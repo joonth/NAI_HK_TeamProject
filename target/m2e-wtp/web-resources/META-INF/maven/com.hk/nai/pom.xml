@@ -21,19 +21,25 @@
 		  </repository>	
 		</repositories>
 	<dependencies>
-		<!-- ///////// OJDBC6 /////////// -->
+		<!-- email 기능 -->
+		<dependency>
+		    <groupId>javax.mail</groupId>
+		    <artifactId>mail</artifactId>
+		    <version>1.4.7</version>
+		</dependency>
+		<!-- ojdbc6 -->
 		<dependency>
 			 <groupId>com.oracle</groupId>
 			 <artifactId>ojdbc6</artifactId>
 			 <version>11.2.0.3</version>
 		</dependency>
-	<!-- /////////  DBCP /////////// -->
+		<!-- dbcp -->
 		<dependency>
 	  		<groupId>commons-dbcp</groupId>
 	  		<artifactId>commons-dbcp</artifactId>
 	  		<version>1.4</version>
 		</dependency>
-	<!-- ///////// MYBATIS /////////// -->
+		<!-- mybatis -->
 		<dependency>
 		  <groupId>org.mybatis</groupId>
 		  <artifactId>mybatis</artifactId>
@@ -49,6 +55,35 @@
 		  <artifactId>spring-orm</artifactId>
 		  <version>4.3.4.RELEASE</version>
 		</dependency>
+		<!-- json 라이브러리 -->
+		<dependency>
+		  <groupId>com.googlecode.json-simple</groupId>
+		  <artifactId>json-simple</artifactId>
+		  <version>1.1.1</version>
+		</dependency>	
+		<!-- commons lang -->	
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.8.1</version>
+		</dependency>
+		<!-- ajax -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.9.7</version>
+		</dependency> 
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.9.7</version>
+		</dependency>
+		<dependency>
+		  <groupId>com.fasterxml.jackson.core</groupId>
+		  <artifactId>jackson-annotations</artifactId>
+		  <version>2.9.7</version>
+		</dependency>	
+			
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
