@@ -3,7 +3,112 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
-  <mapper namespace="com.hk.nai">
-  	
-  
-  </mapper>
+<mapper namespace="com.hk.nai">
+
+	 <resultMap id="MemberDto" type="com.hk.nai.dtos.MemberDto" >
+	    <!-- property = CalDto의 field / column=db -->
+	        <result property="seq" column="M_SEQ"/>
+	        <result property="id" column="M_ID"/>
+	        <result property="pw" column="M_PW"/>
+	        <result property="nickname" column="M_NICK"/>
+	        <result property="email" column="M_EMAIL"/>
+	        <result property="grade" column="M_GRADE"/>
+	        <result property="point" column="M_POINT"/>
+	        <result property="writeCheck" column="M_CHECK"/>
+	    </resultMap>
+	    
+	    <resultMap id="AuthDto" type="com.hk.nai.dtos.AuthDto" >
+	    <!-- property = AuthDto의 field / column=db -->
+	        <result property="authId" column="M_ID"/>
+	        <result property="academyName" column="AC_NAME"/>
+	    </resultMap>
+	
+<!-- 					수민 					-->
+
+	<!-- 회원가입 -->    
+	<select id="checkid" resultType="string" parameterType="String">
+		SELECT M_ID FROM MEMBER WHERE M_ID = #{id}
+	</select>
+	
+	<select id="checknickname" resultType="string" parameterType="String">
+		SELECT M_NICK FROM MEMBER WHERE M_NICK = #{nickname}
+	</select>
+	
+	<select id="checkemail" resultType="string" parameterType="String">
+		SELECT M_EMAIL FROM MEMBER WHERE M_EMAIL = #{email}
+	</select>
+	
+	<insert id="insertmember" parameterType="MemberDto">
+		INSERT INTO MEMBER 
+		(M_SEQ, M_ID, M_PW, M_NICK, M_EMAIL, M_GRADE, M_POINT, M_CHECK) 
+		VALUES (
+			MEMBER_SEQ.NEXTVAL
+			, #{id}
+			, #{pw}
+			, #{nickname}
+			, #{email}
+			, #{grade}
+			, 0
+			, 'N'
+		)
+	</insert>
+	
+	<insert id="insertauth" parameterType="AuthDto">
+		INSERT INTO AUTH 
+		(M_ID, AC_NAME) 
+		VALUES (
+			#{authId}, 
+			#{academyName}
+		)
+	</insert>
+	
+	<select id="signin" resultMap="MemberDto" parameterType="String">
+		SELECT * FROM MEMBER WHERE M_ID = #{id}
+	</select>
+	
+	<!-- 아이디 비번 찾기 -->
+	<select id="findid" resultType="string" parameterType="string">
+		SELECT M_ID FROM MEMBER WHERE M_EMAIL = #{email}
+	</select>
+	
+	<select id="findpw" resultType="string" parameterType="MemberDto">
+		SELECT M_EMAIL FROM MEMBER WHERE M_EMAIL = #{email} AND M_ID = #{id}
+	</select>
+	
+	<update id="temppw" parameterType="MemberDto">
+		UPDATE MEMBER SET M_PW = #{pw} WHERE M_ID = #{id}
+	</update>
+	
+	<!-- 마이페이지 -->
+	<select id="showmyinfo" resultMap="MemberDto" parameterType="string">
+		SELECT * FROM MEMBER WHERE M_ID = #{id}
+	</select>
+	
+	<select id="showauthinfo" resultMap="AuthDto" parameterType="string">
+		SELECT * FROM AUTH WHERE M_ID = #{id}
+	</select>
+	
+	<update id="updatepw" parameterType="MemberDto">
+		UPDATE MEMBER SET M_PW = #{pw} WHERE M_ID = #{id}
+	</update>
+	
+	<update id="updatenickname" parameterType="MemberDto">
+		UPDATE MEMBER SET M_NICK = #{nickname} WHERE M_ID = #{id}
+	</update>
+	
+	<update id="updateemail" parameterType="MemberDto">
+		UPDATE MEMBER SET M_EMAIL = #{email} WHERE M_ID = #{id}
+	</update>
+	
+	<update id="updateauth" parameterType="AuthDto">
+		update auth set ac_name = #{academyName} where m_id = #{authId}
+	</update>
+	
+	<delete id="deletemember" parameterType="MemberDto">
+		DELETE FROM MEMBER WHERE M_ID = #{id} AND M_PW = #{pw}
+	</delete>  	
+	
+<!-- 					찾기쉽게 본인 이름 					-->
+<!-- 					찾기쉽게 본인 이름 					-->
+<!-- 					찾기쉽게 본인 이름 					-->
+</mapper>
