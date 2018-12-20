@@ -83,7 +83,18 @@
 		  <artifactId>jackson-annotations</artifactId>
 		  <version>2.9.7</version>
 		</dependency>	
-			
+		<!-- 이한준  -->
+		
+		
+		<!-- jsoup -->
+		<dependency>
+		    <groupId>org.jsoup</groupId>
+		    <artifactId>jsoup</artifactId>
+		    <version>1.8.3</version>
+		</dependency>	
+		
+		
+		<!-- 이한준  -->
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>

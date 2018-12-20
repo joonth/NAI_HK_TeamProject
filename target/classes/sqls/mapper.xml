@@ -12,7 +12,7 @@
 	        <result property="pw" column="M_PW"/>
 	        <result property="nickname" column="M_NICK"/>
 	        <result property="email" column="M_EMAIL"/>
-	        <result property="grade" column="M_GRADE"/>
+	        <result property="grade" column ="M_GRADE"/>
 	        <result property="point" column="M_POINT"/>
 	        <result property="writeCheck" column="M_CHECK"/>
 	    </resultMap>
@@ -108,7 +108,19 @@
 		DELETE FROM MEMBER WHERE M_ID = #{id} AND M_PW = #{pw}
 	</delete>  	
 	
-<!-- 					찾기쉽게 본인 이름 					-->
+<!-- 					이한준					-->
+	<select id="getScore" parameterType="String" resultType="Integer">
+  		SELECT ac_score FROM ac_comment WHERE ac_name = #{subTitle}
+  	</select>
+  	
+  	<select id="getComment" parameterType="String" resultType="dto">
+  		SELECT ac_name,ac_comment,ac_score,m_id FROM ac_comment WHERE ac_name = #{subTitle}
+  	</select>
+  	
+  	<insert id="addComment" parameterType="dto">
+  		insert into ac_comment values(#{ac_name},#{ac_comment},#{ac_score},#{m_id})
+  	</insert>
+
 <!-- 					찾기쉽게 본인 이름 					-->
 <!-- 					찾기쉽게 본인 이름 					-->
 </mapper>
