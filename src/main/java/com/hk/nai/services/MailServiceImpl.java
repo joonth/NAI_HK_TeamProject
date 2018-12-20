@@ -35,7 +35,7 @@ public class MailServiceImpl implements MailService{
                MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
                helper.setSubject(subject); //제목
                helper.setText(text, true); //내용
-               helper.setFrom("leesuminn@gmail.com"); //발신자
+               helper.setFrom("hk.nai.official@gmail.com"); //발신자
                helper.setTo(to); //수신자
   
                javaMailSender.send(message);
