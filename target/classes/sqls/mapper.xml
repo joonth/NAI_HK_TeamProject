@@ -113,13 +113,34 @@
   		SELECT ac_score FROM ac_comment WHERE ac_name = #{subTitle}
   	</select>
   	
-  	<select id="getComment" parameterType="String" resultType="dto">
+  	<select id="getComment" parameterType="String" resultType="CommentDto">
   		SELECT ac_name,ac_comment,ac_score,m_id FROM ac_comment WHERE ac_name = #{subTitle}
   	</select>
   	
-  	<insert id="addComment" parameterType="dto">
+  	<insert id="addComment" parameterType="CommentDto">
   		insert into ac_comment values(#{ac_name},#{ac_comment},#{ac_score},#{m_id})
   	</insert>
+  	
+  	<!-- websocket message -->
+  	<insert id="sendMessage" parameterType="MessageDto">
+  		insert into notice values(message_seq.nextval,#{n_receiver},#{n_sender},sysdate,#{n_content},#{ns_state_code})
+  	</insert>
+  	
+  	<delete id="deleteMessage" parameterType="int">
+  		delete notice where n_seq =#{n_seq}
+  	</delete>
+  	
+  	<select id="getMessageList" parameterType="String" resultType="MessageDto">
+  		select * from notice where n_receiver = #{n_receiver} order by n_time
+  	</select>
+  	
+  	<select id="getMessage" parameterType="int" resultType="MessageDto">
+  		select * from notice where n_seq = #{n_seq}
+  	</select>
+  	
+  	<select id="getMsgNum" parameterType="String" resultType="MessageDto">
+  		select n_seq from notice where n_receiver = #{n_receiver}
+  	</select>
 
 <!-- 					찾기쉽게 본인 이름 					-->
 <!-- 					찾기쉽게 본인 이름 					-->

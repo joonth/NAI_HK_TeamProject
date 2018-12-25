@@ -4,11 +4,35 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
+	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript">
 		history.pushState(null, null, location.href); 
 		window.onpopstate = function(event) { 
 			location.href="main.do";
 		}
+		
+		$(document).ready(function(){
+			
+			var frm = $('#commentForm');
+
+			frm.submit(function (e) {
+			console.log(frm);
+			    e.preventDefault();
+			    $.ajax({
+			        type: frm.attr('method'),
+			        url: frm.attr('action'),
+			        data: frm.serialize(),
+			        success: function (data) {
+			            console.log('Submission was successful.');
+			       
+			        },
+			        error: function (data) {
+			            console.log('An error occurred.');
+			       
+			        },
+			    });
+			});
+			});
 	</script>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<style type="text/css">
@@ -18,6 +42,7 @@
 		</style>
 	</head>
 <body>
+<%@include file="header.jsp" %>
 	<div class="table">
 		<div class="table-row"> <img alt="img" src="${infoDto.img}"></div>
 		<div class="table-row">${infoDto.addr1} ${infoDto.addr2}</div>
@@ -42,10 +67,10 @@
 				</c:forEach>
 			</c:otherwise>
 		</c:choose>
-		<form action="addComment.do">
+		<form id="commentForm" action="addComment.do">
 	
 			<input type="hidden" name="ac_name" value="${infoDto.inonm}">
-			<input type="hidden" name="m_id" value="session에서꺼내오기">
+			<input type="hidden" name="m_id" value="${sessionScope.member.nickname}" readonly>
 			<input type="text" name="ac_comment" placeholder="평을 작성하실때 과정명과 강사님 성함을 넣어주세요~!" >
 			<select name="ac_score">
 				<option value="5.0">5.0</option>

@@ -1,5 +1,8 @@
 package com.hk.nai.dtos;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class AuthDto {
 	private String academyName;
 	private String authId;

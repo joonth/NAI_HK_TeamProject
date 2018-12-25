@@ -85,7 +85,17 @@
 		</dependency>	
 		<!-- 이한준  -->
 		
-		
+		<!-- websocket  -->
+		<dependency>
+		     <groupId>org.springframework</groupId>
+		      <artifactId>spring-websocket</artifactId>
+		      <version>4.3.4.RELEASE</version>
+		</dependency>
+		  <dependency>
+	    	<groupId>org.codehaus.jackson</groupId>
+	    	<artifactId>jackson-mapper-asl</artifactId>
+	    	<version>1.4.2</version>
+	    </dependency>
 		<!-- jsoup -->
 		<dependency>
 		    <groupId>org.jsoup</groupId>

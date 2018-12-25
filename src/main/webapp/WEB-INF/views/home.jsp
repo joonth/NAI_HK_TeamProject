@@ -5,7 +5,6 @@
 <%@page import="org.jsoup.Jsoup"%>
 <%@page import="org.jsoup.select.Elements"%>
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page session="false" %>
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,8 +14,7 @@
 		
 	</head>
 	<body>
-		
-		<input type="text" id="myInput" onkeypress="if(event.keyCode==13) {myFunction(this.value); return false;}" placeholder="학원,과정,주소로 검색 가능합니다." title="Type in a name">
+			<input type="text" id="myInput" onkeypress="if(event.keyCode==13) {myFunction(this.value); return false;}" placeholder="학원,과정,주소로 검색 가능합니다." title="Type in a name">
 		<div id="none">
 			<table id="myTable">
 				<tr class="header">
@@ -24,28 +22,15 @@
 					<th style="width:40%;">과정명</th>
 					<th style="width:25%;">학원명</th>
 					<th style="width:10%;">주소</th>
-					<th style="width:5%;">평점</th>
-									
-				</tr>
-		 
-				<c:forEach var = "dto" items="${list}">
+					<th style="width:5%;">평점</th>							
+				</tr> 		
+				<c:forEach var = "dto" items="${list}" >
 					<tr onclick="window.location='info?subTitle=${dto.subTitle}'">
-						
-			
-					<c:set var="test" value="한경닷컴IT교육센터"/>
-						<c:choose>
-						    <c:when test="${test eq dto.subTitle}">
-						        <td class="img">1</td>	
-						    </c:when>
-						    <c:otherwise>
-					    	  <td>2</td>
-						    </c:otherwise>
-						</c:choose>
+						<td class="img" ></td>	
 						<td>${dto.title}</td>
 						<td>${dto.subTitle}</td>
 						<td>${dto.address}</td>
 						<td>${dto.score}</td>
-					
 					</tr>
 				</c:forEach>
 			</table>
