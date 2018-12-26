@@ -19,4 +19,8 @@ public class SearchDao {
 		list = sst.selectList(ns+"getScore", subTitle);
 		return list;
 	}
+	
+	public String getImg(String subtitle) {
+		return sst.selectOne(ns+"getImg", subtitle);
+	}
 }

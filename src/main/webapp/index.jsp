@@ -64,6 +64,7 @@ console.log(frm);
 <a href="#">게시판</a>
 <hr>
 <!-- 이한준 -->
+${list1}
 		<input type="text" id="myInput" onkeypress="if(event.keyCode==13) {myFunction(this.value); return false;}" placeholder="학원,과정,주소로 검색 가능합니다." title="Type in a name">
 		<div id="none">
 			<table id="myTable">
@@ -76,11 +77,11 @@ console.log(frm);
 				</tr> 		
 				<c:forEach var = "dto" items="${list}" >
 					<tr onclick="window.location='info.do?subTitle=${dto.subTitle}'">
-						<td class="img" ></td>	
+						<td><img alt="img" width="150" height="90" src="${dto.img}"></td>	
 						<td>${dto.title}</td>
 						<td>${dto.subTitle}</td>
 						<td>${dto.address}</td>
-						<td>${dto.score}</td>
+						<td class="score">${dto.score}</td>
 					</tr>
 				</c:forEach>
 			</table>

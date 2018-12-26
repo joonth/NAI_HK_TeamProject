@@ -62,7 +62,7 @@ public class HomeController {
 	
 	/////////////////////	이한준	///////////////////////
 		
-	Map<String,SearchDto> titleIdMapper = new HashMap<String,SearchDto>();
+	Map<String,Integer> acListNum = new HashMap<String,Integer>();
 	@Autowired		//api로 얻어온 xml data의 tag를 없애는 util.
 	SearchUtil util;
 	@Autowired
@@ -124,22 +124,29 @@ public class HomeController {
 						|| title.contains("보안"))
 				 {		 
 					 SearchDto searchDto = new SearchDto();
+					 String subtitle = util.tagTrim(datas.get(i).select("subtitle"), "subtitle");
+					 String address = util.tagTrim(datas.get(i).select("address"), "address");
+					 String trprid = util.tagTrim(datas.get(i).select("trprid"), "trprid");
+					 
 					 searchDto.setTitle(title);
-					 searchDto.setSubTitle(util.tagTrim(datas.get(i).select("subtitle"), "subtitle"));
-					 searchDto.setAddress(util.tagTrim(datas.get(i).select("address"), "address"));
-					 searchDto.setScore(Sserv.getScore(util.tagTrim(datas.get(i).select("subtitle"), "subtitle")));
-					 searchDto.setTrprId(util.tagTrim(datas.get(i).select("trprid"), "trprid"));
-	
-					 titleIdMapper.put(util.tagTrim(datas.get(i).select("subtitle"), "subtitle"), searchDto);
+					 searchDto.setSubTitle(subtitle);
+					 searchDto.setAddress(address);
+					// searchDto.setScore(Sserv.getScore(subtitle));
+					 searchDto.setTrprId(trprid);
+					 searchDto.setImg(Sserv.getImg(subtitle));
+					
+					 acListNum.put(subtitle, count);
 					 list.add(searchDto);
+					 
+					 
+					 count++;	
+
 				}
-				 count++;	
 			}//for
 			System.out.println("출력 과정수 : "+count);	
 		} // if(
-		model.addAttribute("key", key);
-		model.addAttribute("map", titleIdMapper);
 		model.addAttribute("list", list);	
+		model.addAttribute("key", key);
 		
 		//////////////////////////////////// 이한준 /////////////////////////////////////
 		return "../../index";  //controller가 아니라 signinform.jsp로 이동
@@ -431,9 +438,9 @@ public class HomeController {
 	public String info(Locale locale, Model model, String subTitle) throws IOException {
 		
 		 org.jsoup.nodes.Document docInfo=
-					Jsoup.connect("http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA40/HRDPOA40_2.jsp?authKey="+key+"&returnType=XML&outType=2&srchTrprId="+titleIdMapper.get(subTitle).getTrprId()+"&srchTrprDegr=1")
+					Jsoup.connect("http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA40/HRDPOA40_2.jsp?authKey="+key+"&returnType=XML&outType=2&srchTrprId="+list.get(acListNum.get(subTitle)).getTrprId()+"&srchTrprDegr=1")
 					.timeout(80000).maxBodySize(10*1024*1024).get();
-		infoDto.setImg(titleIdMapper.get(subTitle).getImg());
+		infoDto.setImg(list.get(acListNum.get(subTitle)).getImg());
 		infoDto.setAddr1(docInfo.select("addr1").toString());
 		infoDto.setAddr2(docInfo.select("addr2").toString());
 		infoDto.setHpaddr(docInfo.select("hpAddr").toString());
@@ -461,11 +468,11 @@ public class HomeController {
 		String ac_name = tmpAc_name.substring(tmpAc_name.indexOf("<inonm>")+8, tmpAc_name.indexOf("</inonm>")).trim();
 		dto.setAc_name(ac_name);
 		org.jsoup.nodes.Document docInfo=
-					Jsoup.connect("http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA40/HRDPOA40_2.jsp?authKey="+key+"&returnType=XML&outType=2&srchTrprId="+titleIdMapper.get(ac_name).getTrprId()+"&srchTrprDegr=1")
+					Jsoup.connect("http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA40/HRDPOA40_2.jsp?authKey="+key+"&returnType=XML&outType=2&srchTrprId="+list.get(acListNum.get(dto.getAc_name())).getTrprId()+"&srchTrprDegr=1")
 					.timeout(80000).maxBodySize(10*1024*1024).get();
 		
 		 
-		infoDto.setImg(titleIdMapper.get(ac_name).getImg());
+		infoDto.setImg(list.get(acListNum.get(dto.getAc_name())).getImg());
 		infoDto.setAddr1(docInfo.select("addr1").toString());
 		infoDto.setAddr2(docInfo.select("addr2").toString());
 		infoDto.setHpaddr(docInfo.select("hpAddr").toString());
@@ -473,7 +480,7 @@ public class HomeController {
 		infoDto.setTrprchaptel(docInfo.select("trprChapTel").toString());
 		infoDto.setTrprnm(docInfo.select("trprNm").toString());
 		model.addAttribute("infoDto", infoDto);
-	
+		list.get(acListNum.get(dto.getAc_name())).setScore(Sserv.getScore(dto.getAc_name()));
 		
 		commentDao.addComment(dto);
 		List<commentDto> commentList = new ArrayList<commentDto>();
@@ -485,35 +492,22 @@ public class HomeController {
 		}
 		return "info";
 	}
-	
-	
+    
 	@ResponseBody
-	@RequestMapping(value = "/getImg.do", method = RequestMethod.POST)
-	public Map<String, SearchDto> getImg(Locale locale, Model model,String[] acTitle) throws IOException {
-		Map<String,SearchDto> map = new HashMap<>();
-		 String text = "";
-
-		 for(int i=0; i<acTitle.length; i++) {
-			 text = acTitle[i];
-			
-			 SearchDto searchDto = new SearchDto();
-			 searchDto.setTrprId(titleIdMapper.get(text).getTrprId());
-
-		org.jsoup.nodes.Document docImg=
-				Jsoup.connect("http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA40/HRDPOA40_2.jsp?authKey="+key+"&returnType=XML&outType=2&srchTrprId="+searchDto.getTrprId()+"&srchTrprDegr=1")
-				.timeout(80000).maxBodySize(10*1024*1024).get();
-		if(!docImg.select("filePath").toString().equals("")){
-			searchDto.setImg(docImg.select("filePath").toString().substring(10, 94).trim());
-			titleIdMapper.put(text, searchDto);
-		  }else{
-			searchDto.setImg("http://sign.kedui.net/rtimages/n_sub/no_detail_img.gif");
-		  }
-		map.put(text, searchDto);
-		 }
+	@RequestMapping(value = "/getList.do", method = RequestMethod.POST)
+	public Map<String,Float> getList(Locale locale, Model model,String[] acTitle) throws IOException {
+		Map<String,Float> map = new HashMap<>();
+		/*List<SearchDto> printList = new ArrayList<SearchDto>();
+		list.get(acListNum.get(acTitle[i])).setScore(Sserv.getScore(acTitle[i]));
+		printList.add(list.get(acListNum.get(acTitle[i])));*/
+		for (int i = 0; i < acTitle.length; i++) {
+			list.get(acListNum.get(acTitle[i])).setScore(Sserv.getScore(acTitle[i]));
+			map.put(acTitle[i], Sserv.getScore(acTitle[i]));
+		}
+		model.addAttribute("map",map);
 		return map;
 	}
-    
-    
+	
     ////////////////	이한준 	//////////////////////////////////////////////////////////////////////////////
     
     

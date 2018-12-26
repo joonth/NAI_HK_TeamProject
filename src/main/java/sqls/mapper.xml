@@ -141,6 +141,10 @@
   	<select id="getMsgNum" parameterType="String" resultType="MessageDto">
   		select n_seq from notice where n_receiver = #{n_receiver}
   	</select>
+  	
+  	<select id="getImg" parameterType="String" resultType="String">
+  		select IMG from ac_img where ac_name = #{subtitle}
+  	</select>
 
 <!-- 					찾기쉽게 본인 이름 					-->
 <!-- 					찾기쉽게 본인 이름 					-->

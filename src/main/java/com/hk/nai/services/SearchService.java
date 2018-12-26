@@ -29,4 +29,8 @@ public class SearchService {
 		}
 	}
 
+	
+	public String getImg(String subtitle) {
+		return dao.getImg(subtitle);	
+	}
 }

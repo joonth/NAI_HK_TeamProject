@@ -1,3 +1,4 @@
+
 function myFunction(val) {	
   var input, filter, table, tr, td, i, txtValue;
   input = document.getElementById("myInput");
@@ -7,7 +8,8 @@ function myFunction(val) {
   var acTitle = new Array();
   var tdNum = new Array();
   var count =0;
-  var imgs=document.getElementsByClassName("img");
+  //var imgs = document.getElementsByClassName("img");
+  var scores = document.getElementsByClassName("score");
   for (i = 0; i < tr.length; i++) {				 
 	td = tr[i].getElementsByTagName("td")[1];
     td1 = tr[i].getElementsByTagName("td")[2];
@@ -30,17 +32,20 @@ function myFunction(val) {
 	  }
 	}
   $.ajax({
-		url:"getImg.do?",
+		url:"getList.do?",
 		traditional:true,
 		data:{"acTitle":acTitle},
 		datatype:"json",
 		method:"post",
 		success:function(obj){ //컨트롤에서 전달받은 객체(map)--> obj
 			for(var i=0; i<acTitle.length; i++){
-			// 검색에 해당하는 학원들의 img만 구해서 변경해준다.
-				imgs[tdNum[count]].innerHTML="<img src='"+obj[acTitle[count]].img+"' alt='img' width='150' height='90'>";	
-				count++;
-			}			
+			// 검색에 해당하는 학원들의 score만 구해서 변경해준다.
+				/*imgs[tdNum[count]].innerHTML="<img src='"+obj[acTitle[count]].img+"' alt='img' width='150' height='90'>";	
+				 */
+				scores[tdNum[count]].innerHTML= obj[acTitle[count]];				
+
+			count++;
+			}		
 		},
 		error:function(){
 			console.log("서버통신실패!!");
