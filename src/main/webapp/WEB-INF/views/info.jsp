@@ -24,7 +24,8 @@
 			        data: frm.serialize(),
 			        success: function (data) {
 			            console.log('Submission was successful.');
-			       
+			       		var cmt = data.dto;
+			       		$('#comment').append('<div class="table-row">'+ cmt.ac_name+" "+cmt.m_id+" "+cmt.ac_comment+" "+cmt.ac_score +'</div>')
 			        },
 			        error: function (data) {
 			            console.log('An error occurred.');
@@ -42,6 +43,7 @@
 		</style>
 	</head>
 <body>
+
 <%@include file="header.jsp" %>
 	<div class="table">
 		<div class="table-row"> <img alt="img" src="${infoDto.img}"></div>
@@ -54,17 +56,21 @@
 	<div class="table">
 		<c:choose>
 			<c:when test="${empty list}">
+			<div id="comment">
 				<div class="table-row">---작성된 글이 없습니다.---</div>
+			</div>
 			</c:when>
 			<c:otherwise>
+			<div id="comment">
 				<c:forEach var = "dto" items="${list}">
 					<div class="table-row">
-						<div class="table-cell">${dto.ac_name}</div>
-						<div class="table-cell">${dto.m_id}</div>
-						<div class="table-cell">${dto.ac_comment}</div>
-						<div class="table-cell">${dto.ac_score}</div>
+						${dto.ac_name}
+						${dto.m_id}
+						${dto.ac_comment}
+						${dto.ac_score}
 					</div>
 				</c:forEach>
+			</div>
 			</c:otherwise>
 		</c:choose>
 		<form id="commentForm" action="addComment.do">

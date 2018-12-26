@@ -114,11 +114,11 @@
   	</select>
   	
   	<select id="getComment" parameterType="String" resultType="CommentDto">
-  		SELECT ac_name,ac_comment,ac_score,m_id FROM ac_comment WHERE ac_name = #{subTitle}
+  		SELECT ac_name,ac_comment,ac_score,m_id FROM ac_comment WHERE ac_name = #{subTitle} order by cmt_num
   	</select>
   	
   	<insert id="addComment" parameterType="CommentDto">
-  		insert into ac_comment values(#{ac_name},#{ac_comment},#{ac_score},#{m_id})
+  		insert into ac_comment values(#{ac_name},#{ac_comment},#{ac_score},#{m_id},cmtnum_seq.nextval)
   	</insert>
   	
   	<!-- websocket message -->

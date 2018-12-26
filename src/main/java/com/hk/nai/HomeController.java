@@ -461,36 +461,18 @@ public class HomeController {
 	}
 	//CommentDao
 	
+	@ResponseBody
 	@RequestMapping(value = "/addComment.do", method = RequestMethod.GET)
-	public String addComment(Locale locale, Model model,commentDto dto) throws IOException {
-		
-		String tmpAc_name = dto.getAc_name();
-		String ac_name = tmpAc_name.substring(tmpAc_name.indexOf("<inonm>")+8, tmpAc_name.indexOf("</inonm>")).trim();
-		dto.setAc_name(ac_name);
-		org.jsoup.nodes.Document docInfo=
-					Jsoup.connect("http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA40/HRDPOA40_2.jsp?authKey="+key+"&returnType=XML&outType=2&srchTrprId="+list.get(acListNum.get(dto.getAc_name())).getTrprId()+"&srchTrprDegr=1")
-					.timeout(80000).maxBodySize(10*1024*1024).get();
-		
-		 
-		infoDto.setImg(list.get(acListNum.get(dto.getAc_name())).getImg());
-		infoDto.setAddr1(docInfo.select("addr1").toString());
-		infoDto.setAddr2(docInfo.select("addr2").toString());
-		infoDto.setHpaddr(docInfo.select("hpAddr").toString());
-		infoDto.setInonm(docInfo.select("inoNm").toString());
-		infoDto.setTrprchaptel(docInfo.select("trprChapTel").toString());
-		infoDto.setTrprnm(docInfo.select("trprNm").toString());
-		model.addAttribute("infoDto", infoDto);
-		list.get(acListNum.get(dto.getAc_name())).setScore(Sserv.getScore(dto.getAc_name()));
-		
+	public Map<String,commentDto> addComment(Locale locale, Model model,commentDto dto) throws IOException {
+		String subtitle = util.tagTrim_str(dto.getAc_name(), "inonm");
+		//학원평 작성시 평점 반영.
+		list.get(acListNum.get(subtitle)).setScore(Sserv.getScore(subtitle));
+		dto.setAc_name(subtitle);
 		commentDao.addComment(dto);
-		List<commentDto> commentList = new ArrayList<commentDto>();
-		commentList = Iserv.getComment(ac_name);
-		if(!(commentList.size()==0)) {
-			model.addAttribute("list", commentList);
-		}else {
-			model.addAttribute("list", null);
-		}
-		return "info";
+
+		Map<String,commentDto> map = new HashMap<>();
+		map.put("dto", dto);
+		return map;
 	}
     
 	@ResponseBody
