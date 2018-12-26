@@ -21,6 +21,7 @@
 		  </repository>	
 		</repositories>
 	<dependencies>
+	
 		<!-- email 기능 -->
 		<dependency>
 		    <groupId>javax.mail</groupId>
@@ -105,6 +106,12 @@
 		
 		
 		<!-- 이한준  -->
+		<!-- 황인후 -->
+
+
+		
+
+		
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -133,6 +140,12 @@
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
 			<version>${org.aspectj-version}</version>
+		</dependency>
+<!-- 		황인후 -->
+		<dependency>
+  			<groupId>org.aspectj</groupId>
+  			<artifactId>aspectjweaver</artifactId>
+  			<version>${org.aspectj-version}</version>
 		</dependency>	
 		
 		<!-- Logging -->

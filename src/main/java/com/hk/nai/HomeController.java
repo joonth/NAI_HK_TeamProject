@@ -490,7 +490,7 @@ public class HomeController {
 	@ResponseBody
 	@RequestMapping(value = "/getImg.do", method = RequestMethod.POST)
 	public Map<String, SearchDto> getImg(Locale locale, Model model,String[] acTitle) throws IOException {
-		Map<String,SearchDto> map = new HashMap<>();
+		Map<String,SearchDto> map = new HashMap<String,SearchDto>();
 		 String text = "";
 
 		 for(int i=0; i<acTitle.length; i++) {

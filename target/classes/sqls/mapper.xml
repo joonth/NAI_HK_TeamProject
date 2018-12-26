@@ -142,6 +142,111 @@
   		select n_seq from notice where n_receiver = #{n_receiver}
   	</select>
 
-<!-- 					찾기쉽게 본인 이름 					-->
+<!-- 					황인후					-->
+	<!--   게시판쿼리 -->
+  	<select id="getAllContent" resultType="BoardDto">
+  		SELECT B_SEQ,M_NICK,B_TITLE,B_CONTENT,B_REGDATE,B_READCOUNT
+  		FROM BOARD
+  		ORDER BY B_SEQ DESC
+  	</select>
+  
+  	<insert id="insertBoard" parameterType="BoardDto">
+  		INSERT INTO BOARD VALUES
+  		(BOARD_SEQ.NEXTVAL,#{m_nick},#{b_title},#{b_content},SYSDATE,0,0)
+  	</insert>
+  	
+  	<select id="getBoard" resultType="BoardDto" parameterType="int">
+  		SELECT B_SEQ,M_NICK,B_REGDATE,B_TITLE,B_CONTENT
+  		FROM BOARD WHERE B_SEQ=#{b_seq}
+  	</select>
+  	
+  	<update id="updateBoard" parameterType="BoardDto">
+  		UPDATE BOARD
+  		SET B_TITLE=#{b_title},B_CONTENT=#{b_content},B_REGDATE=sysdate,B_LIKE=#{b_like}
+  		WHERE B_SEQ=#{b_seq}
+  	</update>
+  	
+  	<update id="b_readCount" parameterType="int">
+  		UPDATE BOARD SET B_READCOUNT=B_READCOUNT+1 WHERE B_SEQ=#{b_seq}
+  	</update>
+  	
+  	<delete id="delBoard" parameterType="int">
+  		DELETE FROM BOARD WHERE B_SEQ=#{b_seq}
+  	</delete>
+  	
+  	<!-- 페이징 처리 -->
+    
+	<!--     최신순으로 10개씩 출력하는 쿼리 -->
+    <select id="listCriteria" resultType="BoardDto" parameterType="String"> 
+       <![CDATA[
+			select * from
+						(
+							select ROW_NUMBER() OVER ( ORDER BY b_seq desc) rn,b_seq,m_nick,b_title,b_content,b_regdate,b_readcount,b_like from board
+				 		)
+ 			 where ceil(rn/10)=#{page}
+ 			
+		]]>
+    </select>
+	<!--     조회순으로 10개식 출력하는 쿼리 -->
+    <select id="listCriteria1" resultType="BoardDto" parameterType="String"> 
+       <![CDATA[
+			select * from
+						(
+							select ROW_NUMBER() OVER ( ORDER BY b_readcount desc,b_seq desc) rn,b_seq,m_nick,b_title,b_content,b_regdate,b_readcount,b_like from board
+				 		)
+ 			 where ceil(rn/10)=#{page}
+ 			
+		]]>
+    </select>  
+    
+    
+    <!-- 전체 게시글 수를 구하는 쿼리 -->
+    <select id="getTotalCount" resultType="java.lang.Integer">
+        select count(*) from
+        board
+    </select>
+    <!-- 댓글쿼리 -->
+	<select id="commentList" resultType="CommentDto1">
+  		SELECT R_SEQ,M_NICK,R_CONTENT,R_REGDATE
+  		FROM REPLY
+  		WHERE B_SEQ=#{b_seq}
+  		ORDER BY R_SEQ DESC
+  	</select>
+  
+  	<insert id="insertComment" parameterType="CommentDto1">
+  		INSERT INTO REPLY VALUES
+  		(REPLY_SEQ.NEXTVAL,#{b_seq},#{m_nick},#{r_content},sysdate)
+  		
+  	</insert>
+  	
+  	<update id="updateComment" parameterType="CommentDto1">
+  		UPDATE REPLY
+  		SET R_CONTENT=#{r_content},R_REGDATE=sysdate
+  		WHERE R_SEQ=#{r_seq}
+  	</update>
+  	
+  	<delete id="delComment" parameterType="int">
+  		DELETE FROM REPLY WHERE R_SEQ=#{r_seq}
+  	</delete>	
+	<!-- 	특정댓글조회 -->
+	<select id="readComment" resultType="CommentDto1">
+		SELECT R_SEQ,B_SEQ,M_NICK,R_CONTENT,R_REGDATE
+		FROM REPLY
+		WHERE R_SEQ=#{r_seq}
+	</select>
+	
+	<!-- 게시글 좋아요 체크 ..좋아요 버튼 클릭 이벤트시에 실행-->
+	<update id="like_check" parameterType="HashMap">
+		UPDATE LIKETO 
+		SET LIKE_CHECK = LIKE_CHECK+1
+		WEHRE M_NICK=#{m_nick} AND B_SEQ=#{b_seq}
+	</update>
+	
+	<update id="like_check_cancle" parameterType="HashMap">
+		UPDATE LIKETO
+		SET LIKE_CHECK = 0
+		WEHRE M_NICK=#{m_nick} AND B_SEQ=#{b_seq}
+	</update>
+	
 <!-- 					찾기쉽게 본인 이름 					-->
 </mapper>

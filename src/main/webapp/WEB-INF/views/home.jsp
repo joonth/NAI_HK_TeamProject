@@ -1,7 +1,7 @@
 <%@page import="java.util.List"%>
 <%@page import="com.hk.nai.dtos.SearchDto"%>
 <%@page import="java.util.Map"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page import="org.jsoup.Jsoup"%>
 <%@page import="org.jsoup.select.Elements"%>
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
