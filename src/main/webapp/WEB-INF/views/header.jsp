@@ -9,59 +9,53 @@
 	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 	<!-- websocket -->
-	
-	<script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
 	<script type="text/javascript">
-	 
-	$(document).ready(function(){
-	
-		$("#messageForm").submit(function(event) {
-
-	     sock.send($("#n_receiver").val());
-	     
-		});
-
-		var sock = new SockJS("<c:url value="main.do"/>");
-		 sock.onopen = function() {
-			 sock.send($("#session").val());
-		     console.log('open');
-		 };
-	
-		 sock.onmessage = function(evt) {
-			 $('#count').text(evt.data);
-		 };
-	
-		 sock.onclose = function() {
-		     console.log('close');
-		 };
-	
-	 });
-
+		$(document).ready(function(){
+			var sock = new SockJS("<c:url value=".do"/>");
+			$("#messageForm").submit(function(event) {
+				alert('동작!');
+		     sock.send($("#n_receiver").val());
+			});
+			 sock.onopen = function() {
+				 sock.send($("#session").val());
+			     console.log('open');
+			 };
+			 sock.onmessage = function(evt) {
+				 $('#count').text(evt.data);
+			 };
+			 sock.onclose = function() {
+			     console.log('close');
+			 };
+		 });
+			
+		function changeUrl(url){
+			document.getElementById("if").src=url;	
+		}
 	</script>
-
 </head>
 <body>
  	<input id="session" type="hidden" value="${sessionScope.member.nickname}" >
 	<!-- 세션이 있을 때만 = 로그인되어있을 때만  -->
 	<c:if test="${sessionScope.member!=null}">
 		<span>${sessionScope.member.nickname} 님 환영합니다</span>
-		<span id="count" class="badge bg-theme" data-toggle="modal" data-target="#myModal" >message</span>
+		<span id="count" onclick="changeUrl('getMessageList.do?n_receiver=${sessionScope.member.nickname}')" class="badge bg-theme" data-toggle="modal" data-target="#myModal" >message</span>
 		<a href="signout.do">로그아웃</a>
 		<a href="mypage.do">마이페이지</a>
 	</c:if>
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
       </div>
       <div class="modal-body">
-          <iframe src="getMessageList.do?n_receiver=${sessionScope.member.nickname}" width="600" height="380" frameborder="0" allowtransparency="true"></iframe>  
+          <iframe id="if" src="" width="600" height="380" frameborder="0" allowtransparency="true"></iframe>  
       </div>
     
     </div>
@@ -69,6 +63,6 @@
   </div>
   <!-- /.modal-dialog -->
 </div>
-<!-- /.modal -->
+	<!-- /.modal -->
 </body>
 </html>

@@ -15,11 +15,10 @@
 <!DOCTYPE>
 <html>
 <head>
-	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 <!-- 이한준 -->
+		<script src="https://ajax.aspnetcdn. com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/search.js"></script>
-		<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/search.css">
-			
+		<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/search.css">	
 <!-- 이한준 -->
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>국과수 국비과정수업정보</title>
@@ -29,28 +28,22 @@
 	}
 %>
 <script type="text/javascript">
-
 $(document).ready(function(){
-	
-var frm = $('#messageForm');
-
-frm.submit(function (e) {
-console.log(frm);
-    e.preventDefault();
-    $.ajax({
-        type: frm.attr('method'),
-        url: frm.attr('action'),
-        data: frm.serialize(),
-        success: function (data) {
-            console.log('Submission was successful.');
-       
-        },
-        error: function (data) {
-            console.log('An error occurred.');
-       
-        },
-    });
-});
+	var frm = $('#messageForm');
+	frm.submit(function (e) {
+	    e.preventDefault();
+	    $.ajax({
+	        type: frm.attr('method'),
+	        url: frm.attr('action'),
+	        data: frm.serialize(),
+	        success: function (data) {
+	            console.log('Submission was successful.');
+	        },
+	        error: function (data) {
+	            console.log('An error occurred.');
+	        },
+	    });
+	});
 });
 </script>
 
@@ -64,7 +57,6 @@ console.log(frm);
 <a href="#">게시판</a>
 <hr>
 <!-- 이한준 -->
-${list1}
 		<input type="text" id="myInput" onkeypress="if(event.keyCode==13) {myFunction(this.value); return false;}" placeholder="학원,과정,주소로 검색 가능합니다." title="Type in a name">
 		<div id="none">
 			<table id="myTable">

@@ -31,7 +31,7 @@
 	<util:properties id="apiKey" location="classpath:/config/config.properties"/>
 	
 	<websocket:handlers>
-		<websocket:mapping handler="EchoHandler" path="main.do"/>
+		<websocket:mapping handler="EchoHandler" path=".do"/>
 		<websocket:handshake-interceptors>
 			<beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
 			

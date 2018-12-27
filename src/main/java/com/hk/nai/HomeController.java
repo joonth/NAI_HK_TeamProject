@@ -479,9 +479,7 @@ public class HomeController {
 	@RequestMapping(value = "/getList.do", method = RequestMethod.POST)
 	public Map<String,Float> getList(Locale locale, Model model,String[] acTitle) throws IOException {
 		Map<String,Float> map = new HashMap<>();
-		/*List<SearchDto> printList = new ArrayList<SearchDto>();
-		list.get(acListNum.get(acTitle[i])).setScore(Sserv.getScore(acTitle[i]));
-		printList.add(list.get(acListNum.get(acTitle[i])));*/
+
 		for (int i = 0; i < acTitle.length; i++) {
 			list.get(acListNum.get(acTitle[i])).setScore(Sserv.getScore(acTitle[i]));
 			map.put(acTitle[i], Sserv.getScore(acTitle[i]));
