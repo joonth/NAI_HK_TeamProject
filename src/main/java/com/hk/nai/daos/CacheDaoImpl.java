@@ -20,7 +20,7 @@ public class CacheDaoImpl implements CacheDao{
 
 	@Autowired
 	private SqlSessionTemplate sqlSession;
-	private String namespace = "com.proto.project.";
+	private String namespace = "com.hk.nai.";
 	
 	@Cacheable(value="rankingCache")
 	@Override
