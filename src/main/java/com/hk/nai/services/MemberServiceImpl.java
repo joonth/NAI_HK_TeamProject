@@ -1,5 +1,7 @@
 package com.hk.nai.services;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.hk.nai.daos.MemberDao;
 import com.hk.nai.dtos.AuthDto;
 import com.hk.nai.dtos.MemberDto;
+import com.hk.nai.dtos.AcademyDto;
+import com.hk.nai.dtos.BasketDto;
 
 @Service
 public class MemberServiceImpl implements MemberService{
@@ -129,16 +133,48 @@ public class MemberServiceImpl implements MemberService{
 	
 	@Override
 	public boolean updateAuth(AuthDto authdto) {
-		return memdao.updateAuth(authdto);
+		//일반생 -> 새로 인증 경우
+		if(memdao.showAuthInfo(authdto.getAuthId())==null)
+			return 	memdao.insertAuth(authdto);
+		//기존에 학원 인증 o  -> 다른학원명으로 바꿀 경우
+		else
+			return memdao.updateAuth(authdto);
 	}
 	
 	@Override
 	public boolean deleteMyInfo(MemberDto member) {
-		return memdao.deleteMyInfo(member);
+		System.out.println("탈퇴 service 진입 멤버값: " + member);
+		String grade = memdao.showMyInfo(member.getId()).getGrade();
+		System.out.println("탈퇴 service 진입 grade: " + grade);
+		boolean isDelMyInfo = memdao.deleteMyInfo(member);
+		System.out.println("탈퇴 service 진입 isDelMyInfo: " + isDelMyInfo);
+		boolean isDelAuthInfo = false;
+		//만약  grade가 B이면 auth도 삭제
+		if( isDelMyInfo || grade == "B") {
+			isDelAuthInfo = memdao.deleteAuthInfo(new AuthDto().setAuthId(member.getId()));
+			System.out.println("학원 인증생일 경우 삭제 성공 여부: "+ isDelAuthInfo);
+		} 
+		
+		return isDelMyInfo;
 	}
 
 
+	@Override
+	public List<BasketDto> showMyAcList(String baskId) {
+		return memdao.showMyAcList(baskId);
+	}
 
+	@Override
+	public int deleteMyAc(Integer[] myAcSeq) {
+		// TODO Auto-generated method stub
+		return memdao.deleteMyAc(myAcSeq);
+	}
+
+	@Override
+	public List<AcademyDto> searchAcName(String academyName) {
+		// TODO Auto-generated method stub
+		return memdao.searchAcName(academyName);
+	}
 
 
 

@@ -23,6 +23,26 @@
 	        <result property="academyName" column="AC_NAME"/>
 	    </resultMap>
 	
+		<resultMap id="BasketDto" type="com.hk.nai.dtos.BasketDto" >
+	        <result property="baskSeq" column="B_SEQ"/>
+	        <result property="baskId" column="M_ID"/>
+	        <result property="baskAcademyName" column="AC_NAME"/>
+		</resultMap>
+	    
+		<resultMap id="RankingDto" type="com.hk.nai.dtos.RankingDto" >
+	        <result property="rankAcademyName" column="AC_NAME"/>
+	        <result property="rankScoreAverage" column="SCORE_AVG"/>
+	    </resultMap>
+	    
+		<resultMap id="StartClassDto" type="com.hk.nai.dtos.StartClassDto" >
+	        <result property="startAcademyName" column="AC_NAME"/>
+	        <result property="startClassName" column="AC_CLASS"/>
+	        <result property="startDDay" column="DDAY"/>
+	    </resultMap>
+	    
+		<resultMap id="AcademyDto" type="com.hk.nai.dtos.AcademyDto" >
+	        <result property="academyName" column="AC_NAME"/>
+	    </resultMap>
 <!-- 					수민 					-->
 
 	<!-- 회원가입 -->    
@@ -107,7 +127,47 @@
 	<delete id="deletemember" parameterType="MemberDto">
 		DELETE FROM MEMBER WHERE M_ID = #{id} AND M_PW = #{pw}
 	</delete>  	
+	<delete id="deleteauth" parameterType="AuthDto">
+		DELETE FROM AUTH WHERE M_ID = #{authId}
+	</delete>
+
+	<!-- 마이페이지 : 찜한 학원 -->
+	<select id="showmyaclist" resultMap="BasketDto" parameterType="string">
+		SELECT * FROM BASKET WHERE M_ID = #{baskId}
+	</select>
 	
+	<delete id="delmyac" parameterType="integer">
+		DELETE FROM BASKET WHERE B_SEQ IN
+		<foreach collection="array" item="item" open="("  separator="," close=")">
+			#{item}
+		</foreach>
+	</delete> 
+	<!-- 랭킹 -->
+	<select id="ranking" resultMap="RankingDto">
+		SELECT AC_NAME, SCORE_AVG FROM VIEW_AC_RANKING 
+		<![CDATA[
+		WHERE ROWNUM<=10
+		]]>
+	</select>
+
+	<!-- 개강마감임박 d-14 -->
+	<select id="startclass" resultMap="StartClassDto">
+	<!-- 20180630 = TEST용 나중에 sysdate로 변경 -->
+		SELECT AC_NAME, AC_CLASS,
+		<![CDATA[
+		'20180630'- REPLACE(AC_CRE_DATE,'-','') AS DDAY
+		FROM ACADEMY
+		WHERE '20180630' - REPLACE(AC_CRE_DATE,'-','') BETWEEN 0 AND 14
+		ORDER BY DDAY ASC
+		]]>
+	</select>
+	
+	<select id="searchacname" resultMap="AcademyDto" parameterType="string">
+		<![CDATA[
+		SELECT DISTINCT(AC_NAME) FROM ACADEMY WHERE AC_NAME LIKE '%' || #{academyName} || '%'
+		]]>
+	</select>
+
 <!-- 					이한준					-->
 	<select id="getScore" parameterType="String" resultType="Integer">
   		SELECT ac_score FROM ac_comment WHERE ac_name = #{subTitle}

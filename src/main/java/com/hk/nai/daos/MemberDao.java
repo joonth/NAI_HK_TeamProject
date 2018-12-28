@@ -1,7 +1,11 @@
 package com.hk.nai.daos;
 
+import java.util.List;
+
 import com.hk.nai.dtos.AuthDto;
 import com.hk.nai.dtos.MemberDto;
+import com.hk.nai.dtos.AcademyDto;
+import com.hk.nai.dtos.BasketDto;
 
 public interface MemberDao {
 	
@@ -21,4 +25,8 @@ public interface MemberDao {
 	public boolean updateEmail(MemberDto member);
 	public boolean updateAuth(AuthDto authdto);
 	public boolean deleteMyInfo(MemberDto member);
+	public boolean deleteAuthInfo(AuthDto authdto);
+	public List<BasketDto> showMyAcList(String baskId);
+	public int deleteMyAc(Integer[] myAcSeq);
+	public List<AcademyDto> searchAcName(String academyName);
 }

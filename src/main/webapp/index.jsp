@@ -27,7 +27,21 @@
 		response.sendRedirect("signinform.do");
 	}
 %>
+<style>
+.sticker{
+height:50px;
+overflow:hidden;
+margin:0;
+padding:0;
+list-style:none;
+}
 
+.sticker li{
+height:40px;
+padding:5px;
+margin: 0px 5px;
+}
+</style>
 <script type="text/javascript">
 
 
@@ -200,7 +214,47 @@ function stateClick(val){
 
 
 <p>---학원랭킹---</p>
-
-<p>----마감임박학원----</p>
+	<table border="1">
+	<c:choose>
+		<c:when test="${ranking != null}">
+			<c:forEach items="${ranking}" var="rk" varStatus="status">
+				<tr>
+					<td>${status.count}</td>
+					<td>${rk.rankAcademyName}</td>
+					<td>${rk.rankScoreAverage}</td>
+				</tr>
+			</c:forEach>
+		</c:when>
+		<c:otherwise>
+			<tr>
+				<td>ranking 비어있음</td>
+			</tr>
+		</c:otherwise>
+	</c:choose>
+	</table>
+<div>
+<p>----개강임박과정----</p>
+	<ul id="startClass" class="sticker">
+		<c:choose>
+			<c:when test="${startclass != null}">
+				<c:forEach items="${startclass}" var="sc" varStatus="status">
+					<li>${sc.startAcademyName} ${sc.startClassName} D - ${sc.startDDay}</li>
+				</c:forEach>
+			</c:when>
+			<c:otherwise>
+				<li>startclass 비어있음</li>
+			</c:otherwise>
+		</c:choose>
+	</ul>
+</div>
+<script type="text/javascript">
+	function rollingSticker(){
+		$("#startClass li:first").slideUp(
+				function() {
+					$(this).appendTo($(startClass)).slideDown();
+				});
+		};	
+	setInterval(function(){rollingSticker()},4000);
+</script>
 </body>
 </html>
