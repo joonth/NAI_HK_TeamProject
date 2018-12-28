@@ -145,6 +145,10 @@
   	<select id="getImg" parameterType="String" resultType="String">
   		select IMG from ac_img where ac_name = #{subtitle}
   	</select>
+  	
+  	<select id="getMemberList" resultMap="MemberDto">
+  		select * from member
+  	</select>
 
 <!-- 					찾기쉽게 본인 이름 					-->
 <!-- 					찾기쉽게 본인 이름 					-->

@@ -420,6 +420,7 @@ public class HomeController {
 	@RequestMapping(value = "/sendMessage.do", method = RequestMethod.POST)
 	public String sendMessage(Locale locale, Model model, MessageDto dto) {
 		logger.info("메시지 전송", locale);
+		System.out.println("$$$" + dto.toString());
 		messageDao.sendMessage(dto);
 		
 		return "../../index";
@@ -485,6 +486,25 @@ public class HomeController {
 			map.put(acTitle[i], Sserv.getScore(acTitle[i]));
 		}
 		model.addAttribute("map",map);
+		return map;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/getMemberList.do", method = RequestMethod.POST)
+	public Map<String,List<MemberDto>> getMemberList(Locale locale, Model model) throws IOException {
+		Map<String,List<MemberDto>> map = new HashMap<>();
+		map.put("list", Sserv.getMemberList());
+		return map;
+	}
+	
+
+	@ResponseBody
+	@RequestMapping(value = "/changeState.do", method = RequestMethod.GET)
+	public Map<String,String> changeState(Locale locale, Model model,String value,String section) throws IOException {
+		Map<String,String> map = new HashMap<>();	
+		section = (section.equals("a")) ? "b": "a";
+		map.put("value", value);
+		map.put("section", section);
 		return map;
 	}
 	

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hk.nai.daos.SearchDao;
+import com.hk.nai.dtos.MemberDto;
 
 @Service
 public class SearchService {
@@ -32,5 +33,9 @@ public class SearchService {
 	
 	public String getImg(String subtitle) {
 		return dao.getImg(subtitle);	
+	}
+	
+	public List<MemberDto> getMemberList(){
+		return dao.getMemberList();
 	}
 }

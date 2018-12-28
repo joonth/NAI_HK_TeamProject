@@ -6,7 +6,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
@@ -16,10 +16,19 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			var sock = new SockJS("<c:url value=".do"/>");
+			
+			
 			$("#messageForm").submit(function(event) {
-				alert('동작!');
 		     sock.send($("#n_receiver").val());
 			});
+			
+			$("#messageAllForm").submit(function(event){
+				for(var i=0; i<$('#b').children('div').length; i++){
+					var n_receiver = $('#b').children('div').eq(i).attr('value');	
+					 sock.send(n_receiver);
+				}				
+			});
+			
 			 sock.onopen = function() {
 				 sock.send($("#session").val());
 			     console.log('open');

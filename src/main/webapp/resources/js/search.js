@@ -38,6 +38,7 @@ function myFunction(val) {
 		datatype:"json",
 		method:"post",
 		success:function(obj){ //컨트롤에서 전달받은 객체(map)--> obj
+			console.log(typeof(obj[acTitle[count]]));
 			for(var i=0; i<acTitle.length; i++){
 			// 검색에 해당하는 학원들의 score만 구해서 변경해준다.
 				/*imgs[tdNum[count]].innerHTML="<img src='"+obj[acTitle[count]].img+"' alt='img' width='150' height='90'>";	

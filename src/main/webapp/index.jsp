@@ -16,7 +16,7 @@
 <html>
 <head>
 <!-- 이한준 -->
-		<script src="https://ajax.aspnetcdn. com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+		<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/search.js"></script>
 		<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/search.css">	
 <!-- 이한준 -->
@@ -27,7 +27,42 @@
 		response.sendRedirect("signinform.do");
 	}
 %>
+
 <script type="text/javascript">
+
+
+/////////////// 선택해서 보내기
+
+$(document).ready(function(){
+	var frm = $('#messageAllForm');
+		
+		frm.submit(function (e) {
+		for(var i=0; i<$('#b').children('div').length; i++){
+			var n_sender = 'admin';
+			var n_receiver = $('#b').children('div').eq(i).attr('value');	
+			var n_content = $('#allContent').val();
+			var ns_state_code = 'a';
+		
+		    e.preventDefault();
+		    $.ajax({
+		        type: frm.attr('method'),
+		        url: frm.attr('action'),
+		        data: {"n_sender":n_sender,"n_receiver":n_receiver,"n_content":n_content,"ns_state_code":ns_state_code},
+		        success: function (data) {
+		            console.log('Submission was successful.');
+		        },
+		        error: function (data) {
+		            console.log('An error occurred.');
+		        },
+		    });
+		}
+	});
+});
+
+
+
+
+////////////// 입력해서 보내기
 $(document).ready(function(){
 	var frm = $('#messageForm');
 	frm.submit(function (e) {
@@ -37,6 +72,7 @@ $(document).ready(function(){
 	        url: frm.attr('action'),
 	        data: frm.serialize(),
 	        success: function (data) {
+	        	alert('message를 보냈습니다~!');
 	            console.log('Submission was successful.');
 	        },
 	        error: function (data) {
@@ -45,6 +81,65 @@ $(document).ready(function(){
 	    });
 	});
 });
+
+
+/////////////// 멤버리스트 출력
+$(document).ready(function(){
+	$.ajax({
+        type: "post",
+        url: "getMemberList.do",
+        success: function (data) {
+        	for(var i=0; i<data.list.length; i++){        		
+        	var dto = data.list[i];
+        	$('#a').append("<div onclick='stateClick(this)') value='"+dto.id+"'>"+dto.id+","+dto.nickname+","+ dto.grade+"</div>");
+        	}
+        },
+        error: function (data) {
+            console.log('An error occurred.');
+        },
+    });
+});
+
+
+///////////////////////// 클릭하면 넘어가기
+function stateClick(val){
+	if(val == 'all'){
+		var section = 'a';
+		for(var i=0; i<$('#a').children('div').length; i++){
+			var value = $('#a').children('div').eq(i).attr('value');
+			$.ajax({
+		        type: "get",
+		        url: "changeState.do",
+		        traditional:true,
+				data:{"value":value ,"section":section},
+				datatype:"json",
+		        success: function (data) {
+		        (data.section =='b') ? $('#b').append($("div[value="+data.value+"]")) : $('#a').append($("div[value="+data.value+"]"));	        				
+		        },
+		        error: function (data) {
+		            console.log('실패');
+		        },
+		    });
+		}
+	}else{	
+		var value = $(val).attr('value');
+		var section = $(val).parents('div').attr('id'); 
+		$.ajax({
+	        type: "get",
+	        url: "changeState.do",
+	        traditional:true,
+			data:{"value":value ,"section":section},
+			datatype:"json",
+	        success: function (data) {
+	        (data.section =='b') ? $('#b').append($("div[value="+data.value+"]")) : $('#a').append($("div[value="+data.value+"]"));	        				
+	        },
+	        error: function (data) {
+	            console.log('실패');
+	        },
+	    });
+	}
+}
+
 </script>
 
 
@@ -56,6 +151,8 @@ $(document).ready(function(){
 <a href="#">캘린더</a>
 <a href="#">게시판</a>
 <hr>
+
+
 <!-- 이한준 -->
 		<input type="text" id="myInput" onkeypress="if(event.keyCode==13) {myFunction(this.value); return false;}" placeholder="학원,과정,주소로 검색 가능합니다." title="Type in a name">
 		<div id="none">
@@ -83,10 +180,24 @@ $(document).ready(function(){
 <form id="messageForm" action="sendMessage.do" method="post">
 	<input type="hidden" name="n_sender" value="admin">
 	받는이 <input id="n_receiver" type="text" name="n_receiver" >
-	내용 <input type="text" name="n_content" >
+	내용 <input id="n_content" type="text" name="n_content" >
 	<input type="hidden" name="ns_state_code" value="a">
 	<input type="submit" value="전송">
 </form>
+
+<button id="passAll" onclick="stateClick('all')">전체선택</button>
+
+
+<div id="a" style="border:1px solid black;"></div>
+<div id="b" style="border:1px solid black;"></div>
+<form id="messageAllForm" action="sendMessage.do" method="post">
+	<input type="hidden" name="n_sender" value="admin">
+	내용 <input id="allContent" type="text" name="n_content">
+	<input type="hidden" name="ns_state_code" value="a">
+	<input type="submit" value="전송">
+
+</form>
+
 
 <p>---학원랭킹---</p>
 

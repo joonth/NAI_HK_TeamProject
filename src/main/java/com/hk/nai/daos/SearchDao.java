@@ -7,6 +7,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.hk.nai.dtos.MemberDto;
+
 @Repository
 public class SearchDao {
 
@@ -22,5 +24,9 @@ public class SearchDao {
 	
 	public String getImg(String subtitle) {
 		return sst.selectOne(ns+"getImg", subtitle);
+	}
+	
+	public List<MemberDto> getMemberList(){
+		return sst.selectList(ns+"getMemberList");
 	}
 }
