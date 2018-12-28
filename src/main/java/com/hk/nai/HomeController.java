@@ -25,6 +25,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
@@ -48,6 +50,9 @@ import com.hk.nai.dtos.SearchDto;
 import com.hk.nai.services.InfoService;
 import com.hk.nai.services.SearchService;
 import com.hk.nai.utils.SearchUtil;
+import com.hk.nai.dtos.BasketDto;
+import com.hk.nai.dtos.AcademyDto;
+import com.hk.nai.services.CacheService;
 import com.hk.nai.dtos.MessageDto;
 import com.hk.nai.daos.MessageDao;
 import com.hk.nai.dtos.commentDto;
@@ -81,6 +86,9 @@ public class HomeController {
 	
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private CacheService cacheService;
 	
 	/////////////////////	이한준	///////////////////////
 	List<SearchDto> list = new ArrayList<SearchDto>();
@@ -148,10 +156,14 @@ public class HomeController {
 		model.addAttribute("key", key);
 		
 		//////////////////////////////////// 이한준 /////////////////////////////////////
+		
+		// 학원랭킹, 마감임박수업 캐시
+		model.addAttribute("ranking", cacheService.showRanking());
+		model.addAttribute("startclass", cacheService.showStartClass());
+		
 		return "../../index";  //controller가 아니라 signinform.jsp로 이동
 	}
 	
-	//나중에 이거 어떻게 합칠 수 있을 거 같다
 	//id 중복 ajax
 	@RequestMapping(value="/idcheck.do" , method=RequestMethod.POST)
 	@ResponseBody
@@ -197,12 +209,40 @@ public class HomeController {
 		return null; 
 	}
 	
+	//학원명 찾기 ajax
+		@RequestMapping(value="/searchacademyname.do" , method=RequestMethod.POST)
+		@ResponseBody
+		public JSONArray searchAcademyName(Locale locale, Model model, @RequestParam String searchAcName) {
+			logger.info("searchAcademyName.");
+			String replacedAcName = searchAcName.replaceAll(" ", "");
+			if(replacedAcName.equals("")) {
+				return null;
+			}
+			List<AcademyDto> academy = memberService.searchAcName(replacedAcName);
+			JSONArray list = new JSONArray();
+			JSONObject obj = null;
+			if(academy != null) {
+				for(int i=0; i<academy.size(); i++) {
+					String ac = academy.get(i).getAcademyName().replaceAll(" ", "");
+					System.out.println(ac);
+					obj = new JSONObject();
+					obj.put("data", ac);
+					list.add(obj);
+				}
+				return list;
+			}
+			return null;
+		}
+	
+	
+	//회원가입 form
 	@RequestMapping(value="/signupform.do" , method=RequestMethod.GET)
 	public String signupForm(Locale locale, Model model) {
 		logger.info("signupform.", locale);
 		return "signupform";
 	}
 	
+	//회원가입
 	@RequestMapping(value="/signup.do" , method=RequestMethod.POST)
 	public String signup(Locale locale, Model model, MemberDto memdto, @RequestParam String academyName) {
 		logger.info("signup.", locale);
@@ -257,7 +297,6 @@ public class HomeController {
 	}
 	
 	//로그인, 복호화
-	
 	@RequestMapping(value = "/signin.do", method = RequestMethod.POST)
 	public String signin(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		logger.info("***enter signin  {}.", locale);
@@ -352,9 +391,10 @@ public class HomeController {
 		return "myinfo";
 	}	
 	
+	//회원정보 수정
 	@RequestMapping(value = "/updatemyinfo.do", method = RequestMethod.POST)
-	public String updateMyInfo(Locale locale, Model model, MemberDto member, String academyName) {
-		System.out.println(member.getPw());
+	public String updateMyInfo(Locale locale, Model model, MemberDto member, String academyName, HttpSession session) {
+
 		boolean isPw = memberService.updatePw(member);		
 		boolean isNickname = memberService.updateNickname(member);
 		boolean isEmail = memberService.updateEmail(member);
@@ -368,8 +408,68 @@ public class HomeController {
 			model.addAttribute("errmsg", "수정 실패");
 			return "error";
 		}
+		
+		//세션 값 갱신
+		session.setAttribute("member", member);
+		System.out.println("변경후 session값 :" + session.getAttribute("member"));
 		return "redirect:mypage.do";
 	}
+	
+	//탈퇴하기 form
+	@RequestMapping(value="/withdrawform.do" , method=RequestMethod.GET)
+	public String withdrawForm(Locale locale, Model model) {
+		logger.info("withdrawform.", locale);
+		return "withdrawform";
+	}
+		
+	//탈퇴
+	@RequestMapping(value = "/withdraw.do", method = RequestMethod.POST)
+	public String withdraw(Locale locale, Model model, MemberDto member, HttpSession session, HttpServletResponse response) throws IOException {
+		System.out.println("탈퇴 컨트롤러 진입 멤버값"+member);
+		boolean isDel = memberService.deleteMyInfo(member);
+		System.out.println("삭제 여부?" + isDel);
+		if (!isDel) {
+			response.setContentType("text/html;charset=utf-8");;
+			PrintWriter out = response.getWriter();
+			out.println("<script>");
+			out.println("alert('비밀번호가 틀립니다');");
+			out.println("history.go(-1);");
+			out.println("</script>");
+			out.close();
+			return "redirect:withdrawform.do";
+		} else {
+			session.removeAttribute("member");
+			return "redirect:main.do";	
+		}
+		
+	}
+	
+	//찜한 학원 리스트
+		@RequestMapping(value="/myacademylist.do" , method=RequestMethod.GET)
+		public String myAcademyList(Locale locale, Model model, HttpSession session) {
+			logger.info("myacademylist.", locale);
+			MemberDto member = (MemberDto) session.getAttribute("member");
+			String baskId = member.getId();
+			List<BasketDto> myAcList = memberService.showMyAcList(baskId);
+			model.addAttribute("myAcList", myAcList);
+			return "myacademylist";
+		}
+		
+		//찜한 학원 목록 삭제 ajax
+		@RequestMapping(value="/delmyacademy.do" , method=RequestMethod.POST)
+		@ResponseBody
+		public Map<String,String> delMyAcademy(Locale locale, Model model, @RequestParam Integer[] myAcSeq) {
+			System.out.println("myAcSeq" + myAcSeq);
+			int cnt = myAcSeq.length;
+			int chkdelcnt = memberService.deleteMyAc(myAcSeq);
+			Map<String,String> map = new HashMap<String,String>();
+			if(cnt == chkdelcnt) {
+				System.out.println("삭제한 찜하기 학원 개수 일치");
+				map.put("msg", "삭제 완료");
+			}
+			return map;
+		}	
+	
 	
 	//복호화
     private String decryptRsa(PrivateKey privateKey, String securedValue) throws Exception {        
