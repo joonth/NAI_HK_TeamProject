@@ -161,10 +161,10 @@
 		ORDER BY DDAY ASC
 		]]>
 	</select>
-	
+	<!-- 학원명 검색 -->
 	<select id="searchacname" resultMap="AcademyDto" parameterType="string">
 		<![CDATA[
-		SELECT DISTINCT(AC_NAME) FROM ACADEMY WHERE AC_NAME LIKE '%' || #{academyName} || '%'
+		SELECT DISTINCT(AC_NAME) FROM AC_IMG WHERE AC_NAME LIKE '%' || #{academyName} || '%'
 		]]>
 	</select>
 
