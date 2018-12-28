@@ -1,9 +1,13 @@
 package com.hk.nai.services;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 
 import com.hk.nai.dtos.AuthDto;
 import com.hk.nai.dtos.MemberDto;
+import com.hk.nai.dtos.AcademyDto;
+import com.hk.nai.dtos.BasketDto;
 
 public interface MemberService {
 	public MemberDto signin(String id, String pw);
@@ -22,4 +26,8 @@ public interface MemberService {
 	public boolean updateEmail(MemberDto member);
 	public boolean updateAuth(AuthDto authdto);
 	public boolean deleteMyInfo(MemberDto member);
+	public List<BasketDto> showMyAcList(String baskId);
+	public int deleteMyAc(Integer[] myAcSeq);
+	public List<AcademyDto> searchAcName(String academyName);
+	
 }
