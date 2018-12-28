@@ -23,24 +23,24 @@
 	        <result property="academyName" column="AC_NAME"/>
 	    </resultMap>
 	
-		<resultMap id="BasketDto" type="com.proto.project.dto.BasketDto" >
+		<resultMap id="BasketDto" type="com.hk.nai.dtos.BasketDto" >
 	        <result property="baskSeq" column="B_SEQ"/>
 	        <result property="baskId" column="M_ID"/>
 	        <result property="baskAcademyName" column="AC_NAME"/>
 		</resultMap>
 	    
-		<resultMap id="RankingDto" type="com.proto.project.dto.RankingDto" >
+		<resultMap id="RankingDto" type="com.hk.nai.dtos.RankingDto" >
 	        <result property="rankAcademyName" column="AC_NAME"/>
 	        <result property="rankScoreAverage" column="SCORE_AVG"/>
 	    </resultMap>
 	    
-		<resultMap id="StartClassDto" type="com.proto.project.dto.StartClassDto" >
+		<resultMap id="StartClassDto" type="com.hk.nai.dtos.StartClassDto" >
 	        <result property="startAcademyName" column="AC_NAME"/>
 	        <result property="startClassName" column="AC_CLASS"/>
 	        <result property="startDDay" column="DDAY"/>
 	    </resultMap>
 	    
-		<resultMap id="AcademyDto" type="com.proto.project.dto.AcademyDto" >
+		<resultMap id="AcademyDto" type="com.hk.nai.dtos.AcademyDto" >
 	        <result property="academyName" column="AC_NAME"/>
 	    </resultMap>
 <!-- 					수민 					-->
