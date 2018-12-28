@@ -149,7 +149,7 @@ function stateClick(val){
 
 <a href="main.do">메인</a>
 <a href="#">캘린더</a>
-<a href="#">게시판</a>
+<a href="boardlist.do?page=1&pagelist=first">게시판</a>
 <hr>
 
 

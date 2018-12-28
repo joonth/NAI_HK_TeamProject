@@ -28,7 +28,7 @@ public class EchoHandler extends TextWebSocketHandler {
 	@Autowired
 	MessageDao dao;
 	private static Logger logger = LoggerFactory.getLogger(EchoHandler.class);
-	Map<String,String> map = new HashMap<>();
+	Map<String,String> map = new HashMap<String,String>();
 	Map<String,Object> smap;
 
 	  
