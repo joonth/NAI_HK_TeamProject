@@ -14,7 +14,6 @@
 <script type="text/javascript" src="resources/js/jsa/rng.js"></script>
 </head>
 <body>
-<a href="signupform.do">회원가입</a>
 <table>
 		<tr>
 			<th>아이디</th>
@@ -27,18 +26,17 @@
 			<td><span id="pwChk"></span></td>
 		</tr>	
 </table>
-
+<!-- 암호화 form -->
 <input type="hidden" id="rsaPublicKeyModulus" value="${publicKeyModules}" />
 <input type="hidden" id="rsaPublicKeyExponent" value="${publicKeyExponent}" />
-<a href="#" id="signinBtn" >로그인</a><br>
-
 <form id="securedLoginForm" name="securedLoginForm" action="signin.do" method="post" style="display: none;">
 	<input type="hidden" name="securedId" id="securedId" />
 	<input type="hidden" name="securedPassword" id="securedPassword" />
 </form>
-
+<button type="button" id="signinBtn" >로그인</button><br>
 <a href="#" id="findidBtn">아이디찾기</a>
 <a href="#" id="findpwdBtn">비밀번호찾기</a>
+<a href="signupform.do">국과수에 처음이신가요? 회원가입</a>
 
 <script type="text/javascript">
 	$("#findidBtn").click(function(){
