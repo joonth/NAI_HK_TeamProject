@@ -21,7 +21,12 @@
 		  </repository>	
 		</repositories>
 	<dependencies>
-	
+		<!-- ehcache -->
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			<version>2.9.0</version>
+		</dependency>
 		<!-- email 기능 -->
 		<dependency>
 		    <groupId>javax.mail</groupId>

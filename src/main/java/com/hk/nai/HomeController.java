@@ -88,7 +88,6 @@ public class HomeController {
 	
 	
 	@RequestMapping(value = "/main.do", method = RequestMethod.GET)
-	//locale model 뭐지?
 	public String home(Locale locale, Model model ) throws IOException {
 		logger.info("main {}.", locale);
 		//////////////////////////////////// 이한준 /////////////////////////////////////
