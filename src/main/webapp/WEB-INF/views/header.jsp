@@ -16,13 +16,15 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			var sock = new SockJS("<c:url value=".do"/>");
-			
+
 			
 			$("#messageForm").submit(function(event) {
 		     sock.send($("#n_receiver").val());
+				alert('보냄');
 			});
 			
 			$("#messageAllForm").submit(function(event){
+				alert('보냄');
 				for(var i=0; i<$('#b').children('div').length; i++){
 					var n_receiver = $('#b').children('div').eq(i).attr('value');	
 					 sock.send(n_receiver);

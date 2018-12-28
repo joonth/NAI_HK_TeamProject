@@ -470,7 +470,7 @@ public class HomeController {
 		dto.setAc_name(subtitle);
 		commentDao.addComment(dto);
 
-		Map<String,commentDto> map = new HashMap<>();
+		Map<String,commentDto> map = new HashMap<String,commentDto>();
 		map.put("dto", dto);
 		return map;
 	}
@@ -478,7 +478,7 @@ public class HomeController {
 	@ResponseBody
 	@RequestMapping(value = "/getList.do", method = RequestMethod.POST)
 	public Map<String,Float> getList(Locale locale, Model model,String[] acTitle) throws IOException {
-		Map<String,Float> map = new HashMap<>();
+		Map<String,Float> map = new HashMap<String,Float>();
 
 		for (int i = 0; i < acTitle.length; i++) {
 			list.get(acListNum.get(acTitle[i])).setScore(Sserv.getScore(acTitle[i]));
@@ -491,7 +491,7 @@ public class HomeController {
 	@ResponseBody
 	@RequestMapping(value = "/getMemberList.do", method = RequestMethod.POST)
 	public Map<String,List<MemberDto>> getMemberList(Locale locale, Model model) throws IOException {
-		Map<String,List<MemberDto>> map = new HashMap<>();
+		Map<String,List<MemberDto>> map = new HashMap<String,List<MemberDto>>();
 		map.put("list", Sserv.getMemberList());
 		return map;
 	}
@@ -500,7 +500,7 @@ public class HomeController {
 	@ResponseBody
 	@RequestMapping(value = "/changeState.do", method = RequestMethod.GET)
 	public Map<String,String> changeState(Locale locale, Model model,String value,String section) throws IOException {
-		Map<String,String> map = new HashMap<>();	
+		Map<String,String> map = new HashMap<String,String>();	
 		section = (section.equals("a")) ? "b": "a";
 		map.put("value", value);
 		map.put("section", section);
