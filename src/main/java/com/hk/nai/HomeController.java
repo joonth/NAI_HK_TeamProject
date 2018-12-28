@@ -420,7 +420,6 @@ public class HomeController {
 	@RequestMapping(value = "/sendMessage.do", method = RequestMethod.POST)
 	public String sendMessage(Locale locale, Model model, MessageDto dto) {
 		logger.info("메시지 전송", locale);
-		System.out.println("$$$" + dto.toString());
 		messageDao.sendMessage(dto);
 		
 		return "../../index";
