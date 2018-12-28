@@ -529,7 +529,11 @@ public class HomeController {
 		logger.info("메시지 삭제", locale);
 		messageDao.deleteMessage(dto.getN_seq());
 		List<MessageDto> list = messageDao.getMessageList(n_receiver);
+		model.addAttribute("n_receiver", n_receiver);	
 		model.addAttribute("list", list);
+		
+			
+		
 		return "messagelist";
 	}
 	

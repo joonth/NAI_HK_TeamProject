@@ -11,18 +11,16 @@
  
 
 <script type="text/javascript">
-	$(document).ready(function(){
+	$(document).ready(function(){	
 		var sock = new SockJS("<c:url value=".do"/>");
-		 sock.onopen = function() {
+		sock.onopen = function() {
 			 sock.send($("#session").val());
+			 sock.send($("#rec").val()); 
 		 };
-		 sock.onmessage = function(evt) {
-			 $('#count').text(evt.data);
-		 };
-		 sock.onclose = function() {
-		 };
+		$('a#delete').click(function() {
+				sock.send($('#rec').val());
+		});
 	 });
-			
 		function changeUrl(url){
 			document.getElementById("if").src=url;	
 		}
@@ -31,6 +29,8 @@
 
 </head>
 <body>
+${n_receiver}
+<input type="hidden" id="rec" value="${n_receiver}" >
 <table border="0">
 		<tr>
 			<th>쪽지번호</th>
@@ -47,14 +47,14 @@
 		<c:otherwise>
 			<c:forEach items="${list}" var="dto">
 			<tr>
-				<input type="hidden" id="session" value="${dto.n_receiver}" >
 				<td>${dto.n_seq}</td>
 				<td>${dto.n_receiver}</td>
 				<td>${dto.n_sender}</td>
 				<td>${dto.n_time}</td>
 				<td><a href="getMessage.do?n_seq=${dto.n_seq}">${dto.n_content}</a></td>
 				<td>${dto.ns_state_code}</td>
-				<td> <a id="delete" href="deleteMessage.do?n_seq=${dto.n_seq}&n_receiver=${sessionScope.member.nickname}">삭제</a></td>		
+				<td><a id="delete" href="deleteMessage.do?n_seq=${dto.n_seq}&n_receiver=${sessionScope.member.nickname}">삭제</a></td>		
+				<input type="hidden" id="session" value="${dto.n_receiver}" >
 			</tr>
 			</c:forEach>
 		</c:otherwise>
