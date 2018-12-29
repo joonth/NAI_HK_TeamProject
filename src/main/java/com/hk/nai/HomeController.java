@@ -52,6 +52,7 @@ import com.hk.nai.services.SearchService;
 import com.hk.nai.utils.SearchUtil;
 import com.hk.nai.dtos.BasketDto;
 import com.hk.nai.dtos.AcademyDto;
+import com.hk.nai.services.CommentAddPermitService;
 import com.hk.nai.services.CacheService;
 import com.hk.nai.dtos.MessageDto;
 import com.hk.nai.daos.MessageDao;
@@ -80,6 +81,8 @@ public class HomeController {
 	SearchService Sserv;
 	@Autowired
 	InfoService Iserv;
+	@Autowired
+	CommentAddPermitService commentAddPermit;
 	
 	@Value("#{apiKey['key']}")	//github에 apikey를 올리지 않기 위해서 key를 따로 저장후 받아옴.
 	private String key;
@@ -567,14 +570,19 @@ public class HomeController {
 	@ResponseBody
 	@RequestMapping(value = "/addComment.do", method = RequestMethod.GET)
 	public Map<String,commentDto> addComment(Locale locale, Model model,commentDto dto) throws IOException {
-		String subtitle = util.tagTrim_str(dto.getAc_name(), "inonm");
-		//학원평 작성시 평점 반영.
-		list.get(acListNum.get(subtitle)).setScore(Sserv.getScore(subtitle));
-		dto.setAc_name(subtitle);
-		commentDao.addComment(dto);
-
 		Map<String,commentDto> map = new HashMap<String,commentDto>();
-		map.put("dto", dto);
+		String subtitle = util.tagTrim_str(dto.getAc_name(), "inonm");
+		dto.setAc_name(subtitle);
+		if(commentAddPermit.getAuth(subtitle, dto.getM_id()) && commentAddPermit.checkDupe(dto)) {
+			//학원평 작성시 평점 반영.
+			list.get(acListNum.get(subtitle)).setScore(Sserv.getScore(subtitle));
+			dto.setAc_name(subtitle);
+			commentDao.addComment(dto);
+			map.put("dto", dto);
+		}else {
+			dto.setAc_comment("false");
+			map.put("dto", dto);
+		}
 		return map;
 	}
     

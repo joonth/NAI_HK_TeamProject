@@ -181,6 +181,14 @@
   		insert into ac_comment values(#{ac_name},#{ac_comment},#{ac_score},#{m_id},cmtnum_seq.nextval)
   	</insert>
   	
+  	<select id="checkAuth" resultMap="AuthDto">
+  		select * from auth
+  	</select>
+  	
+  	<select id="checkDupe" parameterType="CommentDto" resultType="CommentDto">
+  		select * from ac_comment where ac_name =#{ac_name} and m_id=#{m_id}
+  	</select>
+  	
   	<!-- websocket message -->
   	<insert id="sendMessage" parameterType="MessageDto">
   		insert into notice values(message_seq.nextval,#{n_receiver},#{n_sender},sysdate,#{n_content},#{ns_state_code})
