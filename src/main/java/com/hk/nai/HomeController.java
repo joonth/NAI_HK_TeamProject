@@ -143,7 +143,19 @@ public class HomeController {
 					 searchDto.setAddress(address);
 					// searchDto.setScore(Sserv.getScore(subtitle));
 					 searchDto.setTrprId(trprid);
-					 searchDto.setImg(Sserv.getImg(subtitle));
+					 if(Sserv.getImg(subtitle) != null) {
+						 searchDto.setImg(Sserv.getImg(subtitle));						 
+					 }else {
+					    org.jsoup.nodes.Document imgData=
+						Jsoup.connect("http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA40/HRDPOA40_2.jsp?authKey="+key+"&returnType=XML&outType=2&srchTrprId="+trprid+"&srchTrprDegr=1")
+						.timeout(80000).maxBodySize(10*1024*1024).get();
+					    String img = util.tagTrim(imgData.select("filepath"), "filepath");
+						  if(img.equals("")){
+							searchDto.setImg("http://sign.kedui.net/rtimages/n_sub/no_detail_img.gif");
+						  }else{
+							searchDto.setImg(img);
+						  }  
+					 }
 					
 					 acListNum.put(subtitle, count);
 					 list.add(searchDto);
