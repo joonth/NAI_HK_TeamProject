@@ -52,6 +52,7 @@ import com.hk.nai.services.SearchService;
 import com.hk.nai.utils.SearchUtil;
 import com.hk.nai.dtos.BasketDto;
 import com.hk.nai.dtos.AcademyDto;
+import com.hk.nai.dtos.AddImgDto;
 import com.hk.nai.services.CommentAddPermitService;
 import com.hk.nai.services.CacheService;
 import com.hk.nai.dtos.MessageDto;
@@ -80,6 +81,8 @@ public class HomeController {
 	PointHandleDao pointDao;
 	@Autowired
 	InfoDto infoDto;
+	@Autowired
+	AddImgDto addImgDto;
 	@Autowired
 	SearchService Sserv;
 	@Autowired
@@ -153,19 +156,19 @@ public class HomeController {
 						Jsoup.connect("http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA40/HRDPOA40_2.jsp?authKey="+key+"&returnType=XML&outType=2&srchTrprId="+trprid+"&srchTrprDegr=1")
 						.timeout(80000).maxBodySize(10*1024*1024).get();
 					    String img = util.tagTrim(imgData.select("filepath"), "filepath");
+					    
 						  if(img.equals("")){
+							addImgDto.setAc_name(subtitle).setImg("http://sign.kedui.net/rtimages/n_sub/no_detail_img.gif");
 							searchDto.setImg("http://sign.kedui.net/rtimages/n_sub/no_detail_img.gif");
 						  }else{
+						    addImgDto.setAc_name(subtitle).setImg(img);
 							searchDto.setImg(img);
 						  }  
-					 }
-					
+						  Sserv.addImgToDb(addImgDto);
+					 }	
 					 acListNum.put(subtitle, count);
-					 list.add(searchDto);
-					 
-					 
+					 list.add(searchDto); 
 					 count++;	
-
 				}
 			}//for
 			System.out.println("출력 과정수 : "+count);	

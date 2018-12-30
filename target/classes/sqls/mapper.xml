@@ -196,6 +196,10 @@
   	<update id="addPoint" parameterType="MemberDto">
   		UPDATE MEMBER SET M_POINT = M_POINT + #{point} WHERE M_ID =#{id}
   	</update>
+  	
+  	<insert id="addImgToDb" parameterType="AddImgDto">
+  		INSERT INTO AC_IMG VALUES(#{ac_name},#{img})
+  	</insert>
   	 
   	 
   	<!-- websocket message -->

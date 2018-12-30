@@ -16,6 +16,7 @@
 		<typeAlias type="com.hk.nai.dtos.RankingDto" alias="RankingDto"/>
 		<typeAlias type="com.hk.nai.dtos.StartClassDto" alias="StartClassDto"/>
 		<typeAlias type="com.hk.nai.dtos.AcademyDto" alias="AcademyDto"/>
+		<typeAlias type="com.hk.nai.dtos.AddImgDto" alias="AddImgDto"/>
   	</typeAliases>
   	
   <!--dao 객체에서 쿼리 실행할 때 쿼리가 정의되어있는 xml 경로 설정  -->
