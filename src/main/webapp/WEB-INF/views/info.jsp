@@ -6,17 +6,16 @@
 	<head>
 	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript">
+		//뒤로가기 눌렀을때 메인으로 돌아가기
 		history.pushState(null, null, location.href); 
 		window.onpopstate = function(event) { 
 			location.href="main.do";
 		}
 		
 		$(document).ready(function(){
-			
 			var frm = $('#commentForm');
-
+			
 			frm.submit(function (e) {
-			console.log(frm);
 			    e.preventDefault();
 			    $.ajax({
 			        type: frm.attr('method'),
@@ -26,17 +25,17 @@
 			            console.log('Submission was successful.');
 		            	var cmt = data.dto;
 				       	if(cmt.ac_comment != 'false'){				       		
-				       		$('#comment').append('<div class="table-row">'+ cmt.ac_name+" "+cmt.m_id+" "+cmt.ac_comment+" "+cmt.ac_score +'</div>')
+				       		$('#comment').append('<div class="table-row">'+ cmt.ac_name+" "+cmt.m_id+" "+cmt.ac_comment+" "+cmt.ac_score +'</div>');
 				       	}else{
 				       		alert('등록한 학원이 다르거나, 이미 학원평을 작성했습니다.');
 				       	}
 			        },
 			        error: function (data) {
 			            console.log('An error occurred.');
-			       
 			        },
 			    });
-			});
+			}); 
+		
 			});
 	</script>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -47,8 +46,8 @@
 		</style>
 	</head>
 <body>
-
 <%@include file="header.jsp" %>
+
 	<div class="table">
 		<div class="table-row"> <img alt="img" src="${infoDto.img}"></div>
 		<div class="table-row">${infoDto.addr1} ${infoDto.addr2}</div>

@@ -56,6 +56,7 @@ import com.hk.nai.services.CommentAddPermitService;
 import com.hk.nai.services.CacheService;
 import com.hk.nai.dtos.MessageDto;
 import com.hk.nai.daos.MessageDao;
+import com.hk.nai.daos.PointHandleDao;
 import com.hk.nai.dtos.commentDto;
 
 /**
@@ -75,6 +76,8 @@ public class HomeController {
 	MessageDao messageDao;
 	@Autowired
 	CommentDao commentDao;
+	@Autowired
+	PointHandleDao pointDao;
 	@Autowired
 	InfoDto infoDto;
 	@Autowired
@@ -581,16 +584,30 @@ public class HomeController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/addComment.do", method = RequestMethod.GET)
-	public Map<String,commentDto> addComment(Locale locale, Model model,commentDto dto) throws IOException {
+	public Map<String,commentDto> addComment(Locale locale, Model model,commentDto dto, HttpSession session) throws IOException {
 		Map<String,commentDto> map = new HashMap<String,commentDto>();
+		MemberDto member = (MemberDto) session.getAttribute("member");
 		String subtitle = util.tagTrim_str(dto.getAc_name(), "inonm");
 		dto.setAc_name(subtitle);
+		
+		// 등록학원과 중복작성여부 체크
 		if(commentAddPermit.getAuth(subtitle, dto.getM_id()) && commentAddPermit.checkDupe(dto)) {
 			//학원평 작성시 평점 반영.
 			list.get(acListNum.get(subtitle)).setScore(Sserv.getScore(subtitle));
-			dto.setAc_name(subtitle);
+			//학원평 작성시 포인트 추가
+			member.setPoint(100);
+			if(pointDao.addPoint(member) >= 100) {
+				MessageDto mdto = new MessageDto();
+				mdto.setN_sender("admin");
+				mdto.setN_receiver(member.getId());
+				mdto.setN_content("포인트 100점을 달성하셨습니다~ \n 아래의 링크를 통해서 쿠폰을 받아보실수 있습니다~! \n http://쿠폰쿠폰.com");
+				mdto.setNs_state_code("e");
+				messageDao.sendMessage(mdto);
+			}
+			
 			commentDao.addComment(dto);
 			map.put("dto", dto);
+	
 		}else {
 			dto.setAc_comment("false");
 			map.put("dto", dto);

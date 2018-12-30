@@ -29,7 +29,7 @@
 
 </head>
 <body>
-${n_receiver}
+
 <input type="hidden" id="rec" value="${n_receiver}" >
 <table border="0">
 		<tr>

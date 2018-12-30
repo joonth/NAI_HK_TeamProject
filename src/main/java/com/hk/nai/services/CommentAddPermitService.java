@@ -24,9 +24,7 @@ public class CommentAddPermitService {
 	
 	public boolean getAuth(String subTitle, String m_id) {
 		list =dao.checkAuth();
-		System.out.println(list.size());
 		for(AuthDto dto : list) {
-			System.out.println(dto.toString());
 			//본인이 등록된 학원에만 학원평 작성가능
 			if(dto.getAcademyName().equals(subTitle) && dto.getAuthId().equals(m_id)) {
 				return true;

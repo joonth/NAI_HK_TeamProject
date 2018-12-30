@@ -86,7 +86,6 @@ $(document).ready(function(){
 	        url: frm.attr('action'),
 	        data: frm.serialize(),
 	        success: function (data) {
-	        	alert('message를 보냈습니다~!');
 	            console.log('Submission was successful.');
 	        },
 	        error: function (data) {
@@ -195,7 +194,8 @@ function stateClick(val){
 	<input type="hidden" name="n_sender" value="admin">
 	받는이 <input id="n_receiver" type="text" name="n_receiver" >
 	내용 <input id="n_content" type="text" name="n_content" >
-	<input type="hidden" name="ns_state_code" value="a">
+	<input type="radio" name="ns_state_code" checked="checked" value="a"> 공지사항
+  	<input type="radio" name="ns_state_code" value="e"> 이벤트
 	<input type="submit" value="전송">
 </form>
 
@@ -207,7 +207,8 @@ function stateClick(val){
 <form id="messageAllForm" action="sendMessage.do" method="post">
 	<input type="hidden" name="n_sender" value="admin">
 	내용 <input id="allContent" type="text" name="n_content">
-	<input type="hidden" name="ns_state_code" value="a">
+	<input type="radio" name="ns_state_code" checked="checked" value="a"> 공지사항
+  	<input type="radio" name="ns_state_code" value="e"> 이벤트
 	<input type="submit" value="전송">
 
 </form>

@@ -18,6 +18,11 @@
 			var sock = new SockJS("<c:url value=".do"/>");
 
 			
+			$( document ).ajaxComplete(function() {
+				 sock.send($("#session").val());
+				});
+		
+			
 			$("#messageForm").submit(function(event) {
 		     sock.send($("#n_receiver").val());
 				alert('보냄');
