@@ -24,8 +24,14 @@
 			        success: function (data) {
 			            console.log('Submission was successful.');
 		            	var cmt = data.dto;
-				       	if(cmt.ac_comment != 'false'){				       		
-				       		$('#comment').append('<div class="table-row">'+ cmt.ac_name+" "+cmt.m_id+" "+cmt.ac_comment+" "+cmt.ac_score +'</div>');
+				       	if(cmt.ac_comment != 'false'){
+	
+				       		$('#comment').append('<div class="table-row">'
+				       				+ cmt.ac_name+" "
+				       				+cmt.m_id+" "
+				       				+cmt.ac_comment+" "
+				       				+parseFloat(cmt.ac_score).toFixed(1) 
+				       				+'</div>');
 				       	}else{
 				       		alert('등록한 학원이 다르거나, 이미 학원평을 작성했습니다.');
 				       	}
