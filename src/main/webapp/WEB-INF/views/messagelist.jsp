@@ -7,22 +7,8 @@
 <head>
 	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/hj/messagelist.js"></script>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<script type="text/javascript">
-		$(document).ready(function(){	
-			var sock = new SockJS("<c:url value=".do"/>");
-			sock.onopen = function() {
-				 sock.send($("#session").val());
-				 sock.send($("#rec").val()); 
-			 };
-			$('a#delete').click(function() {
-					sock.send($('#rec').val());
-			});
-		 });
-		function changeUrl(url){
-			document.getElementById("if").src=url;	
-		}
-	</script>
 </head>
 <body>
 	<input type="hidden" id="rec" value="${n_receiver}" >

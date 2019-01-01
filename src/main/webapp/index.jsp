@@ -8,8 +8,8 @@
 <head>
 <!-- 이한준 -->
 	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/hj/search.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/hj/message.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/hj/main_search.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/hj/main_message.js"></script>
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/search.css">	
 <!-- 이한준 -->
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
