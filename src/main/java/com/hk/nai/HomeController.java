@@ -564,13 +564,14 @@ public class HomeController {
 		 org.jsoup.nodes.Document docInfo=
 					Jsoup.connect("http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA40/HRDPOA40_2.jsp?authKey="+key+"&returnType=XML&outType=2&srchTrprId="+list.get(acListNum.get(subTitle)).getTrprId()+"&srchTrprDegr=1")
 					.timeout(80000).maxBodySize(10*1024*1024).get();
+		 //String subtitle = util.tagTrim(datas.get(i).select("subtitle"), "subtitle");
 		infoDto.setImg(list.get(acListNum.get(subTitle)).getImg());
-		infoDto.setAddr1(docInfo.select("addr1").toString());
-		infoDto.setAddr2(docInfo.select("addr2").toString());
-		infoDto.setHpaddr(docInfo.select("hpAddr").toString());
-		infoDto.setInonm(docInfo.select("inoNm").toString());
-		infoDto.setTrprchaptel(docInfo.select("trprChapTel").toString());
-		infoDto.setTrprnm(docInfo.select("trprNm").toString());
+		infoDto.setAddr1(util.tagTrim(docInfo.select("addr1"),"addr1"));
+		infoDto.setAddr2(util.tagTrim(docInfo.select("addr2"),"addr2"));
+		infoDto.setHpaddr(util.tagTrim(docInfo.select("hpaddr"),"hpaddr"));
+		infoDto.setInonm(util.tagTrim(docInfo.select("inonm"),"inonm"));
+		infoDto.setTrprchaptel(util.tagTrim(docInfo.select("trprchaptel"),"trprchaptel"));
+		infoDto.setTrprnm(util.tagTrim(docInfo.select("trprnm"),"trprnm"));
 		model.addAttribute("infoDto", infoDto);
 		
 		List<commentDto> commentList = new ArrayList<commentDto>();
@@ -622,7 +623,6 @@ public class HomeController {
 	@RequestMapping(value = "/getList.do", method = RequestMethod.POST)
 	public Map<String,Float> getList(Locale locale, Model model,String[] acTitle) throws IOException {
 		Map<String,Float> map = new HashMap<String,Float>();
-
 		for (int i = 0; i < acTitle.length; i++) {
 			list.get(acListNum.get(acTitle[i])).setScore(Sserv.getScore(acTitle[i]));
 			map.put(acTitle[i], Sserv.getScore(acTitle[i]));
@@ -648,6 +648,13 @@ public class HomeController {
 		map.put("value", value);
 		map.put("section", section);
 		return map;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/putBasket.do", method = RequestMethod.GET)
+	public void putBasket(Locale locale, Model model, BasketDto dto) throws IOException {
+		System.out.println(dto.getBaskId()+" "+dto.getBaskAcademyName());
+		Sserv.putBasket(dto);
 	}
 	
     ////////////////	이한준 	//////////////////////////////////////////////////////////////////////////////

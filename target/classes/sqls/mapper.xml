@@ -230,6 +230,10 @@
   	<select id="getMemberList" resultMap="MemberDto">
   		select * from member
   	</select>
+  	
+  	<insert id="putBasket" parameterType="BasketDto">
+  		insert into basket values(basket_seq.nextval,#{baskId},#{baskAcademyName})
+  	</insert>
 
 <!-- 					황인후					-->
 	<!--   게시판쿼리 -->

@@ -14,9 +14,10 @@
 		<tr><td><img alt="img" src="${infoDto.img}"></td></tr>
 		<tr><td>${infoDto.addr1} ${infoDto.addr2}</td></tr>
 		<tr><td>${infoDto.hpaddr}</td></tr>
-		<tr><td>${infoDto.inonm}</td></tr>
+		<tr><td id="ac_name">${infoDto.inonm}</td></tr>
 		<tr><td>${infoDto.trprchaptel}</td></tr>
 		<tr><td>${infoDto.trprnm}</td></tr>
+		<tr><td><button id="bk">찜하기</button></td></tr>
 	</table>
 	<table>
 		<c:choose>

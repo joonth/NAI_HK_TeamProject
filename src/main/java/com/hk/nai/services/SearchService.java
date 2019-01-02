@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.hk.nai.daos.SearchDao;
 import com.hk.nai.dtos.AddImgDto;
+import com.hk.nai.dtos.BasketDto;
 import com.hk.nai.dtos.MemberDto;
 
 @Service
@@ -42,5 +43,9 @@ public class SearchService {
 	
 	public void addImgToDb(AddImgDto dto) {
 		dao.addImgToDb(dto);
+	}
+	
+	public void putBasket(BasketDto dto) {
+		dao.putBasket(dto);
 	}
 }
