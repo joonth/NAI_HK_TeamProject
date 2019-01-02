@@ -3,6 +3,9 @@
 /////////////// 선택해서 보내기
 
 $(document).ready(function(){
+	
+	console.log($("#startClass li").text());
+	
 	var frm = $('#messageAllForm');
 		
 		frm.submit(function (e) {

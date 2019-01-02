@@ -40,4 +40,8 @@ public class SearchDao {
 		sst.insert(ns+"putBasket",dto);
 	}
 	
+	public List<BasketDto> getBasketMname(String AC_NAME){
+		return sst.selectList(ns+"getBasketMname", AC_NAME);
+	}
+	
 }

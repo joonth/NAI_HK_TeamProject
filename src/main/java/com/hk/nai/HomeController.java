@@ -47,6 +47,7 @@ import com.hk.nai.HomeController;
 import com.hk.nai.daos.CommentDao;
 import com.hk.nai.dtos.InfoDto;
 import com.hk.nai.dtos.SearchDto;
+import com.hk.nai.dtos.StartClassDto;
 import com.hk.nai.services.InfoService;
 import com.hk.nai.services.SearchService;
 import com.hk.nai.utils.SearchUtil;
@@ -105,7 +106,7 @@ public class HomeController {
 	
 	
 	@RequestMapping(value = "/main.do", method = RequestMethod.GET)
-	public String home(Locale locale, Model model ) throws IOException {
+	public String home(Locale locale, Model model) throws IOException {
 		logger.info("main {}.", locale);
 		//////////////////////////////////// 이한준 /////////////////////////////////////
 		if(list.size() ==0) {		// 과정정보 list를 구하는 for문을 한번만 돌리기 위한 if문.		
@@ -152,6 +153,7 @@ public class HomeController {
 					 if(Sserv.getImg(subtitle) != null) {
 						 searchDto.setImg(Sserv.getImg(subtitle));						 
 					 }else {
+						 System.out.println("test!");
 					    org.jsoup.nodes.Document imgData=
 						Jsoup.connect("http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA40/HRDPOA40_2.jsp?authKey="+key+"&returnType=XML&outType=2&srchTrprId="+trprid+"&srchTrprDegr=1")
 						.timeout(80000).maxBodySize(10*1024*1024).get();
@@ -175,6 +177,7 @@ public class HomeController {
 		} // if(
 		model.addAttribute("list", list);	
 		model.addAttribute("key", key);
+		
 		
 		//////////////////////////////////// 이한준 /////////////////////////////////////
 		
@@ -591,7 +594,7 @@ public class HomeController {
 	public Map<String,commentDto> addComment(Locale locale, Model model,commentDto dto, HttpSession session) throws IOException {
 		Map<String,commentDto> map = new HashMap<String,commentDto>();
 		MemberDto member = (MemberDto) session.getAttribute("member");
-		String subtitle = util.tagTrim_str(dto.getAc_name(), "inonm");
+		String subtitle = dto.getAc_name();
 		dto.setAc_name(subtitle);
 		
 		// 등록학원과 중복작성여부 체크
@@ -652,9 +655,32 @@ public class HomeController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/putBasket.do", method = RequestMethod.GET)
-	public void putBasket(Locale locale, Model model, BasketDto dto) throws IOException {
+	public Map<String,String> putBasket(Locale locale, Model model, BasketDto dto,HttpSession session) throws IOException {
+	Map<String,String> map = new HashMap<String,String>();
+	MemberDto mto = (MemberDto)session.getAttribute("member");
+	List<StartClassDto> list = cacheService.showStartClass();
+	List<BasketDto> myAcList = memberService.showMyAcList(mto.getId());
+	for(BasketDto bdto : myAcList) {
+		if(bdto.getBaskAcademyName().equals(dto.getBaskAcademyName())) {
+			map.put("msg", "이미 찜한 학원입니다.");
+			return map;
+		}
+	}
+	for(int i =0; i<list.size(); i++) {
+		StartClassDto sto = list.get(i);
+		if(sto.getStartAcademyName().equals(dto.getBaskAcademyName())) {
+			MessageDto mdto = new MessageDto();
+			mdto.setN_sender("admin");
+			mdto.setN_receiver(dto.getBaskId());
+			mdto.setN_content(sto.getStartAcademyName()+" "+sto.getStartClassName()+" " + sto.getStartDDay());
+			mdto.setNs_state_code("a");
+			messageDao.sendMessage(mdto);
+		}
+		}
 		System.out.println(dto.getBaskId()+" "+dto.getBaskAcademyName());
 		Sserv.putBasket(dto);
+		map.put("msg", "찜목록에 추가되었습니다.");
+		return map;
 	}
 	
     ////////////////	이한준 	//////////////////////////////////////////////////////////////////////////////

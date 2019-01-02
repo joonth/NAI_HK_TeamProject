@@ -234,6 +234,10 @@
   	<insert id="putBasket" parameterType="BasketDto">
   		insert into basket values(basket_seq.nextval,#{baskId},#{baskAcademyName})
   	</insert>
+  	
+  	<select id="getBasketMname" parameterType="String" resultMap="BasketDto">
+  		select M_ID from basket where AC_NAME = #{AC_NAME}
+  	</select>
 
 <!-- 					황인후					-->
 	<!--   게시판쿼리 -->

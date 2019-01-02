@@ -26,5 +26,10 @@ public class StartClassDto {
 	public void setStartDDay(String startDDay) {
 		this.startDDay = startDDay;
 	}
+	@Override
+	public String toString() {
+		return "StartClassDto [startAcademyName=" + startAcademyName + ", startClassName=" + startClassName
+				+ ", startDDay=" + startDDay + "]";
+	}
 	
 }

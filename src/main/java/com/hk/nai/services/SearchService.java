@@ -48,4 +48,8 @@ public class SearchService {
 	public void putBasket(BasketDto dto) {
 		dao.putBasket(dto);
 	}
+	
+	public List<BasketDto> getBasketMname(String AC_NAME){
+		return dao.getBasketMname(AC_NAME);
+	}
 }

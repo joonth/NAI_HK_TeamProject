@@ -42,8 +42,7 @@ $(document).ready(function(){
 			data:{"baskId":id, "baskAcademyName":ac_name},
 			datatype:"json",
 			success: function (data) {
-				alert('장바구니에 추가되었습니다.')
-				console.log('성공');
+				alert(data.msg);
 			},
 			error: function (data) {
 				console.log('실패');
