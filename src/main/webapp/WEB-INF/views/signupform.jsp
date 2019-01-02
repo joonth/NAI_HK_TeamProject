@@ -6,21 +6,38 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>회원가입</title>
-<!-- 
-1.이메일인증 누르면 email 정보 받아옴
-2.email 값 전달
-3.사용자가 입력한 authcode 값 받아옴
-4컨트롤러에서 세션에 담은 authcode값과 비교
-틀릴경우 번호가 다릅니다 alert
-맞을경우 인증되엇습니다 alert ->학원생 checked
-
-*학원명..? 모달창 새로 띄워서 학원명 검색 , 학원(캘린더) 테이블에서 학원명만 가져오기
- -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui
+.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 <form action="signup.do" method="post" onsubmit="return checkRegx();">
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+	<div class="modal-dialog">  
+	<!-- Modal content-->
+		<div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">학원명 검색</h4>
+        </div>
+		<div class="modal-body">
+			<input type="text" autofocus="autofocus" id="searchAcName" name="searchAcName" placeholder="학원명">      
+			<button type="button" id="searchBtn2" class="btn btn-default" >검색</button>
+        </div>
+        <div class="modal-footer">
+			<div id="searchAcNmResult" style="float: left;"></div>
+			<div id="searchBtns" style="float: right;">
+			<button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+        	<button type="button" id="searchSubmitBtn" class="btn btn-default">확인</button>
+        	</div>
+        </div> 
+		</div>
+	</div>
+</div>
 <table>
 		<tr>
 			<th>아이디</th>
@@ -49,7 +66,10 @@
 		</tr>
 		<tr>
 			<th>학원명</th>
-			<td><input type="text" id="academyName" name="academyName"></td>		
+			<td><input type="text" id="academyName" name="academyName">		
+			<button type="button" id="searchBtn" data-toggle="modal" data-target="#myModal">검색</button>
+			</td>
+		
 		</tr>
 		<tr>
 			<th>(학원생 인증을 원할 경우 전송된 인증코드를 등록해야합니다)</th>
@@ -72,7 +92,6 @@
 		</tr>				
 		<tr>
 			<td colspan="2">
-			<!-- 여러번못하게 하려면? -->
 				<input type="submit" id="submitBtn" value="확인" class="btn btn-primary">
 			</td>
 		</tr>
@@ -159,6 +178,108 @@ $("#id").focusout(function(e){
 				alert("서버 통신 실패");
 			}
 		})
+	});
+/* --------------------학원명 검색----------------------------  */
+	
+	//입력폼에서 검색 버튼 누를 때 input 값 초기화
+	$("#searchBtn").click(function(){
+		$("#searchAcName").val("");
+		$("#searchAcNmResult").text(""); //검색결과 초기화
+	});
+	
+	//학원명 검색  자동완성 ajax
+	$("#searchAcName").autocomplete({
+		source:function (request, response){
+			$.ajax({
+				url : "searchacademyname.do",
+				data : {
+					"searchAcName" : $("#searchAcName").val()
+				},
+				datatype : "json",
+				method : "post",
+				success : function(obj) {
+					$("#searchAcNmResult").text("");
+					response(
+						$.map(obj, function(item){ //item에 obj가 바인딩
+								return{
+									//label : 화면에 보여지는 텍스트 
+									//value : 실제 text태그에 들어갈 값 
+									//본인은 둘다 똑같이 줬음 
+									//화면에 보여지는 text가 즉, value가 되기때문 
+									label: item.data,
+									value: item.data
+								}
+							})//map	
+					);
+				},
+				error : function() {
+					alert("서버 통신 실패");
+				}
+			}) //ajax 
+		}, //source
+		minLength: 2, //2글자 이상 입력해야 autocomplete 작동
+		focus:function(event,ui){ 
+			$("#searchAcName").val(ui.item.label);
+			return false; 
+		},
+		select:function(event,ui){
+			 // 자동완성 선택되었을 때 이벤트 콜백 함수
+			 //ui(object)=>item(object)는 label과 value 속성으로 구성
+		 	$("#searchAcName").val(ui.item.label);
+		 	return false;
+		}
+	});
+	//modal 창에 보이게
+	$("#searchAcName").autocomplete("option", "appendTo","#myModal");
+	
+	//검색버튼 눌러서 학원명 검색
+	$("#searchBtn2").click(
+		function(){
+			$.ajax({
+				url : "searchacademyname.do",
+				data : {
+					"searchAcName" : $("#searchAcName").val()
+				},
+				datatype : "json",
+				method : "post",
+				success : function(obj) {
+					$("#searchAcNmResult").text("");
+					if(obj == ""){
+						$("#searchAcNmResult").text("검색결과가 없습니다");
+					} else{
+						for(var i in obj){
+							$("#searchAcNmResult").append("<label><input type='radio' name='radioAcNames' " 
+									+" value='"+obj[i].data+"' style='display: none;'>"
+									+obj[i].data
+									+"</label><br>");
+						}
+					}						
+				},
+				error : function() {
+					alert("서버 통신 실패");
+				}
+			}) //ajax 
+		});
+	
+	//모달창 확인 눌렀을 때
+ 	$("#searchSubmitBtn").click(	
+		function(){
+			console.log($("input[name='radioAcNames']:checked").val());
+			$("#academyName").val($("input[name='radioAcNames']:checked").val());
+			$("#myModal").modal("hide");
+		}		
+	); 
+
+	//학원명 선택시 배경색 변경
+	var cnt =0;
+	$("body").on("click","label",function(){
+		$("label").css("background-color","transparent");
+		console.log(this);
+		cnt++;
+		if(cnt == 1 ){
+			$(this).css("background-color","#E0F8F1");
+			cnt--;
+		}
 	});
 
 	// ajax 메일값 받아서 메일 보내기 

@@ -25,6 +25,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
@@ -48,8 +50,14 @@ import com.hk.nai.dtos.SearchDto;
 import com.hk.nai.services.InfoService;
 import com.hk.nai.services.SearchService;
 import com.hk.nai.utils.SearchUtil;
+import com.hk.nai.dtos.BasketDto;
+import com.hk.nai.dtos.AcademyDto;
+import com.hk.nai.dtos.AddImgDto;
+import com.hk.nai.services.CommentAddPermitService;
+import com.hk.nai.services.CacheService;
 import com.hk.nai.dtos.MessageDto;
 import com.hk.nai.daos.MessageDao;
+import com.hk.nai.daos.PointHandleDao;
 import com.hk.nai.dtos.commentDto;
 
 /**
@@ -62,7 +70,7 @@ public class HomeController {
 	
 	/////////////////////	이한준	///////////////////////
 		
-	Map<String,SearchDto> titleIdMapper = new HashMap<String,SearchDto>();
+	Map<String,Integer> acListNum = new HashMap<String,Integer>();
 	@Autowired		//api로 얻어온 xml data의 tag를 없애는 util.
 	SearchUtil util;
 	@Autowired
@@ -70,11 +78,17 @@ public class HomeController {
 	@Autowired
 	CommentDao commentDao;
 	@Autowired
+	PointHandleDao pointDao;
+	@Autowired
 	InfoDto infoDto;
+	@Autowired
+	AddImgDto addImgDto;
 	@Autowired
 	SearchService Sserv;
 	@Autowired
 	InfoService Iserv;
+	@Autowired
+	CommentAddPermitService commentAddPermit;
 	
 	@Value("#{apiKey['key']}")	//github에 apikey를 올리지 않기 위해서 key를 따로 저장후 받아옴.
 	private String key;
@@ -82,13 +96,15 @@ public class HomeController {
 	@Autowired
 	private MemberService memberService;
 	
+	@Autowired
+	private CacheService cacheService;
+	
 	/////////////////////	이한준	///////////////////////
 	List<SearchDto> list = new ArrayList<SearchDto>();
 	int count = 0;	//출력되는 과정수를 나타내기 위한 변수.
 	
 	
 	@RequestMapping(value = "/main.do", method = RequestMethod.GET)
-	//locale model 뭐지?
 	public String home(Locale locale, Model model ) throws IOException {
 		logger.info("main {}.", locale);
 		//////////////////////////////////// 이한준 /////////////////////////////////////
@@ -124,28 +140,51 @@ public class HomeController {
 						|| title.contains("보안"))
 				 {		 
 					 SearchDto searchDto = new SearchDto();
+					 String subtitle = util.tagTrim(datas.get(i).select("subtitle"), "subtitle");
+					 String address = util.tagTrim(datas.get(i).select("address"), "address");
+					 String trprid = util.tagTrim(datas.get(i).select("trprid"), "trprid");
+					 
 					 searchDto.setTitle(title);
-					 searchDto.setSubTitle(util.tagTrim(datas.get(i).select("subtitle"), "subtitle"));
-					 searchDto.setAddress(util.tagTrim(datas.get(i).select("address"), "address"));
-					 searchDto.setScore(Sserv.getScore(util.tagTrim(datas.get(i).select("subtitle"), "subtitle")));
-					 searchDto.setTrprId(util.tagTrim(datas.get(i).select("trprid"), "trprid"));
-	
-					 titleIdMapper.put(util.tagTrim(datas.get(i).select("subtitle"), "subtitle"), searchDto);
-					 list.add(searchDto);
+					 searchDto.setSubTitle(subtitle);
+					 searchDto.setAddress(address);
+					// searchDto.setScore(Sserv.getScore(subtitle));
+					 searchDto.setTrprId(trprid);
+					 if(Sserv.getImg(subtitle) != null) {
+						 searchDto.setImg(Sserv.getImg(subtitle));						 
+					 }else {
+					    org.jsoup.nodes.Document imgData=
+						Jsoup.connect("http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA40/HRDPOA40_2.jsp?authKey="+key+"&returnType=XML&outType=2&srchTrprId="+trprid+"&srchTrprDegr=1")
+						.timeout(80000).maxBodySize(10*1024*1024).get();
+					    String img = util.tagTrim(imgData.select("filepath"), "filepath");
+					    
+						  if(img.equals("")){
+							addImgDto.setAc_name(subtitle).setImg("http://sign.kedui.net/rtimages/n_sub/no_detail_img.gif");
+							searchDto.setImg("http://sign.kedui.net/rtimages/n_sub/no_detail_img.gif");
+						  }else{
+						    addImgDto.setAc_name(subtitle).setImg(img);
+							searchDto.setImg(img);
+						  }  
+						  Sserv.addImgToDb(addImgDto);
+					 }	
+					 acListNum.put(subtitle, count);
+					 list.add(searchDto); 
+					 count++;	
 				}
-				 count++;	
 			}//for
 			System.out.println("출력 과정수 : "+count);	
 		} // if(
-		model.addAttribute("key", key);
-		model.addAttribute("map", titleIdMapper);
 		model.addAttribute("list", list);	
+		model.addAttribute("key", key);
 		
 		//////////////////////////////////// 이한준 /////////////////////////////////////
+		
+		// 학원랭킹, 마감임박수업 캐시
+		model.addAttribute("ranking", cacheService.showRanking());
+		model.addAttribute("startclass", cacheService.showStartClass());
+		
 		return "../../index";  //controller가 아니라 signinform.jsp로 이동
 	}
 	
-	//나중에 이거 어떻게 합칠 수 있을 거 같다
 	//id 중복 ajax
 	@RequestMapping(value="/idcheck.do" , method=RequestMethod.POST)
 	@ResponseBody
@@ -191,12 +230,40 @@ public class HomeController {
 		return null; 
 	}
 	
+	//학원명 찾기 ajax
+		@RequestMapping(value="/searchacademyname.do" , method=RequestMethod.POST)
+		@ResponseBody
+		public JSONArray searchAcademyName(Locale locale, Model model, @RequestParam String searchAcName) {
+			logger.info("searchAcademyName.");
+			String replacedAcName = searchAcName.replaceAll(" ", "");
+			if(replacedAcName.equals("")) {
+				return null;
+			}
+			List<AcademyDto> academy = memberService.searchAcName(replacedAcName);
+			JSONArray list = new JSONArray();
+			JSONObject obj = null;
+			if(academy != null) {
+				for(int i=0; i<academy.size(); i++) {
+					String ac = academy.get(i).getAcademyName().replaceAll(" ", "");
+					System.out.println(ac);
+					obj = new JSONObject();
+					obj.put("data", ac);
+					list.add(obj);
+				}
+				return list;
+			}
+			return null;
+		}
+	
+	
+	//회원가입 form
 	@RequestMapping(value="/signupform.do" , method=RequestMethod.GET)
 	public String signupForm(Locale locale, Model model) {
 		logger.info("signupform.", locale);
 		return "signupform";
 	}
 	
+	//회원가입
 	@RequestMapping(value="/signup.do" , method=RequestMethod.POST)
 	public String signup(Locale locale, Model model, MemberDto memdto, @RequestParam String academyName) {
 		logger.info("signup.", locale);
@@ -251,7 +318,6 @@ public class HomeController {
 	}
 	
 	//로그인, 복호화
-	
 	@RequestMapping(value = "/signin.do", method = RequestMethod.POST)
 	public String signin(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		logger.info("***enter signin  {}.", locale);
@@ -346,9 +412,10 @@ public class HomeController {
 		return "myinfo";
 	}	
 	
+	//회원정보 수정
 	@RequestMapping(value = "/updatemyinfo.do", method = RequestMethod.POST)
-	public String updateMyInfo(Locale locale, Model model, MemberDto member, String academyName) {
-		System.out.println(member.getPw());
+	public String updateMyInfo(Locale locale, Model model, MemberDto member, String academyName, HttpSession session) {
+
 		boolean isPw = memberService.updatePw(member);		
 		boolean isNickname = memberService.updateNickname(member);
 		boolean isEmail = memberService.updateEmail(member);
@@ -362,8 +429,68 @@ public class HomeController {
 			model.addAttribute("errmsg", "수정 실패");
 			return "error";
 		}
+		
+		//세션 값 갱신
+		session.setAttribute("member", member);
+		System.out.println("변경후 session값 :" + session.getAttribute("member"));
 		return "redirect:mypage.do";
 	}
+	
+	//탈퇴하기 form
+	@RequestMapping(value="/withdrawform.do" , method=RequestMethod.GET)
+	public String withdrawForm(Locale locale, Model model) {
+		logger.info("withdrawform.", locale);
+		return "withdrawform";
+	}
+		
+	//탈퇴
+	@RequestMapping(value = "/withdraw.do", method = RequestMethod.POST)
+	public String withdraw(Locale locale, Model model, MemberDto member, HttpSession session, HttpServletResponse response) throws IOException {
+		System.out.println("탈퇴 컨트롤러 진입 멤버값"+member);
+		boolean isDel = memberService.deleteMyInfo(member);
+		System.out.println("삭제 여부?" + isDel);
+		if (!isDel) {
+			response.setContentType("text/html;charset=utf-8");;
+			PrintWriter out = response.getWriter();
+			out.println("<script>");
+			out.println("alert('비밀번호가 틀립니다');");
+			out.println("history.go(-1);");
+			out.println("</script>");
+			out.close();
+			return "redirect:withdrawform.do";
+		} else {
+			session.removeAttribute("member");
+			return "redirect:main.do";	
+		}
+		
+	}
+	
+	//찜한 학원 리스트
+		@RequestMapping(value="/myacademylist.do" , method=RequestMethod.GET)
+		public String myAcademyList(Locale locale, Model model, HttpSession session) {
+			logger.info("myacademylist.", locale);
+			MemberDto member = (MemberDto) session.getAttribute("member");
+			String baskId = member.getId();
+			List<BasketDto> myAcList = memberService.showMyAcList(baskId);
+			model.addAttribute("myAcList", myAcList);
+			return "myacademylist";
+		}
+		
+		//찜한 학원 목록 삭제 ajax
+		@RequestMapping(value="/delmyacademy.do" , method=RequestMethod.POST)
+		@ResponseBody
+		public Map<String,String> delMyAcademy(Locale locale, Model model, @RequestParam Integer[] myAcSeq) {
+			System.out.println("myAcSeq" + myAcSeq);
+			int cnt = myAcSeq.length;
+			int chkdelcnt = memberService.deleteMyAc(myAcSeq);
+			Map<String,String> map = new HashMap<String,String>();
+			if(cnt == chkdelcnt) {
+				System.out.println("삭제한 찜하기 학원 개수 일치");
+				map.put("msg", "삭제 완료");
+			}
+			return map;
+		}	
+	
 	
 	//복호화
     private String decryptRsa(PrivateKey privateKey, String securedValue) throws Exception {        
@@ -423,7 +550,11 @@ public class HomeController {
 		logger.info("메시지 삭제", locale);
 		messageDao.deleteMessage(dto.getN_seq());
 		List<MessageDto> list = messageDao.getMessageList(n_receiver);
+		model.addAttribute("n_receiver", n_receiver);	
 		model.addAttribute("list", list);
+		
+			
+		
 		return "messagelist";
 	}
 	
@@ -431,9 +562,9 @@ public class HomeController {
 	public String info(Locale locale, Model model, String subTitle) throws IOException {
 		
 		 org.jsoup.nodes.Document docInfo=
-					Jsoup.connect("http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA40/HRDPOA40_2.jsp?authKey="+key+"&returnType=XML&outType=2&srchTrprId="+titleIdMapper.get(subTitle).getTrprId()+"&srchTrprDegr=1")
+					Jsoup.connect("http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA40/HRDPOA40_2.jsp?authKey="+key+"&returnType=XML&outType=2&srchTrprId="+list.get(acListNum.get(subTitle)).getTrprId()+"&srchTrprDegr=1")
 					.timeout(80000).maxBodySize(10*1024*1024).get();
-		infoDto.setImg(titleIdMapper.get(subTitle).getImg());
+		infoDto.setImg(list.get(acListNum.get(subTitle)).getImg());
 		infoDto.setAddr1(docInfo.select("addr1").toString());
 		infoDto.setAddr2(docInfo.select("addr2").toString());
 		infoDto.setHpaddr(docInfo.select("hpAddr").toString());
@@ -454,66 +585,71 @@ public class HomeController {
 	}
 	//CommentDao
 	
-	@RequestMapping(value = "/addComment.do", method = RequestMethod.GET)
-	public String addComment(Locale locale, Model model,commentDto dto) throws IOException {
-		
-		String tmpAc_name = dto.getAc_name();
-		String ac_name = tmpAc_name.substring(tmpAc_name.indexOf("<inonm>")+8, tmpAc_name.indexOf("</inonm>")).trim();
-		dto.setAc_name(ac_name);
-		org.jsoup.nodes.Document docInfo=
-					Jsoup.connect("http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA40/HRDPOA40_2.jsp?authKey="+key+"&returnType=XML&outType=2&srchTrprId="+titleIdMapper.get(ac_name).getTrprId()+"&srchTrprDegr=1")
-					.timeout(80000).maxBodySize(10*1024*1024).get();
-		
-		 
-		infoDto.setImg(titleIdMapper.get(ac_name).getImg());
-		infoDto.setAddr1(docInfo.select("addr1").toString());
-		infoDto.setAddr2(docInfo.select("addr2").toString());
-		infoDto.setHpaddr(docInfo.select("hpAddr").toString());
-		infoDto.setInonm(docInfo.select("inoNm").toString());
-		infoDto.setTrprchaptel(docInfo.select("trprChapTel").toString());
-		infoDto.setTrprnm(docInfo.select("trprNm").toString());
-		model.addAttribute("infoDto", infoDto);
-	
-		
-		commentDao.addComment(dto);
-		List<commentDto> commentList = new ArrayList<commentDto>();
-		commentList = Iserv.getComment(ac_name);
-		if(!(commentList.size()==0)) {
-			model.addAttribute("list", commentList);
-		}else {
-			model.addAttribute("list", null);
-		}
-		return "info";
-	}
-	
-	
 	@ResponseBody
-	@RequestMapping(value = "/getImg.do", method = RequestMethod.POST)
-	public Map<String, SearchDto> getImg(Locale locale, Model model,String[] acTitle) throws IOException {
-		Map<String,SearchDto> map = new HashMap<String,SearchDto>();
-		 String text = "";
-
-		 for(int i=0; i<acTitle.length; i++) {
-			 text = acTitle[i];
+	@RequestMapping(value = "/addComment.do", method = RequestMethod.GET)
+	public Map<String,commentDto> addComment(Locale locale, Model model,commentDto dto, HttpSession session) throws IOException {
+		Map<String,commentDto> map = new HashMap<String,commentDto>();
+		MemberDto member = (MemberDto) session.getAttribute("member");
+		String subtitle = util.tagTrim_str(dto.getAc_name(), "inonm");
+		dto.setAc_name(subtitle);
+		
+		// 등록학원과 중복작성여부 체크
+		if(commentAddPermit.getAuth(subtitle, dto.getM_id()) && commentAddPermit.checkDupe(dto)) {
+			//학원평 작성시 평점 반영.
+			list.get(acListNum.get(subtitle)).setScore(Sserv.getScore(subtitle));
+			//학원평 작성시 포인트 추가
+			member.setPoint(100);
+			if(pointDao.addPoint(member) >= 100) {
+				MessageDto mdto = new MessageDto();
+				mdto.setN_sender("admin");
+				mdto.setN_receiver(member.getId());
+				mdto.setN_content("포인트 100점을 달성하셨습니다~ \n 아래의 링크를 통해서 쿠폰을 받아보실수 있습니다~! \n http://쿠폰쿠폰.com");
+				mdto.setNs_state_code("e");
+				messageDao.sendMessage(mdto);
+			}
 			
-			 SearchDto searchDto = new SearchDto();
-			 searchDto.setTrprId(titleIdMapper.get(text).getTrprId());
-
-		org.jsoup.nodes.Document docImg=
-				Jsoup.connect("http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA40/HRDPOA40_2.jsp?authKey="+key+"&returnType=XML&outType=2&srchTrprId="+searchDto.getTrprId()+"&srchTrprDegr=1")
-				.timeout(80000).maxBodySize(10*1024*1024).get();
-		if(!docImg.select("filePath").toString().equals("")){
-			searchDto.setImg(docImg.select("filePath").toString().substring(10, 94).trim());
-			titleIdMapper.put(text, searchDto);
-		  }else{
-			searchDto.setImg("http://sign.kedui.net/rtimages/n_sub/no_detail_img.gif");
-		  }
-		map.put(text, searchDto);
-		 }
+			commentDao.addComment(dto);
+			map.put("dto", dto);
+	
+		}else {
+			dto.setAc_comment("false");
+			map.put("dto", dto);
+		}
 		return map;
 	}
     
-    
+	@ResponseBody
+	@RequestMapping(value = "/getList.do", method = RequestMethod.POST)
+	public Map<String,Float> getList(Locale locale, Model model,String[] acTitle) throws IOException {
+		Map<String,Float> map = new HashMap<String,Float>();
+
+		for (int i = 0; i < acTitle.length; i++) {
+			list.get(acListNum.get(acTitle[i])).setScore(Sserv.getScore(acTitle[i]));
+			map.put(acTitle[i], Sserv.getScore(acTitle[i]));
+		}
+		model.addAttribute("map",map);
+		return map;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/getMemberList.do", method = RequestMethod.POST)
+	public Map<String,List<MemberDto>> getMemberList(Locale locale, Model model) throws IOException {
+		Map<String,List<MemberDto>> map = new HashMap<String,List<MemberDto>>();
+		map.put("list", Sserv.getMemberList());
+		return map;
+	}
+	
+
+	@ResponseBody
+	@RequestMapping(value = "/changeState.do", method = RequestMethod.GET)
+	public Map<String,String> changeState(Locale locale, Model model,String value,String section) throws IOException {
+		Map<String,String> map = new HashMap<String,String>();	
+		section = (section.equals("a")) ? "b": "a";
+		map.put("value", value);
+		map.put("section", section);
+		return map;
+	}
+	
     ////////////////	이한준 	//////////////////////////////////////////////////////////////////////////////
     
     
