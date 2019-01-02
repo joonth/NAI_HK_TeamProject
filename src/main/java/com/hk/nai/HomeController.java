@@ -70,7 +70,7 @@ public class HomeController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	/////////////////////	이한준	///////////////////////
-		
+	Map<String,String> dupeCheck = new HashMap<String,String>();
 	Map<String,Integer> acListNum = new HashMap<String,Integer>();
 	@Autowired		//api로 얻어온 xml data의 tag를 없애는 util.
 	SearchUtil util;
@@ -601,18 +601,21 @@ public class HomeController {
 		if(commentAddPermit.getAuth(subtitle, dto.getM_id()) && commentAddPermit.checkDupe(dto)) {
 			//학원평 작성시 평점 반영.
 			list.get(acListNum.get(subtitle)).setScore(Sserv.getScore(subtitle));
-			//학원평 작성시 포인트 추가
-			member.setPoint(100);
-			if(pointDao.addPoint(member) >= 100) {
-				MessageDto mdto = new MessageDto();
-				mdto.setN_sender("admin");
-				mdto.setN_receiver(member.getId());
-				mdto.setN_content("포인트 100점을 달성하셨습니다~ \n 아래의 링크를 통해서 쿠폰을 받아보실수 있습니다~! \n http://쿠폰쿠폰.com");
-				mdto.setNs_state_code("e");
-				messageDao.sendMessage(mdto);
+			if(dupeCheck.get(member.getId()) ==null) {
+				//학원평 작성시 포인트 추가
+				member.setPoint(100);
+				if(pointDao.addPoint(member) >= 100) {
+					MessageDto mdto = new MessageDto();
+					mdto.setN_sender("admin");
+					mdto.setN_receiver(member.getId());
+					mdto.setN_content("포인트 100점을 달성하셨습니다~ \n 아래의 링크를 통해서 쿠폰을 받아보실수 있습니다~! \n http://쿠폰쿠폰.com");
+					mdto.setNs_state_code("e");
+					messageDao.sendMessage(mdto);
+				}
 			}
-			
 			commentDao.addComment(dto);
+			
+			dupeCheck.put(member.getId(), member.getId());
 			map.put("dto", dto);
 	
 		}else {
