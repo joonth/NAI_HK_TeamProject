@@ -238,6 +238,10 @@
   	<select id="getBasketMname" parameterType="String" resultMap="BasketDto">
   		select M_ID from basket where AC_NAME = #{AC_NAME}
   	</select>
+  	
+  	<delete id="deleteComment" parameterType="String">
+  		delete ac_comment where m_id = #{m_id}
+  	</delete>
 
 <!-- 					황인후					-->
 	<!--   게시판쿼리 -->

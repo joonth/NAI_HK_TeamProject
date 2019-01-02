@@ -16,5 +16,8 @@ public class CommentDao {
 	public void addComment(commentDto dto) {
 		sst.insert(ns+"addComment", dto);
 	}
+	public void deleteComment(String m_id) {
+		sst.delete(ns+"deleteComment", m_id);
+	}
 	
 }

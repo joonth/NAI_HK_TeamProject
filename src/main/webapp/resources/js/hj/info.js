@@ -16,12 +16,33 @@ $(document).ready(function(){
 	            console.log('Submission was successful.');
 	        	var cmt = data.dto;
 		       	if(cmt.ac_comment != 'false'){
-		       		$('#comment').append('<tr><td>'
+		       		$('table').eq(1).append('<tr><td>'
 		       				+ cmt.ac_name+" "
 		       				+cmt.m_id+" "
 		       				+cmt.ac_comment+" "
-		       				+parseFloat(cmt.ac_score).toFixed(1) 
+		       				+parseFloat(cmt.ac_score).toFixed(1)+" "+
+		       				"<button id='delete'> 삭제</button>"
 		       				+'</td></tr>');
+		       		//
+		       		$('#delete').click(function() {
+		       			$(this).parent().remove();
+		       			var m_id = $('#session').val();
+		       			var ac_name = $('#ac_name').text();
+		       			$.ajax({
+		       				type: "get",
+		       				url: "deleteComment.do",
+		       				traditional:true,
+		       				data:{"m_id":m_id, "ac_name":ac_name},
+		       				datatype:"json",
+		       				success: function (data) {
+		       					console.log('성공');
+		       				},
+		       				error: function (data) {
+		       					console.log('실패');
+		       				},
+		       			});
+
+		       	    });
 		       	}else{
 		       		alert('등록한 학원이 다르거나, 이미 학원평을 작성했습니다.');
 		       	}
@@ -49,4 +70,27 @@ $(document).ready(function(){
 			},
 		});
 	});
+	
+	
+	$('#delete').click(function() {
+		$(this).parent().remove();
+		var m_id = $('#session').val();
+		var ac_name = $('#ac_name').text();
+		$.ajax({
+			type: "get",
+			url: "deleteComment.do",
+			traditional:true,
+			data:{"m_id":m_id, "ac_name":ac_name},
+			datatype:"json",
+			success: function (data) {
+				console.log('성공');
+			},
+			error: function (data) {
+				console.log('실패');
+			},
+		});
+
+    });
+	
+	
 });

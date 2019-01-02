@@ -683,6 +683,13 @@ public class HomeController {
 		return map;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/deleteComment.do", method = RequestMethod.GET)
+	public void deleteComment(Locale locale, Model model, String m_id, String ac_name) throws IOException {
+		logger.info("학원평 삭제", locale);
+		commentDao.deleteComment(m_id);
+	}
+	
     ////////////////	이한준 	//////////////////////////////////////////////////////////////////////////////
     
     

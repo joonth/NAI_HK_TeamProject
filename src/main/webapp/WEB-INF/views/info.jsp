@@ -22,23 +22,24 @@
 	<table>
 		<c:choose>
 			<c:when test="${empty list}">
-			<div id="comment">
 				<tr><td>---작성된 글이 없습니다.---</td></tr>
-			</div>
 			</c:when>
 			<c:otherwise>
-				<div id="comment">
-					<c:forEach var = "dto" items="${list}">
-						<tr>
-							<td>
-								${dto.ac_name}
-								${dto.m_id}
-								${dto.ac_comment}
-								${dto.ac_score}
-							</td>
-						</tr>
-					</c:forEach>
-				</div>
+				<c:forEach var = "dto" items="${list}">
+					<tr>
+						<td>
+							${dto.ac_name}
+							${dto.m_id}
+							${dto.ac_comment}
+							${dto.ac_score}
+							<c:choose>
+								<c:when test="${sessionScope.member.id eq dto.m_id}">
+									<button id="delete">삭제</button>
+								</c:when>
+							</c:choose>
+						</td>
+					</tr>
+				</c:forEach>
 			</c:otherwise>
 		</c:choose>
 	</table>
