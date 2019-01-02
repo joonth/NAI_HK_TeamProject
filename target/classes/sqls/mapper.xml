@@ -15,6 +15,8 @@
 	        <result property="grade" column ="M_GRADE"/>
 	        <result property="point" column="M_POINT"/>
 	        <result property="writeCheck" column="M_CHECK"/>
+	        <result property="rownum" column="ROWNUM"/>
+	        <result property="count" column="COUNT"/> 
 	    </resultMap>
 	    
 	    <resultMap id="AuthDto" type="com.hk.nai.dtos.AuthDto" >
@@ -349,5 +351,39 @@
 		WEHRE M_NICK=#{m_nick} AND B_SEQ=#{b_seq}
 	</update>
 	
-<!-- 					찾기쉽게 본인 이름 					-->
+<!-- 					김설백					-->
+<!-- 관리자 회원관리 기능 -->
+<select id="getUserList" resultMap="MemberDto">	
+  		SELECT ROWNUM, M_SEQ, M_ID, M_PW, M_NICK, M_EMAIL, M_GRADE,M_POINT,M_CHECK
+ 		FROM MEMBER ORDER BY M_SEQ ASC
+
+  	</select>
+  	
+  	<select id="getUser" resultMap="MemberDto" parameterType="int">
+  		SELECT M_SEQ, M_ID, M_PW, M_NICK, M_EMAIL, M_GRADE, M_POINT, M_CHECK 
+  		FROM MEMBER 
+  		WHERE M_SEQ=#{seq}
+  	</select>
+  	
+  	<!-- 등급 변경 기능 -->
+  	<update id="updateGrade" parameterType="MemberDto">
+  		 UPDATE MEMBER
+		 SET M_GRADE=#{grade} WHERE M_SEQ=#{seq}
+  	</update>
+  	<!-- 회원정보 수정기능 -->
+  	<update id="userUpdate" parameterType="MemberDto">
+  		UPDATE MEMBER
+  		SET M_NICK=#{nickname}, M_EMAIL=#{email}, M_GRADE=#{grade}
+  		WHERE M_SEQ = #{seq}	
+  	</update>
+  	
+  	<!-- 체크박스 회원삭제기능 -->
+  	<delete id="checkDel" parameterType="java.lang.String"  statementType="PREPARED">
+ 		 DELETE FROM MEMBER WHERE M_ID=#{id}	
+  	</delete>
+	<!-- 회원삭제기능 -->
+  	<delete id="delUser" parameterType="int">
+  		DELETE FROM MEMBER WHERE M_SEQ=#{seq}
+  	</delete>
+ 
 </mapper>
