@@ -1,9 +1,9 @@
 $(document).ready(function(){
 	var sock = new SockJS('.do');
 	
-	$( document ).ajaxComplete(function() {
+	/*$(document).ajaxComplete(function() {
 		 sock.send($("#session").val());
-		});
+	});*/
 	
 	$("#messageForm").submit(function(event) {
      sock.send($("#n_receiver").val());

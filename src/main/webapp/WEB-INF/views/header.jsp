@@ -11,11 +11,11 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
 <body>
- 	<input id="session" type="hidden" value="${sessionScope.member.nickname}" >
+ 	<input id="session" type="hidden" value="${sessionScope.member.id}" >
 	<!-- 세션이 있을 때만 = 로그인되어있을 때만  -->
 	<c:if test="${sessionScope.member!=null}">
 		<span>${sessionScope.member.nickname} 님 환영합니다</span>
-		<span id="count" onclick="changeUrl('getMessageList.do?n_receiver=${sessionScope.member.nickname}')" class="badge bg-theme" data-toggle="modal" data-target="#myModal" >message</span>
+		<span id="count" onclick="changeUrl('getMessageList.do?n_receiver=${sessionScope.member.id}')" class="badge bg-theme" data-toggle="modal" data-target="#myModal" >message</span>
 		<a href="signout.do">로그아웃</a>
 		<a href="mypage.do">마이페이지</a>
 	</c:if>

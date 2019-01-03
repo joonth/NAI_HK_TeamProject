@@ -45,7 +45,7 @@
 	</table>
 		<form id="commentForm" action="addComment.do" method="get">
 			<input type="hidden" name="ac_name" value="${infoDto.inonm}">
-			<input type="hidden" name="m_id" value="${sessionScope.member.nickname}" readonly>
+			<input type="hidden" name="m_id" value="${sessionScope.member.id}" readonly>
 			<input type="text" name="ac_comment" placeholder="평을 작성하실때 과정명과 강사님 성함을 넣어주세요~!" >
 			<select name="ac_score">
 				<option value="5.0">5.0</option>
