@@ -71,7 +71,7 @@ public class HomeController {
 	
 	/////////////////////	이한준	///////////////////////
 	Map<String,String> dupeCheck = new HashMap<String,String>();	// 학원평 재 작성시 포인트 중복추가 방지
-	Map<String,Integer> acListNum = new HashMap<String,Integer>();
+	Map<String,Integer> acListNum = new HashMap<String,Integer>();	//list에 들어가있는 학원의 인덱스 학원명을 넣으면 해당 인덱스가 나온다.
 	@Autowired		//api로 얻어온 xml data의 tag를 없애는 util.
 	SearchUtil util;
 	@Autowired
@@ -692,6 +692,24 @@ public class HomeController {
 		logger.info("학원평 삭제", locale);
 		commentDao.deleteComment(m_id);
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/showBasket.do", method = RequestMethod.GET)
+	public Map<String,List<String>> showBasket(Locale locale, Model model, String m_id) throws IOException {
+		logger.info("장바구니 출력", locale);
+		List<String> img = new ArrayList<String>();
+		List<BasketDto> myAcList = memberService.showMyAcList(m_id);
+		for(int i=0; i<myAcList.size(); i++) {
+			SearchDto dto = (SearchDto) list.get(acListNum.get(myAcList.get(i).getBaskAcademyName()));
+			img.add(dto.getImg());
+			img.add(dto.getSubTitle());
+		}
+		Map<String,List<String>> list = new HashMap<String,List<String>>();
+		list.put("list", img);
+		return list;
+	}
+	
 	
     ////////////////	이한준 	//////////////////////////////////////////////////////////////////////////////
     
