@@ -16,7 +16,7 @@
 	<c:when test="${myAcList != null}">
 		<c:forEach items="${myAcList}" var="ac">
 			<tr>
-				<td>${ac.baskAcademyName}</td>
+				<td><a href="info.do?subTitle=${ac.baskAcademyName}" target="_blank">${ac.baskAcademyName}</a></td>
 				<td><input type="checkbox" name="delMyAc" checked="checked" value="${ac.baskSeq}">삭제(체크풀시 삭제)</td>
 			</tr>
 		</c:forEach>
