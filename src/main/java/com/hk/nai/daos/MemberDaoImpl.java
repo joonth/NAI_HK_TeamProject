@@ -1,5 +1,7 @@
 package com.hk.nai.daos;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import com.hk.nai.dtos.AuthDto;
 import com.hk.nai.dtos.MemberDto;
+import com.hk.nai.dtos.AcademyDto;
+import com.hk.nai.dtos.BasketDto;
 
 @Repository
 public class MemberDaoImpl implements MemberDao{
@@ -115,10 +119,25 @@ public class MemberDaoImpl implements MemberDao{
 		return count > 0 ? true: false;
 	}
 
+	@Override
+	public boolean deleteAuthInfo(AuthDto authdto) {
+		int count=0;
+		count = sqlSession.delete(namespace+"deleteauth", authdto);
+		return count > 0 ? true: false;
+	}
 
+	@Override
+	public List<BasketDto> showMyAcList(String baskId) {
+		return sqlSession.selectList(namespace+"showmyaclist", baskId);
+	}
 
+	@Override
+	public int deleteMyAc(Integer[] myAcSeq) {
+		return sqlSession.delete(namespace+"delmyac", myAcSeq);
+	}
 
-	
-	
-
+	@Override
+	public List<AcademyDto> searchAcName(String academyName) {
+		return sqlSession.selectList(namespace+"searchacname", academyName);
+	}
 }

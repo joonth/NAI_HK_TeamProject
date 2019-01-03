@@ -1,23 +1,26 @@
 package com.hk.nai.daos;
 
+import java.util.List;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
+import com.hk.nai.dtos.AuthDto;
 import com.hk.nai.dtos.commentDto;
 
-@Repository
-public class CommentDao {
 
+@Repository
+public class CommentAddPermitDao {
+	
 	@Autowired
 	private SqlSessionTemplate sst;
 	private String ns = "com.hk.nai.";
 	
-	public void addComment(commentDto dto) {
-		sst.insert(ns+"addComment", dto);
+	public List<AuthDto> checkAuth() {
+		return sst.selectList(ns+"checkAuth");
 	}
-	public void deleteComment(String m_id) {
-		sst.delete(ns+"deleteComment", m_id);
+	
+	public commentDto checkDupe(commentDto dto) {
+		return sst.selectOne(ns+"checkDupe", dto);
 	}
 	
 }

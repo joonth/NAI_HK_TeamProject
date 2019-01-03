@@ -46,6 +46,11 @@ public class MessageDto {
 	public void setNs_state_code(String ns_state_code) {
 		this.ns_state_code = ns_state_code;
 	}
+	@Override
+	public String toString() {
+		return "MessageDto [n_seq=" + n_seq + ", n_receiver=" + n_receiver + ", n_sender=" + n_sender + ", n_time="
+				+ n_time + ", n_content=" + n_content + ", ns_state_code=" + ns_state_code + "]";
+	}
 	
 	
 	

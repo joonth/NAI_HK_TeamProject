@@ -9,6 +9,8 @@ public class MemberDto {
 	private String grade;
 	private int point;
 	private String writeCheck;
+	private int rownum;
+	private int count;
 	
 	public MemberDto() {
 		super();
@@ -22,7 +24,7 @@ public class MemberDto {
 	}
 
 	public MemberDto(int seq, String id, String pw, String nickname, String email, String grade, int point,
-			String writeCheck) {
+			String writeCheck, int rownum, int count) {
 		this.seq = seq;
 		this.id = id;
 		this.pw = pw;
@@ -31,7 +33,25 @@ public class MemberDto {
 		this.grade = grade;
 		this.point = point;
 		this.writeCheck = writeCheck;
+		this.rownum = rownum;
+		this.count = count;
 	}
+	
+	public MemberDto(int seq, String grade) {
+		super();
+		this.seq= seq;
+		this.grade = grade;
+	}
+	
+	public MemberDto(int seq, String nickname, String email, String grade) {
+		super();
+		this.seq= seq;
+		this.nickname = nickname;
+		this.email = email;
+		this.grade = grade;
+	}
+	
+	
 
 	public int getSeq() {
 		return seq;
@@ -96,11 +116,31 @@ public class MemberDto {
 	public void setWriteCheck(String writeCheck) {
 		this.writeCheck = writeCheck;
 	}
+	
+	public int getRownum() {
+		return rownum;
+	}
+
+	public void setRownum(int rownum) {
+		this.rownum = rownum;
+	}
+	
+	
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+	
+	
 
 	@Override
 	public String toString() {
 		return "MemberDto [seq=" + seq + ", id=" + id + ", pw=" + pw + ", nickname=" + nickname + ", email=" + email
-				+ ", grade=" + grade + ", point=" + point + ", writeCheck=" + writeCheck + "]";
+				+ ", grade=" + grade + ", point=" + point + ", writeCheck=" + writeCheck + ", rownum=" + rownum + ", count=" + count + 
+				"]";
 	}
 	
 	

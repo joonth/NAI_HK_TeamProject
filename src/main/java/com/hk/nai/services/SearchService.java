@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hk.nai.daos.SearchDao;
+import com.hk.nai.dtos.AddImgDto;
+import com.hk.nai.dtos.BasketDto;
+import com.hk.nai.dtos.MemberDto;
 
 @Service
 public class SearchService {
@@ -29,4 +32,24 @@ public class SearchService {
 		}
 	}
 
+	
+	public String getImg(String subtitle) {
+		return dao.getImg(subtitle);	
+	}
+	
+	public List<MemberDto> getMemberList(){
+		return dao.getMemberList();
+	}
+	
+	public void addImgToDb(AddImgDto dto) {
+		dao.addImgToDb(dto);
+	}
+	
+	public void putBasket(BasketDto dto) {
+		dao.putBasket(dto);
+	}
+	
+	public List<BasketDto> getBasketMname(String AC_NAME){
+		return dao.getBasketMname(AC_NAME);
+	}
 }

@@ -15,6 +15,8 @@
 	        <result property="grade" column ="M_GRADE"/>
 	        <result property="point" column="M_POINT"/>
 	        <result property="writeCheck" column="M_CHECK"/>
+	        <result property="rownum" column="ROWNUM"/>
+	        <result property="count" column="COUNT"/> 
 	    </resultMap>
 	    
 	    <resultMap id="AuthDto" type="com.hk.nai.dtos.AuthDto" >
@@ -23,6 +25,26 @@
 	        <result property="academyName" column="AC_NAME"/>
 	    </resultMap>
 	
+		<resultMap id="BasketDto" type="com.hk.nai.dtos.BasketDto" >
+	        <result property="baskSeq" column="B_SEQ"/>
+	        <result property="baskId" column="M_ID"/>
+	        <result property="baskAcademyName" column="AC_NAME"/>
+		</resultMap>
+	    
+		<resultMap id="RankingDto" type="com.hk.nai.dtos.RankingDto" >
+	        <result property="rankAcademyName" column="AC_NAME"/>
+	        <result property="rankScoreAverage" column="SCORE_AVG"/>
+	    </resultMap>
+	    
+		<resultMap id="StartClassDto" type="com.hk.nai.dtos.StartClassDto" >
+	        <result property="startAcademyName" column="AC_NAME"/>
+	        <result property="startClassName" column="AC_CLASS"/>
+	        <result property="startDDay" column="DDAY"/>
+	    </resultMap>
+	    
+		<resultMap id="AcademyDto" type="com.hk.nai.dtos.AcademyDto" >
+	        <result property="academyName" column="AC_NAME"/>
+	    </resultMap>
 <!-- 					수민 					-->
 
 	<!-- 회원가입 -->    
@@ -107,20 +129,81 @@
 	<delete id="deletemember" parameterType="MemberDto">
 		DELETE FROM MEMBER WHERE M_ID = #{id} AND M_PW = #{pw}
 	</delete>  	
+	<delete id="deleteauth" parameterType="AuthDto">
+		DELETE FROM AUTH WHERE M_ID = #{authId}
+	</delete>
+
+	<!-- 마이페이지 : 찜한 학원 -->
+	<select id="showmyaclist" resultMap="BasketDto" parameterType="string">
+		SELECT * FROM BASKET WHERE M_ID = #{baskId}
+	</select>
 	
+	<delete id="delmyac" parameterType="integer">
+		DELETE FROM BASKET WHERE B_SEQ IN
+		<foreach collection="array" item="item" open="("  separator="," close=")">
+			#{item}
+		</foreach>
+	</delete> 
+	<!-- 랭킹 -->
+	<select id="ranking" resultMap="RankingDto">
+		SELECT AC_NAME, SCORE_AVG FROM VIEW_AC_RANKING 
+		<![CDATA[
+		WHERE ROWNUM<=10
+		]]>
+	</select>
+
+	<!-- 개강마감임박 d-14 -->
+	<select id="startclass" resultMap="StartClassDto">
+	<!-- 20180630 = TEST용 나중에 sysdate로 변경 -->
+		SELECT AC_NAME, AC_CLASS,
+		<![CDATA[
+		'20180630'- REPLACE(AC_CRE_DATE,'-','') AS DDAY
+		FROM ACADEMY
+		WHERE '20180630' - REPLACE(AC_CRE_DATE,'-','') BETWEEN 0 AND 14
+		ORDER BY DDAY ASC
+		]]>
+	</select>
+	<!--  학원명 검색  -->
+	<select id="searchacname" resultMap="AcademyDto" parameterType="string">
+		<![CDATA[
+		SELECT DISTINCT(AC_NAME) FROM AC_IMG WHERE AC_NAME LIKE '%' || #{academyName} || '%'
+		]]>
+	</select>
+
 <!-- 					이한준					-->
 	<select id="getScore" parameterType="String" resultType="Integer">
   		SELECT ac_score FROM ac_comment WHERE ac_name = #{subTitle}
   	</select>
   	
   	<select id="getComment" parameterType="String" resultType="CommentDto">
-  		SELECT ac_name,ac_comment,ac_score,m_id FROM ac_comment WHERE ac_name = #{subTitle}
+  		SELECT ac_name,ac_comment,ac_score,m_id FROM ac_comment WHERE ac_name = #{subTitle} order by cmt_num
   	</select>
   	
   	<insert id="addComment" parameterType="CommentDto">
-  		insert into ac_comment values(#{ac_name},#{ac_comment},#{ac_score},#{m_id})
+  		insert into ac_comment values(#{ac_name},#{ac_comment},#{ac_score},#{m_id},cmtnum_seq.nextval)
   	</insert>
   	
+  	<select id="checkAuth" resultMap="AuthDto">
+  		select * from auth
+  	</select>
+  	
+  	<select id="checkDupe" parameterType="CommentDto" resultType="CommentDto">
+  		select * from ac_comment where ac_name =#{ac_name} and m_id=#{m_id}
+  	</select>
+  	
+  	<select id="checkPoint" parameterType="String" resultType="int" >
+  		select M_POINT from MEMBER where M_ID = #{id}
+  	</select>
+  	
+  	<update id="addPoint" parameterType="MemberDto">
+  		UPDATE MEMBER SET M_POINT = M_POINT + #{point} WHERE M_ID =#{id}
+  	</update>
+  	
+  	<insert id="addImgToDb" parameterType="AddImgDto">
+  		INSERT INTO AC_IMG VALUES(#{ac_name},#{img})
+  	</insert>
+  	 
+  	 
   	<!-- websocket message -->
   	<insert id="sendMessage" parameterType="MessageDto">
   		insert into notice values(message_seq.nextval,#{n_receiver},#{n_sender},sysdate,#{n_content},#{ns_state_code})
@@ -141,6 +224,26 @@
   	<select id="getMsgNum" parameterType="String" resultType="MessageDto">
   		select n_seq from notice where n_receiver = #{n_receiver}
   	</select>
+  	
+  	<select id="getImg" parameterType="String" resultType="String">
+  		select IMG from ac_img where ac_name = #{subtitle}
+  	</select>
+  	
+  	<select id="getMemberList" resultMap="MemberDto">
+  		select * from member
+  	</select>
+  	
+  	<insert id="putBasket" parameterType="BasketDto">
+  		insert into basket values(basket_seq.nextval,#{baskId},#{baskAcademyName})
+  	</insert>
+  	
+  	<select id="getBasketMname" parameterType="String" resultMap="BasketDto">
+  		select M_ID from basket where AC_NAME = #{AC_NAME}
+  	</select>
+  	
+  	<delete id="deleteComment" parameterType="String">
+  		delete ac_comment where m_id = #{m_id}
+  	</delete>
 
 <!-- 					황인후					-->
 	<!--   게시판쿼리 -->
@@ -311,5 +414,39 @@
 	
 	
 	
-<!-- 					찾기쉽게 본인 이름 					-->
+<!-- 					김설백					-->
+<!-- 관리자 회원관리 기능 -->
+<select id="getUserList" resultMap="MemberDto">	
+  		SELECT ROWNUM, M_SEQ, M_ID, M_PW, M_NICK, M_EMAIL, M_GRADE,M_POINT,M_CHECK
+ 		FROM MEMBER ORDER BY M_SEQ ASC
+
+  	</select>
+  	
+  	<select id="getUser" resultMap="MemberDto" parameterType="int">
+  		SELECT M_SEQ, M_ID, M_PW, M_NICK, M_EMAIL, M_GRADE, M_POINT, M_CHECK 
+  		FROM MEMBER 
+  		WHERE M_SEQ=#{seq}
+  	</select>
+  	
+  	<!-- 등급 변경 기능 -->
+  	<update id="updateGrade" parameterType="MemberDto">
+  		 UPDATE MEMBER
+		 SET M_GRADE=#{grade} WHERE M_SEQ=#{seq}
+  	</update>
+  	<!-- 회원정보 수정기능 -->
+  	<update id="userUpdate" parameterType="MemberDto">
+  		UPDATE MEMBER
+  		SET M_NICK=#{nickname}, M_EMAIL=#{email}, M_GRADE=#{grade}
+  		WHERE M_SEQ = #{seq}	
+  	</update>
+  	
+  	<!-- 체크박스 회원삭제기능 -->
+  	<delete id="checkDel" parameterType="java.lang.String"  statementType="PREPARED">
+ 		 DELETE FROM MEMBER WHERE M_ID=#{id}	
+  	</delete>
+	<!-- 회원삭제기능 -->
+  	<delete id="delUser" parameterType="int">
+  		DELETE FROM MEMBER WHERE M_SEQ=#{seq}
+  	</delete>
+ 
 </mapper>
