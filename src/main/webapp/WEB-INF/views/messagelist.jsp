@@ -34,7 +34,7 @@
 						<td>${dto.n_time}</td>
 						<td><a href="getMessage.do?n_seq=${dto.n_seq}">${dto.n_content}</a></td>
 						<td>${dto.ns_state_code}</td>
-						<td><a id="delete" href="deleteMessage.do?n_seq=${dto.n_seq}&n_receiver=${sessionScope.member.nickname}">삭제</a></td>		
+						<td><a id="delete" href="deleteMessage.do?n_seq=${dto.n_seq}&n_receiver=${sessionScope.member.id}">삭제</a></td>		
 						<input type="hidden" id="session" value="${dto.n_receiver}" >
 					</tr>
 				</c:forEach>

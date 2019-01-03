@@ -18,6 +18,6 @@
 			<td>${dto.n_content}</td>
 		</tr>
 	</table>
-	<a href="getMessageList.do?n_receiver=${sessionScope.member.nickname}">뒤로</a>
+	<a href="getMessageList.do?n_receiver=${sessionScope.member.id}">뒤로</a>
 </body>
 </html>
