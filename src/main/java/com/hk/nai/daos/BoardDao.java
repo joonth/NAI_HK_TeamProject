@@ -30,8 +30,8 @@ public class BoardDao implements IBoardDao{
 	}
 
 	@Override
-	public BoardDto getBoard(int b_seq) {
-		return sqlSession.selectOne(namespace+"getBoard",b_seq);
+	public BoardDto getBoard(BoardDto dto) {
+		return sqlSession.selectOne(namespace+"getBoard",dto);
 	}
 
 	@Override
@@ -45,6 +45,20 @@ public class BoardDao implements IBoardDao{
 	public boolean b_readCount(int b_seq) {
 		int count=0;
 		count = sqlSession.update(namespace+"b_readCount",b_seq);
+		return count>0?true:false;
+	}
+	
+	@Override
+	public boolean b_like_up(int b_seq) {
+		int count=0;
+		count = sqlSession.update(namespace+"b_like_up", b_seq);
+		return count>0?true:false;
+	}
+
+	@Override
+	public boolean b_like_down(int b_seq) {
+		int count=0;
+		count = sqlSession.update(namespace+"b_like_down", b_seq);
 		return count>0?true:false;
 	}
 
@@ -63,6 +77,10 @@ public class BoardDao implements IBoardDao{
 	@Override
 	public List<BoardDto> listCriteria1(String page) throws Exception {
 		return sqlSession.selectList(namespace+"listCriteria1", page);
+	}
+	@Override
+	public List<BoardDto> listCriteria2(String page) throws Exception {
+		return sqlSession.selectList(namespace+"listCriteria2", page);
 	}
 //-----------------게시글 전체 수 구하기----------------------------
 	@Override
@@ -100,5 +118,7 @@ public class BoardDao implements IBoardDao{
 	public CommentDto1 readComment(int r_seq) {
 		return sqlSession.selectOne(namespace+"readComment",r_seq);
 	}
+
+	
 
 }

@@ -28,8 +28,8 @@ public class BoardService implements IBoardService {
 		}
 
 		@Override
-		public BoardDto getBoard(int b_seq) {
-			return boardDao.getBoard(b_seq);
+		public BoardDto getBoard(BoardDto dto) {
+			return boardDao.getBoard(dto);
 		}
 
 		@Override
@@ -42,6 +42,16 @@ public class BoardService implements IBoardService {
 			return boardDao.b_readCount(b_seq);
 		}
 
+		@Override
+		public boolean b_like_up(int b_seq) {
+			return boardDao.b_like_up(b_seq);
+		}
+
+		@Override
+		public boolean b_like_down(int b_seq) {
+			return boardDao.b_like_down(b_seq);
+		}
+		
 		@Override
 		public boolean delBoard(int b_seq) {
 			return boardDao.delBoard(b_seq);
@@ -56,6 +66,12 @@ public class BoardService implements IBoardService {
 		public List<BoardDto> listCriteria1(String page) throws Exception {
 			return boardDao.listCriteria1(page);
 		}
+		@Override
+		public List<BoardDto> listCriteria2(String page) throws Exception {
+			return boardDao.listCriteria2(page);
+		}
+
+		
 	//------------------게시글 전체 수 구하기---------------------------------
 
 		@Override
@@ -88,5 +104,6 @@ public class BoardService implements IBoardService {
 			return boardDao.readComment(r_seq);
 		}
 
+		
 
 }

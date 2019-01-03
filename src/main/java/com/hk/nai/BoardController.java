@@ -3,12 +3,18 @@ package com.hk.nai;
 
 
 
+
+import java.util.ArrayList;
+
+import java.util.HashMap;
 import java.util.List;
+
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
-
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +23,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hk.nai.dtos.BoardDto;
 import com.hk.nai.dtos.CommentDto1;
 import com.hk.nai.dtos.CriteriaDto;
+import com.hk.nai.dtos.LikeDto;
+import com.hk.nai.dtos.MemberDto;
 import com.hk.nai.dtos.PageMakerDto;
+import com.hk.nai.services.BoardLikeService;
+import com.hk.nai.services.IBoardLikeService;
 import com.hk.nai.services.IBoardService;
 
 @Controller
@@ -31,6 +42,8 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 	
 	@Autowired
 	private IBoardService boardService; //객체생성안하고 스프링이 만들어서 넣어줄거임
+/*	@Autowired
+	private IBoardLikeService boardLikeService;*/
 	
 	//게시판 글 목록 조회  --> 기본은 최신순으로 10개씩 정렬
 	@RequestMapping(value="/boardlist.do", method= RequestMethod.GET)
@@ -78,6 +91,11 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 			model.addAttribute("list", dto);
 			model.addAttribute("pagelist", "first");
 			return "boardlist";
+		}else if(pagelist.equals("b_like")) {
+			dto = boardService.listCriteria2(page);
+			model.addAttribute("list", dto);
+			model.addAttribute("pagelist", "b_like");
+			return "boardlist";
 		}
 		return "boardlist";
 	}
@@ -104,25 +122,37 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 	
 	//게시글 상세보기 
 	@RequestMapping(value="/detailboard.do", method=RequestMethod.GET)
-	public String detailBoard(CriteriaDto cri, HttpServletRequest request, Locale locale, Model model,String b_seq,String page,String perPageNum) {
+	public String detailBoard(HttpSession session, CriteriaDto cri, HttpServletRequest request, Locale locale,
+							Model model,String b_seq,String page,String perPageNum) {
 		// page정보와 perPageNum을 받을 수 있도록 Criteria 객체를 추가
 		
 		logger.info("글 상세조회{}.", locale);
 		int sseq = Integer.parseInt(b_seq);
 		
+		MemberDto mdto = (MemberDto)session.getAttribute("member");
+		String m_nick = mdto.getNickname();
 		
 		//조회수증가에 대한 처리
 		String rseq = (String)request.getSession().getAttribute("b_readcount");
+	
 		if(rseq==null) {
 			boardService.b_readCount(sseq);
-		}
+		}	
 		request.getSession().setAttribute("b_readcount", b_seq);
+	
+
+		
 		List<CommentDto1> list = boardService.commentList(sseq);
-		BoardDto dto = boardService.getBoard(sseq);
+	
+
+		
+		
+		BoardDto dto = boardService.getBoard(new BoardDto(sseq,null));
+		System.out.println(dto);
 		model.addAttribute("cri", cri);
 		model.addAttribute("dto", dto);
 		model.addAttribute("list", list);
-	
+
 		return "boarddetail";
 	}
 	
@@ -132,7 +162,7 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 		logger.info("글수정 폼이동{}.", locale);		
 		
 		int sseq = Integer.parseInt(b_seq);
-		BoardDto dto = boardService.getBoard(sseq);
+		BoardDto dto = boardService.getBoard(new BoardDto(sseq,null));
 		model.addAttribute("cri", cri);
 		model.addAttribute("dto", dto);
 		//boarddetail폼에서 hidden으로 보낸 page와 perPageNum값은 커맨드객체인 CriteriaDto객체에 담겨 모델에
@@ -216,7 +246,7 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 		int sseq = Integer.parseInt(b_seq);
 		int rseq = Integer.parseInt(r_seq);
 		
-		BoardDto dto = boardService.getBoard(sseq);
+		BoardDto dto = boardService.getBoard(new BoardDto(sseq,null));
 		CommentDto1 cdto = boardService.readComment(rseq);
 		model.addAttribute("cri", cri);
 		model.addAttribute("dto", dto);
@@ -240,5 +270,50 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 		}
 		
 	}
+	@Autowired
+	private BoardLikeService boardLikeService;
+	//좋아요기능
 	
+	@ResponseBody
+	@RequestMapping(value="/like.do",method=RequestMethod.GET, produces="text/plain;charset=UTF-8")
+	public String like(int b_seq,String m_nick,HttpSession session,HttpServletRequest request,Model model) {
+		JSONObject obj = new JSONObject();
+		
+		ArrayList<String> msgs = new ArrayList<String>();
+
+		LikeDto ldto = new LikeDto();
+		ldto.setB_seq(b_seq);
+		ldto.setM_nick(m_nick);
+		
+		BoardDto dto = boardService.getBoard(new BoardDto(b_seq,null));
+		System.out.println("3");
+		int b_like=dto.getB_like(); //게시판의 좋아요카운트
+		System.out.println(b_like);
+				
+		if(boardLikeService.countbyLike(ldto)==0) {
+			boardLikeService.create(ldto);			
+		}
+		ldto = boardLikeService.read(ldto);
+		int like_check = 0;
+		if(ldto.getLike_check() == 0) {
+			boardLikeService.like_check(ldto);
+			msgs.add("좋아요!");			
+			like_check=1;
+			b_like++;
+			boardService.b_like_up(b_seq);	
+		}else {
+			boardLikeService.like_check_cancle(ldto);
+			msgs.add("좋아요 취소");			
+			like_check=0;
+			b_like--;
+			boardService.b_like_down(b_seq);
+			
+		}
+		obj.put("b_seq", ldto.getB_seq());
+		obj.put("like_check",like_check);
+		obj.put("b_like", b_like);
+		obj.put("msg", msgs);
+		
+		return obj.toJSONString();
+	}
 }

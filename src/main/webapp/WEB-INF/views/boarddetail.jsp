@@ -9,16 +9,56 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>게시글 상세보기</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+////ajax좋아요
+function like_func(){
+	var frm_read = $("#frm_read");
+	var b_seq = $('#b_seq').val();
+	var m_nick=$('#m_nick').val();
+	var b_like=$('#b_like').val();
+	
+	
+	$.ajax({
+		url: "like.do",
+		data: {'b_seq':b_seq,'m_nick':m_nick},
+		dataType:"json",
+		cache: false,
+		type:"GET",
+		traditional:true,
+		success:function(data){
+			var msg='';
+// 			var like_img='';
+			msg+=data.msg;
+			alert(msg);
+			
+			if(data.like_check==0){
+// 				like_img="./resources/dislike.png";
+				$('#like_img').attr('src',"./resources/images/dislike.png");
+			}else{
+// 				like_img="./resources/like.png";
+				$('#like_img').attr('src',"./resources/images/like.png");
+			}
+// 			$('#like_img',frm_read).attr('src',like_img);
+			$('#b_like').html(data.b_like);
+			$('#like_check').html(data.like_check);
+		},
+		error:function(){
+			alert("서버에러");
+		}
+	});
+}
+</script>
 </head>
 <body>
 <%@include file="header.jsp" %>
 <h2>게시글 상세보기</h2>
-<form method="post">
-<input type ="hidden" name="b_seq" value="${dto.b_seq}" />
-<input type ="hidden" name="page" value="${cri.page}" />
-<input type ="hidden" name="perPageNum" value="${cri.perPageNum}" />
-<input type="hidden" name="pagelist" value="${dto.pagelist}" />
-</form>
+
+<form id="frm_read" name="frm_read" method="get">
+<input type="hidden" id="b_seq" name="b_seq" value="${dto.b_seq }" />
+<input type="hidden" id="m_nick" name="m_nick" value="${sessionScope.member.nickname}" />
+<input type="hidden" id="b_like" name="b_like" value="${dto.b_like }" />
+
 <table>
 	<tr>
 		<th>글 번호</th>
@@ -39,6 +79,10 @@
 	<tr>
 		<th>내용</th>
 		<td><textarea rows="10" cols="60" readonly="readonly">${dto.b_content}</textarea>
+		<a href='javascript:like_func();'><img src="./resources/images/${dto.like_check==0?'dislike.png':'like.png'}" id="like_img" alt="하트사진"></a>		
+
+		<span id="b_like">Likes</span>
+		</td>
 	</tr>
 	<tr>
 		<td colspan="2">
@@ -50,6 +94,7 @@
 		</td>
 	</tr>
 </table>
+</form>
 <br /><br />
 <%@include file="reply.jsp" %>
 
@@ -63,6 +108,7 @@
 	function delBoard(b_seq){
 		location.href="delboard.do?page=${cri.page}&pagelist=${pagelist}&b_seq="+b_seq;
 	}
+	
 </script>
 </body>
 </html>

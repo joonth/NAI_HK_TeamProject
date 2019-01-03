@@ -16,9 +16,19 @@ private static final long serialVersionUID = 1L;
 	private int b_readcount;
 	private int b_like;
 	private String pagelist;
+	private int like_check;
 	public BoardDto() {
 		
 	}
+	
+	
+	public BoardDto(int b_seq, String m_nick) {
+		super();
+		this.b_seq = b_seq;
+		this.m_nick = m_nick;
+	}
+
+
 	public int getB_seq() {
 		return b_seq;
 	}
@@ -68,8 +78,23 @@ private static final long serialVersionUID = 1L;
 	public void setPagelist(String pagelist) {
 		this.pagelist = pagelist;
 	}
+	
+	public int getLike_check() {
+		return like_check;
+	}
+	public void setLike_check(int like_check) {
+		this.like_check = like_check;
+	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+
+	@Override
+	public String toString() {
+		return "BoardDto [b_seq=" + b_seq + ", m_nick=" + m_nick + ", b_title=" + b_title + ", b_content=" + b_content
+				+ ", b_regdate=" + b_regdate + ", b_readcount=" + b_readcount + ", b_like=" + b_like + ", pagelist="
+				+ pagelist + ", like_check=" + like_check + "]";
 	}
 	
 	

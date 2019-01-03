@@ -5,6 +5,8 @@ public class LikeDto {
 	private int b_seq;
 	private String m_nick;
 	private int like_check;
+	
+	
 	public LikeDto() {
 		
 	}
@@ -32,6 +34,9 @@ public class LikeDto {
 	public void setLike_check(int like_check) {
 		this.like_check = like_check;
 	}
+	
+	
+	
 	
 	
 

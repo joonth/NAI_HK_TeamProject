@@ -9,29 +9,21 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title></title>
-<script type="text/javascript" src="http://code.jquery.com/jquery-Latest.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
-	$(function(){
-		$("form").submit(function(){
-			var tds = $("form table td");
-			var tdVals = tds.slice(0,tds.length-1) //마지막 td제거 input값이므로
-			var bool = true;
-			tdVals.each(function(){
-				if($(this).children().eq(0).val()==""){
-					alert("빈칸을 채워주세요");
-					$(this).children().eq(0).focus();
-					bool = false;
-					return false;
-				}
-			})//eact
-			return bool;
-		});//submit
-	});
+	function checkForm(){
+		var r_content = document.getElementById('r_content');
+		if(replyForm.r_content.value == ""){
+			alert("댓글작성해주세요");
+			r_content.focus();
+			return false;
+		}
+	}
 </script>
 </head>
 <body>
 <!-- 댓글폼 -->
-<form action="insertcomment.do?page=${cri.page}&pagelist=${pagelist }" method="post">
+<form action="insertcomment.do?page=${cri.page}&pagelist=${pagelist }" method="post" id="replyForm" name="replyForm" onsubmit="return checkForm();">
 	<input type ="hidden" name="b_seq" value="${dto.b_seq}" />
 	<table>	
 		<tr>
