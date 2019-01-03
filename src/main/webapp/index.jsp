@@ -37,21 +37,12 @@ margin: 0px 5px;
 
 </head>
 <body>
-<<<<<<< HEAD
-<%@include file="WEB-INF/views/header.jsp" %>
-
-<a href="main.do">메인</a>
-<a href="#">캘린더</a>
-<a href="boardlist.do?page=1&pagelist=first">게시판</a>
-<a href="userList.do">회원목록</a>
-<hr>
-=======
 	<%@include file="WEB-INF/views/header.jsp" %>
 	<a href="main.do">메인</a>
 	<a href="#">캘린더</a>
 	<a href="boardlist.do?page=1&pagelist=first">게시판</a>
 	<hr>
->>>>>>> branch 'master' of https://github.com/joonth/NAI_HK_TeamProject.git
+
 <!-- 이한준 -->
 	<input type="text" id="myInput" onkeypress="if(event.keyCode==13) {myFunction(this.value); return false;}" placeholder="학원,과정,주소로 검색 가능합니다." title="Type in a name">
 	<div id="none">

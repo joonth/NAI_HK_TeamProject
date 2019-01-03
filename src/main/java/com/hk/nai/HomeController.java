@@ -70,7 +70,7 @@ public class HomeController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	/////////////////////	이한준	///////////////////////
-	Map<String,String> dupeCheck = new HashMap<String,String>();
+	Map<String,String> dupeCheck = new HashMap<String,String>();	// 학원평 재 작성시 포인트 중복추가 방지
 	Map<String,Integer> acListNum = new HashMap<String,Integer>();
 	@Autowired		//api로 얻어온 xml data의 tag를 없애는 util.
 	SearchUtil util;
