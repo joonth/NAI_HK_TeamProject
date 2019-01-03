@@ -7,9 +7,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>글 목록 페이지</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>글 목록 페이지</title>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+
 </head>
 <body>
 <%@include file="header.jsp" %>
