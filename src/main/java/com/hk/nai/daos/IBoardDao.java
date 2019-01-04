@@ -23,7 +23,7 @@ public List<BoardDto> getAllList(); //전체 게시글 보기
 	public boolean b_like_up(int b_seq); //게시글 추천수 증가
 	
 	public boolean b_like_down(int b_seq); //게시글 추천수 감소
-	
+
 	
 	// [ 페이징 처리를 위한 메서드 ]
     public List<BoardDto> listCriteria(String page) throws Exception;//최신순 10개씩
@@ -46,7 +46,11 @@ public List<BoardDto> getAllList(); //전체 게시글 보기
 
   	//댓글보기
   	public CommentDto1 readComment(int r_seq);
-
 	
+  	//댓글개수 증가
+  	public boolean upComment(int b_seq);
+  	
+  	//댓글개수 감소
+  	public boolean downComment(int b_seq);
 
 }

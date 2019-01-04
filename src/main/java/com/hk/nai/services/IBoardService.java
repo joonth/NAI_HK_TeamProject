@@ -19,7 +19,7 @@ public interface IBoardService {
 		public boolean updateBoard(BoardDto dto);
 		
 		public boolean b_readCount(int b_seq);
-			
+		
 		public boolean b_like_up(int b_seq);
 		
 		public boolean b_like_down(int b_seq);
@@ -49,4 +49,9 @@ public interface IBoardService {
 	  	public CommentDto1 readComment(int r_seq);
 
 
+	  	//댓글개수 증가
+	  	public boolean upComment(int b_seq);
+	  	
+	  	//댓글개수 감소
+	  	public boolean downComment(int b_seq);
 }

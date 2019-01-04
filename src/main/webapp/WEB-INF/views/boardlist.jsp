@@ -44,7 +44,7 @@
 					<td>${dto.b_seq}</td>
 					<td>${dto.m_nick}</td>
 					<td><a href="detailboard.do?page=${cri.page}&b_seq=${dto.b_seq}">${dto.b_title}</a>
-<%-- 					<td><a href="javascript:read_func();">${dto.b_content}</a></td> --%>
+					(${dto.cmt_count})
 					<td><fmt:formatDate value="${dto.b_regdate}" pattern="yyyy-MM-dd a HH:mm"/></td>
 					<td>${dto.b_readcount}</td>
 					<td>${dto.b_like }</td>

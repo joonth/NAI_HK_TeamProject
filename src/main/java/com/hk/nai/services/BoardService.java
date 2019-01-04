@@ -104,6 +104,19 @@ public class BoardService implements IBoardService {
 			return boardDao.readComment(r_seq);
 		}
 
+
+		@Override
+		public boolean upComment(int b_seq) {
+			return boardDao.upComment(b_seq);
+		}
+
+		@Override
+		public boolean downComment(int b_seq) {
+			return boardDao.downComment(b_seq);
+		}
+
+		
+
 		
 
 }

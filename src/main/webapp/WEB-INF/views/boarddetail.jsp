@@ -17,12 +17,12 @@ function like_func(){
 	var frm_read = $("#frm_read");
 	var b_seq = $('#b_seq').val();
 	var m_nick=$('#m_nick').val();
-	var b_like=$('#b_like').val();
-	
+// 	var b_like=$('#b_like').val();
+
 	
 	$.ajax({
 		url: "like.do",
-		data: {'b_seq':b_seq,'m_nick':m_nick},
+		data: {'b_seq':b_seq,'m_nick':m_nick,'b_like':b_like},
 		dataType:"json",
 		cache: false,
 		type:"GET",
@@ -41,8 +41,8 @@ function like_func(){
 				$('#like_img').attr('src',"./resources/images/like.png");
 			}
 // 			$('#like_img',frm_read).attr('src',like_img);
-			$('#b_like').html(data.b_like);
-			$('#like_check').html(data.like_check);
+// 			$('#b_like').html(data.b_like);
+// 			$('#like_check').html(data.like_check);
 		},
 		error:function(){
 			alert("서버에러");
@@ -81,9 +81,10 @@ function like_func(){
 	<tr>
 		<th>내용</th>
 		<td><textarea rows="10" cols="60" readonly="readonly">${dto.b_content}</textarea>
-		<a href='javascript:like_func();'><img src="./resources/images/${dto.like_check==0?'dislike.png':'like.png'}" id="like_img" alt="하트사진"></a>		
+	
+		<a href='javascript:like_func();'><img src="./resources/images/${dto.like_check==1?'like.png':'dislike.png'}" id="like_img" alt="하트사진"></a>		
 
-		<span id="b_like">Likes</span>
+		Likes
 		</td>
 	</tr>
 	<tr>

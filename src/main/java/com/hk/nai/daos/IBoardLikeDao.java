@@ -17,34 +17,12 @@ public interface IBoardLikeDao {
 	//좋아요 체크 여부 (1 -> 0)
 	public boolean like_check_cancle(LikeDto ldto);
 	 /* 조회 */
-//	public int read(LikeDto ldto);
 	public LikeDto read(LikeDto ldto);
+	//like_check값 확인
+	public int like_check_read(LikeDto ldto);
 	
 	
 	
-	
-//	public List<Integer> countbyLike();
 
-//	public List<Integer> countbyLike();
-	  
-	  
-//	  public int create(HashMap hashMap);
-	  
-	  
-	  	   
-//	  public int like_check(HashMap hashMap);
-	  
-	  
-	  	  
-//	  public int like_check_cancel(HashMap hashMap);
-	  
-	 
-//	  public LikeDto read(HashMap hashMap);
-	  
-	  //게시판 좋아요 삭제
-//	  public int deletebyB_seq(int b_seq);
-	  
-	  /* 회원의 좋아요 삭제 */
-//	  public boolean deletebyM_nick(String m_nick);
 
 }

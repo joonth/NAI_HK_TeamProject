@@ -47,6 +47,7 @@ public class BoardDao implements IBoardDao{
 		count = sqlSession.update(namespace+"b_readCount",b_seq);
 		return count>0?true:false;
 	}
+
 	
 	@Override
 	public boolean b_like_up(int b_seq) {
@@ -119,6 +120,22 @@ public class BoardDao implements IBoardDao{
 		return sqlSession.selectOne(namespace+"readComment",r_seq);
 	}
 
+
+	@Override
+	public boolean upComment(int b_seq) {
+		int count = 0;
+		count = sqlSession.update(namespace+"upComment", b_seq);
+		return count>0?true:false;
+	}
+
+	@Override
+	public boolean downComment(int b_seq) {
+		int count=0;
+		count = sqlSession.update(namespace+"downComment", b_seq);
+		return count>0?true:false;
+	}
+
+	
 	
 
 }

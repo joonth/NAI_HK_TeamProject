@@ -255,22 +255,13 @@
   
   	<insert id="insertBoard" parameterType="BoardDto">
   		INSERT INTO BOARD VALUES
-  		(BOARD_SEQ.NEXTVAL,#{m_nick},#{b_title},#{b_content},SYSDATE,0,0)
+  		(BOARD_SEQ.NEXTVAL,#{m_nick},#{b_title},#{b_content},SYSDATE,0,0,0)
   	</insert>
   	
   	<select id="getBoard" resultType="BoardDto" parameterType="int">
   		SELECT B_SEQ,M_NICK,B_REGDATE,B_TITLE,B_CONTENT
   		FROM BOARD WHERE B_SEQ=#{b_seq}
   	</select>
- 
-<!-- 	<select id="getBoard" resultType="BoardDto" parameterType="BoardDto"> -->
-<!--   	<![CDATA[ -->
-<!--    		SELECT B.B_SEQ,B.M_NICK,B.B_REGDATE,B.B_TITLE,B.B_CONTENT  -->
-<!--  		FROM BOARD B, LIKETO L   -->
-<!-- 		WHERE B.B_SEQ=L.B_SEQ AND B.B_SEQ=#{b_seq} -->
-<!--    		]]>  -->
-<!--   	</select> -->
-	
   	
   	<update id="updateBoard" parameterType="BoardDto">
   		UPDATE BOARD
@@ -281,6 +272,7 @@
   	<update id="b_readCount" parameterType="int">
   		UPDATE BOARD SET B_READCOUNT=B_READCOUNT+1 WHERE B_SEQ=#{b_seq}
   	</update>
+  	
   	
   	<update id="b_like_up" parameterType="BoardDto">
   		UPDATE BOARD SET B_LIKE=B_LIKE+1 WHERE B_SEQ=#{b_seq}
@@ -301,7 +293,7 @@
        <![CDATA[
 			select * from
 						(
-							select ROW_NUMBER() OVER ( ORDER BY b_seq desc) rn,b_seq,m_nick,b_title,b_content,b_regdate,b_readcount,b_like from board
+							select ROW_NUMBER() OVER ( ORDER BY b_seq desc) rn,b_seq,m_nick,b_title,b_content,b_regdate,b_readcount,b_like,cmt_count from board
 				 		)
  			 where ceil(rn/10)=#{page}
  			
@@ -312,7 +304,7 @@
        <![CDATA[
 			select * from
 						(
-							select ROW_NUMBER() OVER ( ORDER BY b_readcount desc,b_seq desc) rn,b_seq,m_nick,b_title,b_content,b_regdate,b_readcount,b_like from board
+							select ROW_NUMBER() OVER ( ORDER BY b_readcount desc,b_seq desc) rn,b_seq,m_nick,b_title,b_content,b_regdate,b_readcount,b_like,cmt_count from board
 				 		)
  			 where ceil(rn/10)=#{page}
  			
@@ -324,7 +316,7 @@
        <![CDATA[
 			select * from
 						(
-							select ROW_NUMBER() OVER ( ORDER BY b_like desc,b_seq desc) rn,b_seq,m_nick,b_title,b_content,b_regdate,b_readcount,b_like from board
+							select ROW_NUMBER() OVER ( ORDER BY b_like desc,b_seq desc) rn,b_seq,m_nick,b_title,b_content,b_regdate,b_readcount,b_like,cmt_count from board
 				 		)
  			 where ceil(rn/10)=#{page}
  			
@@ -347,8 +339,7 @@
   
   	<insert id="insertComment" parameterType="CommentDto1">
   		INSERT INTO REPLY VALUES
-  		(REPLY_SEQ.NEXTVAL,#{b_seq},#{m_nick},#{r_content},sysdate)
-  		
+  		(REPLY_SEQ.NEXTVAL,#{b_seq},#{m_nick},#{r_content},sysdate)  		
   	</insert>
   	
   	<update id="updateComment" parameterType="CommentDto1">
@@ -360,12 +351,23 @@
   	<delete id="delComment" parameterType="int">
   		DELETE FROM REPLY WHERE R_SEQ=#{r_seq}
   	</delete>	
+  	
+  	<update id="upComment" parameterType="int">
+  		UPDATE BOARD SET CMT_COUNT=CMT_COUNT+1
+  		WHERE B_SEQ=#{b_seq}
+  	</update>
+  	
+  	<update id="downComment" parameterType="int">
+  		UPDATE BOARD SET CMT_COUNT=CMT_COUNT-1
+  		WHERE B_SEQ=#{b_seq}
+  	</update>
 	<!-- 	특정댓글조회 -->
 	<select id="readComment" resultType="CommentDto1">
 		SELECT R_SEQ,B_SEQ,M_NICK,R_CONTENT,R_REGDATE
 		FROM REPLY
 		WHERE R_SEQ=#{r_seq}
 	</select>
+
 	<!-- 	게시글 좋아요기능 -->
 
 	
@@ -398,20 +400,12 @@
 		FROM LIKETO
 		WHERE B_SEQ=#{b_seq} AND M_NICK=#{m_nick}
 	</select>
-
 	
-	<delete id="deletebyB_seq" parameterType="int">
-		DELETE FROM LIKETO
-		WHERE B_SEQ=#{b_seq}
-	</delete>
-	
-	<delete id="deletebyM_nick" parameterType="String">
-		DELETE FROM LIKETO
-		WHERE M_NICK=#{m_nick}
-	</delete>
-	
-	
-	
+	<select id="like_check_read" resultType="String" parameterType="LikeDto">
+		SELECT LIKE_CHECK
+		FROM LIKETO
+		WHERE B_SEQ=#{b_seq} AND M_NICK=#{m_nick}
+	</select>
 	
 	
 <!-- 					김설백					-->
