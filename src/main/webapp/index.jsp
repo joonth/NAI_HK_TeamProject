@@ -19,6 +19,7 @@
 	}
 %>
 <style>
+
 .sticker{
 height:50px;
 overflow:hidden;

@@ -144,11 +144,9 @@ public class HomeController {
 					 String subtitle = util.tagTrim(datas.get(i).select("subtitle"), "subtitle");
 					 String address = util.tagTrim(datas.get(i).select("address"), "address");
 					 String trprid = util.tagTrim(datas.get(i).select("trprid"), "trprid");
-					 
 					 searchDto.setTitle(title);
 					 searchDto.setSubTitle(subtitle);
 					 searchDto.setAddress(address);
-					// searchDto.setScore(Sserv.getScore(subtitle));
 					 searchDto.setTrprId(trprid);
 					 if(Sserv.getImg(subtitle) != null) {
 						 searchDto.setImg(Sserv.getImg(subtitle));						 
