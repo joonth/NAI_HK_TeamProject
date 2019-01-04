@@ -9,7 +9,6 @@
 <!-- 이한준 -->
 	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/hj/main_search.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/hj/main_message.js"></script>
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/search.css">	
 <!-- 이한준 -->
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -20,6 +19,7 @@
 	}
 %>
 <style>
+
 .sticker{
 height:50px;
 overflow:hidden;
@@ -36,13 +36,13 @@ margin: 0px 5px;
 </style>
 
 </head>
-<body>
 	<%@include file="WEB-INF/views/header.jsp" %>
 	<a href="main.do">메인</a>
 	<a href="calendar.do">캘린더</a>
 	<a href="boardlist.do?page=1&pagelist=first">게시판</a>
 	<a href="userList.do">회원목록</a>
 	<hr>
+<body>
 <!-- 이한준 -->
 	<input type="text" id="myInput" onkeypress="if(event.keyCode==13) {myFunction(this.value); return false;}" placeholder="학원,과정,주소로 검색 가능합니다." title="Type in a name">
 	<div id="none">
@@ -65,26 +65,6 @@ margin: 0px 5px;
 			</c:forEach>
 		</table>
 	</div>
-<!-- 이한준 -->
-	<hr>
-	<form id="messageForm" action="sendMessage.do" method="post">
-		<input type="hidden" name="n_sender" value="admin">
-		받는이 <input id="n_receiver" type="text" name="n_receiver" >
-		내용 <input id="n_content" type="text" name="n_content" >
-		<input type="radio" name="ns_state_code" checked="checked" value="a"> 공지사항
-	  	<input type="radio" name="ns_state_code" value="e"> 이벤트
-		<input type="submit" value="전송">
-	</form>
-	<button id="passAll" onclick="stateClick('all')">전체선택</button>
-	<div id="a" style="border:1px solid black;"></div>
-	<div id="b" style="border:1px solid black;"></div>
-	<form id="messageAllForm" action="sendMessage.do" method="post">
-		<input type="hidden" name="n_sender" value="admin">
-		내용 <input id="allContent" type="text" name="n_content">
-		<input type="radio" name="ns_state_code" checked="checked" value="a"> 공지사항
-	  	<input type="radio" name="ns_state_code" value="e"> 이벤트
-		<input type="submit" value="전송">
-	</form>
 
 <p>---학원랭킹---</p>
 	<table border="1">

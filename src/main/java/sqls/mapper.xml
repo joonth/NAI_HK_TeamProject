@@ -169,9 +169,9 @@
 	<!-- 20180630 = TEST용 나중에 sysdate로 변경 -->
 		SELECT AC_NAME, AC_CLASS,
 		<![CDATA[
-		'20180630'- REPLACE(AC_CRE_DATE,'-','') AS DDAY
+		REPLACE(AC_CRE_DATE,'-','')-TO_CHAR(sysdate,'YYYYMMDD') AS DDAY
 		FROM ACADEMY
-		WHERE '20180630' - REPLACE(AC_CRE_DATE,'-','') BETWEEN 0 AND 14
+		WHERE REPLACE(AC_CRE_DATE,'-','')-TO_CHAR(sysdate,'YYYYMMDD') BETWEEN 0 AND 14
 		ORDER BY DDAY ASC
 		]]>
 	</select>
@@ -267,7 +267,7 @@
   
   	<insert id="insertBoard" parameterType="BoardDto">
   		INSERT INTO BOARD VALUES
-  		(BOARD_SEQ.NEXTVAL,#{m_nick},#{b_title},#{b_content},SYSDATE,0,0)
+  		(BOARD_SEQ.NEXTVAL,#{m_nick},#{b_title},#{b_content},SYSDATE,0,0,0)
   	</insert>
   	
   	<select id="getBoard" resultType="BoardDto" parameterType="int">
@@ -285,6 +285,15 @@
   		UPDATE BOARD SET B_READCOUNT=B_READCOUNT+1 WHERE B_SEQ=#{b_seq}
   	</update>
   	
+  	
+  	<update id="b_like_up" parameterType="BoardDto">
+  		UPDATE BOARD SET B_LIKE=B_LIKE+1 WHERE B_SEQ=#{b_seq}
+  	</update>
+  	
+  	<update id="b_like_down" parameterType="BoardDto">
+  		UPDATE BOARD SET B_LIKE=B_LIKE-1 WHERE B_SEQ=#{b_seq}
+  	</update>
+  	
   	<delete id="delBoard" parameterType="int">
   		DELETE FROM BOARD WHERE B_SEQ=#{b_seq}
   	</delete>
@@ -296,7 +305,7 @@
        <![CDATA[
 			select * from
 						(
-							select ROW_NUMBER() OVER ( ORDER BY b_seq desc) rn,b_seq,m_nick,b_title,b_content,b_regdate,b_readcount,b_like from board
+							select ROW_NUMBER() OVER ( ORDER BY b_seq desc) rn,b_seq,m_nick,b_title,b_content,b_regdate,b_readcount,b_like,cmt_count from board
 				 		)
  			 where ceil(rn/10)=#{page}
  			
@@ -307,7 +316,19 @@
        <![CDATA[
 			select * from
 						(
-							select ROW_NUMBER() OVER ( ORDER BY b_readcount desc,b_seq desc) rn,b_seq,m_nick,b_title,b_content,b_regdate,b_readcount,b_like from board
+							select ROW_NUMBER() OVER ( ORDER BY b_readcount desc,b_seq desc) rn,b_seq,m_nick,b_title,b_content,b_regdate,b_readcount,b_like,cmt_count from board
+				 		)
+ 			 where ceil(rn/10)=#{page}
+ 			
+		]]>
+    </select>  
+    
+    <!--     추천순으로 10개식 출력하는 쿼리 -->
+    <select id="listCriteria2" resultType="BoardDto" parameterType="String"> 
+       <![CDATA[
+			select * from
+						(
+							select ROW_NUMBER() OVER ( ORDER BY b_like desc,b_seq desc) rn,b_seq,m_nick,b_title,b_content,b_regdate,b_readcount,b_like,cmt_count from board
 				 		)
  			 where ceil(rn/10)=#{page}
  			
@@ -330,8 +351,7 @@
   
   	<insert id="insertComment" parameterType="CommentDto1">
   		INSERT INTO REPLY VALUES
-  		(REPLY_SEQ.NEXTVAL,#{b_seq},#{m_nick},#{r_content},sysdate)
-  		
+  		(REPLY_SEQ.NEXTVAL,#{b_seq},#{m_nick},#{r_content},sysdate)  		
   	</insert>
   	
   	<update id="updateComment" parameterType="CommentDto1">
@@ -343,25 +363,62 @@
   	<delete id="delComment" parameterType="int">
   		DELETE FROM REPLY WHERE R_SEQ=#{r_seq}
   	</delete>	
+  	
+  	<update id="upComment" parameterType="int">
+  		UPDATE BOARD SET CMT_COUNT=CMT_COUNT+1
+  		WHERE B_SEQ=#{b_seq}
+  	</update>
+  	
+  	<update id="downComment" parameterType="int">
+  		UPDATE BOARD SET CMT_COUNT=CMT_COUNT-1
+  		WHERE B_SEQ=#{b_seq}
+  	</update>
 	<!-- 	특정댓글조회 -->
 	<select id="readComment" resultType="CommentDto1">
 		SELECT R_SEQ,B_SEQ,M_NICK,R_CONTENT,R_REGDATE
 		FROM REPLY
 		WHERE R_SEQ=#{r_seq}
 	</select>
+
+	<!-- 	게시글 좋아요기능 -->
+
 	
-	<!-- 게시글 좋아요 체크 ..좋아요 버튼 클릭 이벤트시에 실행-->
-	<update id="like_check" parameterType="HashMap">
-		UPDATE LIKETO 
-		SET LIKE_CHECK = LIKE_CHECK+1
-		WEHRE M_NICK=#{m_nick} AND B_SEQ=#{b_seq}
-	</update>
+	<select id="countbyLike" resultType="int" parameterType="LikeDto">
+		SELECT COUNT(LIKE_SEQ) AS cnt
+		FROM LIKETO
+		WHERE B_SEQ=#{b_seq} AND M_NICK=#{m_nick}
+	</select>	
 	
-	<update id="like_check_cancle" parameterType="HashMap">
+	<insert id="create" parameterType="LikeDto">
+		INSERT INTO LIKETO(LIKE_SEQ,B_SEQ,M_NICK,LIKE_CHECK)
+		VALUES((SELECT NVL(MAX(LIKE_SEQ),0)+1 as LIKE_SEQ FROM LIKETO),
+		#{b_seq},#{m_nick},0)
+	</insert>
+	
+	<update id="like_check" parameterType="LikeDto">
 		UPDATE LIKETO
-		SET LIKE_CHECK = 0
-		WEHRE M_NICK=#{m_nick} AND B_SEQ=#{b_seq}
+		SET LIKE_CHECK=LIKE_CHECK+1
+		WHERE M_NICK=#{m_nick} AND B_SEQ=#{b_seq}
 	</update>
+		
+	<update id="like_check_cancle" parameterType="LikeDto">
+		UPDATE LIKETO
+		SET LIKE_CHECK=0
+		WHERE M_NICK=#{m_nick} AND B_SEQ=#{b_seq}
+	</update>
+	
+	<select id="read" resultType="LikeDto" parameterType="LikeDto" >
+		SELECT LIKE_SEQ,B_SEQ,M_NICK,LIKE_CHECK
+		FROM LIKETO
+		WHERE B_SEQ=#{b_seq} AND M_NICK=#{m_nick}
+	</select>
+	
+	<select id="like_check_read" resultType="String" parameterType="LikeDto">
+		SELECT LIKE_CHECK
+		FROM LIKETO
+		WHERE B_SEQ=#{b_seq} AND M_NICK=#{m_nick}
+	</select>
+	
 	
 <!-- 					김설백					-->
 <!-- 캘린더 기능 -->

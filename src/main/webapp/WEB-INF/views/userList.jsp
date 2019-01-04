@@ -12,10 +12,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>회원관리페이지</title>
+	<!-- 이한준 -->
+	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/hj/main_message.js"></script>
+	<!-- 이한준 -->	
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>회원관리페이지</title>
 </head>
 <body>
+	<%@include file="header.jsp" %>
 <script type="text/javascript">
 	//전체 선택 체크박스 
 	function allSel(bool){
@@ -123,5 +128,27 @@
 }
 
 </script>
+
+<!-- 이한준 -->
+	<hr>
+	<form id="messageForm" action="sendMessage.do" method="post">
+		<input type="hidden" name="n_sender" value="admin">
+		받는이 <input id="n_receiver" type="text" name="n_receiver" >
+		내용 <input id="n_content" type="text" name="n_content" >
+		<input type="radio" name="ns_state_code" checked="checked" value="a"> 공지사항
+	  	<input type="radio" name="ns_state_code" value="e"> 이벤트
+		<input type="submit" value="전송">
+	</form>
+	<button id="passAll" onclick="stateClick('all')">전체선택</button>
+	<div id="a" style="border:1px solid black;"></div>
+	<div id="b" style="border:1px solid black;"></div>
+	<form id="messageAllForm" action="sendMessage.do" method="post">
+		<input type="hidden" name="n_sender" value="admin">
+		내용 <input id="allContent" type="text" name="n_content">
+		<input type="radio" name="ns_state_code" checked="checked" value="a"> 공지사항
+	  	<input type="radio" name="ns_state_code" value="e"> 이벤트
+		<input type="submit" value="전송">
+	</form>
+<!-- 이한준 -->
 </body>
 </html>

@@ -70,8 +70,8 @@ public class HomeController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	/////////////////////	이한준	///////////////////////
-	Map<String,String> dupeCheck = new HashMap<String,String>();
-	Map<String,Integer> acListNum = new HashMap<String,Integer>();
+	Map<String,String> dupeCheck = new HashMap<String,String>();	// 학원평 재 작성시 포인트 중복추가 방지
+	Map<String,Integer> acListNum = new HashMap<String,Integer>();	//list에 들어가있는 학원의 인덱스 학원명을 넣으면 해당 인덱스가 나온다.
 	@Autowired		//api로 얻어온 xml data의 tag를 없애는 util.
 	SearchUtil util;
 	@Autowired
@@ -144,11 +144,9 @@ public class HomeController {
 					 String subtitle = util.tagTrim(datas.get(i).select("subtitle"), "subtitle");
 					 String address = util.tagTrim(datas.get(i).select("address"), "address");
 					 String trprid = util.tagTrim(datas.get(i).select("trprid"), "trprid");
-					 
 					 searchDto.setTitle(title);
 					 searchDto.setSubTitle(subtitle);
 					 searchDto.setAddress(address);
-					// searchDto.setScore(Sserv.getScore(subtitle));
 					 searchDto.setTrprId(trprid);
 					 if(Sserv.getImg(subtitle) != null) {
 						 searchDto.setImg(Sserv.getImg(subtitle));						 
@@ -692,6 +690,24 @@ public class HomeController {
 		logger.info("학원평 삭제", locale);
 		commentDao.deleteComment(m_id);
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/showBasket.do", method = RequestMethod.GET)
+	public Map<String,List<String>> showBasket(Locale locale, Model model, String m_id) throws IOException {
+		logger.info("장바구니 출력", locale);
+		List<String> img = new ArrayList<String>();
+		List<BasketDto> myAcList = memberService.showMyAcList(m_id);
+		for(int i=0; i<myAcList.size(); i++) {
+			SearchDto dto = (SearchDto) list.get(acListNum.get(myAcList.get(i).getBaskAcademyName()));
+			img.add(dto.getImg());
+			img.add(dto.getSubTitle());
+		}
+		Map<String,List<String>> list = new HashMap<String,List<String>>();
+		list.put("list", img);
+		return list;
+	}
+	
 	
     ////////////////	이한준 	//////////////////////////////////////////////////////////////////////////////
     

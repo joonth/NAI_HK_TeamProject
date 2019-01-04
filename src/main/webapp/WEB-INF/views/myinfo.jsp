@@ -109,7 +109,7 @@
 </form>
 <a href="main.do">메인</a>
 <a href="#">캘린더</a>
-<a href="boardlist.do?page=1&pagelist=b_regdate">게시판</a>
+<a href="boardlist.do?page=1&pagelist=first">게시판</a>
 <br>
 마이페이지
 <a href="mypage.do">마이페이지</a>

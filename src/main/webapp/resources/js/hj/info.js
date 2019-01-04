@@ -64,6 +64,7 @@ $(document).ready(function(){
 			datatype:"json",
 			success: function (data) {
 				alert(data.msg);
+				showBasket();
 			},
 			error: function (data) {
 				console.log('실패');
@@ -94,3 +95,31 @@ $(document).ready(function(){
 	
 	
 });
+
+function showBasket(){
+	alert('되니?');
+	 var m_id = $('#session').val();
+		$.ajax({
+			type: "get",
+			url: "showBasket.do",
+			traditional:true,
+			data:{"m_id":m_id},
+			datatype:"json",
+			success: function (data) {
+				var list = data.list;
+				for(var i=(list.length/2)-1; i<list.length/2; i++){
+					if((list.length/2)-1 == 5){	// 찜목록 5개 제한
+						break;
+					}
+					$('#icon-bar').append("<a href='info.do?subTitle="+list[(2*i)+1]+"' class='ac'>" +
+											"<img src='"+list[2*i]+"' alt='pic' width='120' height='60'>" +
+										  "</a>");
+				}
+				console.log('성공');
+			},
+			error: function (data) {
+				console.log('실패');
+			},
+		});
+}
+

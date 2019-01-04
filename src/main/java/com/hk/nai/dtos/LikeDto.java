@@ -5,6 +5,8 @@ public class LikeDto {
 	private int b_seq;
 	private String m_nick;
 	private int like_check;
+	
+	
 	public LikeDto() {
 		
 	}
@@ -32,6 +34,14 @@ public class LikeDto {
 	public void setLike_check(int like_check) {
 		this.like_check = like_check;
 	}
+	@Override
+	public String toString() {
+		return "LikeDto [like_seq=" + like_seq + ", b_seq=" + b_seq + ", m_nick=" + m_nick + ", like_check="
+				+ like_check + "]";
+	}
+	
+	
+	
 	
 	
 

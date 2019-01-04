@@ -9,10 +9,16 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>글 목록 페이지</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 </head>
 <body>
 <%@include file="header.jsp" %>
 <h1>글목록 보기</h1>
+<form id="read" name="read" method="get">
+<input type="hidden" id="m_nick" name="m_nick" value="${sessionScope.member.nickname}" />
+<input type="hidden" id="b_seq" name="b_seq" value="${dto.b_seq}" />
 <table>
 	<col width = 100px>
 	<col width = 100px>
@@ -38,6 +44,7 @@
 					<td>${dto.b_seq}</td>
 					<td>${dto.m_nick}</td>
 					<td><a href="detailboard.do?page=${cri.page}&b_seq=${dto.b_seq}">${dto.b_title}</a>
+					(${dto.cmt_count})
 					<td><fmt:formatDate value="${dto.b_regdate}" pattern="yyyy-MM-dd a HH:mm"/></td>
 					<td>${dto.b_readcount}</td>
 					<td>${dto.b_like }</td>
@@ -47,7 +54,7 @@
 	</c:choose>
 
 </table>
-
+</form>
 
 <ul>
     <!--
@@ -83,15 +90,15 @@
 </ul>
 
 
-<!-- <form action="boardlist.do" method="get"> -->
-<%-- <input type="hidden" name="page" value="${cri.page }" /> --%>
-<!-- <select id="pagelist" name="pagelist" onchange="this.form.submit()"> -->
-<%-- 	<option value="first" ${pagelist=="first"?"selected":"" }>선택</option> --%>
-<%-- 	<option value="b_regdate" ${pagelist=="b_regdate"?"selected":""}>최신순</option> --%>
-<%-- 	<option value="b_readcount" ${pagelist=="b_readcount"?"selected":""}>조회순</option> --%>
-<%-- 	<option value="b_like" ${pagelist=="b_like"?"selected":""}>추천순</option> --%>
-<!-- </select> -->
-<!-- </form> -->
+<form action="boardlist.do" method="get">
+<input type="hidden" name="page" value="${cri.page }" />
+<select id="pagelist" name="pagelist" onchange="this.form.submit()">
+	<option value="first" ${pagelist=="first"?"selected":"" }>선택</option>
+	<option value="b_regdate" ${pagelist=="b_regdate"?"selected":""}>최신순</option>
+	<option value="b_readcount" ${pagelist=="b_readcount"?"selected":""}>조회순</option>
+	<option value="b_like" ${pagelist=="b_like"?"selected":""}>추천순</option>
+</select>
+</form>
 <br /><br />
 <div>            
     <a href='insertform.do' id="write">글쓰기</a>            
