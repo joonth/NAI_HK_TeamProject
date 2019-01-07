@@ -202,6 +202,10 @@
   	<insert id="addImgToDb" parameterType="AddImgDto">
   		INSERT INTO AC_IMG VALUES(#{ac_name},#{img})
   	</insert>
+  	
+  	<update id="updateCheck" parameterType="MemberDto">
+  		update member set M_CHECK = #{writeCheck} where M_ID = #{id}
+  	</update>
   	 
   	 
   	<!-- websocket message -->

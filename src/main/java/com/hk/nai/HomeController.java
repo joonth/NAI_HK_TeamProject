@@ -55,6 +55,7 @@ import com.hk.nai.dtos.BasketDto;
 import com.hk.nai.dtos.AcademyDto;
 import com.hk.nai.dtos.AddImgDto;
 import com.hk.nai.services.CommentAddPermitService;
+import com.hk.nai.services.CommentService;
 import com.hk.nai.services.CacheService;
 import com.hk.nai.dtos.MessageDto;
 import com.hk.nai.daos.MessageDao;
@@ -77,7 +78,7 @@ public class HomeController {
 	@Autowired
 	MessageDao messageDao;
 	@Autowired
-	CommentDao commentDao;
+	CommentService Cserv;
 	@Autowired
 	PointHandleDao pointDao;
 	@Autowired
@@ -611,7 +612,7 @@ public class HomeController {
 					messageDao.sendMessage(mdto);
 				}
 			}
-			commentDao.addComment(dto);
+			Cserv.addComment(dto);
 			
 			dupeCheck.put(member.getId(), member.getId());
 			map.put("dto", dto);
@@ -688,7 +689,7 @@ public class HomeController {
 	@RequestMapping(value = "/deleteComment.do", method = RequestMethod.GET)
 	public void deleteComment(Locale locale, Model model, String m_id, String ac_name) throws IOException {
 		logger.info("학원평 삭제", locale);
-		commentDao.deleteComment(m_id);
+		Cserv.deleteComment(m_id);
 	}
 	
 	
