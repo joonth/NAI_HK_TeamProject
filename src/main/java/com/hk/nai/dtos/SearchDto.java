@@ -12,7 +12,21 @@ public class SearchDto implements Serializable {
 	private String subTitle;
 	private String address;
 	private Float score;
+	private String trastartdate;
+	private long dday;
 	
+	public long getDday() {
+		return dday;
+	}
+	public void setDday(long dday) {
+		this.dday = dday;
+	}
+	public String getTrastartdate() {
+		return trastartdate;
+	}
+	public void setTrastartdate(String trastartdate) {
+		this.trastartdate = trastartdate;
+	}
 	public String getTrprId() {
 		return trprId;
 	}

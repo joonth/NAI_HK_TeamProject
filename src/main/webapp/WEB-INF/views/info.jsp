@@ -43,6 +43,13 @@
 			</c:otherwise>
 		</c:choose>
 	</table>
+	<div>
+		<c:forEach var = "dto" items="${aclist}">
+			${dto.title} ${dto.trastartdate} ${dto.dday}<br>
+		</c:forEach>
+	</div>
+	
+	
 		<form id="commentForm" action="addComment.do" method="get">
 			<input type="hidden" name="ac_name" value="${infoDto.inonm}">
 			<input type="hidden" name="m_id" value="${sessionScope.member.id}" readonly>

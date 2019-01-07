@@ -10,7 +10,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPublicKeySpec;
-
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -116,6 +116,7 @@ public class HomeController {
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");	
 		    Calendar c1 = Calendar.getInstance();
+		    long today = c1.getTimeInMillis();
 		    String strToday = sdf.format(c1.getTime());
 			
 			org.jsoup.nodes.Document doc=
@@ -153,7 +154,6 @@ public class HomeController {
 					 if(Sserv.getImg(subtitle) != null) {
 						 searchDto.setImg(Sserv.getImg(subtitle));						 
 					 }else {
-						 System.out.println("test!");
 					    org.jsoup.nodes.Document imgData=
 						Jsoup.connect("http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA40/HRDPOA40_2.jsp?authKey="+key+"&returnType=XML&outType=2&srchTrprId="+trprid+"&srchTrprDegr=1")
 						.timeout(80000).maxBodySize(10*1024*1024).get();
@@ -170,9 +170,19 @@ public class HomeController {
 					 }	
 								 
 					 if(getAcClassMap.containsKey(subtitle)) {
-						 getAcClassMap.get(subtitle).add(searchDto);
+						 searchDto.setTrastartdate(util.tagTrim(datas.get(i).select("trastartdate"), "trastartdate"));
+						 String[] strdate =searchDto.getTrastartdate().split("-");
+						 c1.set(Integer.parseInt(strdate[0]), Integer.parseInt(strdate[1])-1, Integer.parseInt(strdate[2]));
+						 long eventDay = c1.getTimeInMillis();
+						 searchDto.setDday((eventDay-today)/(60*60*24*1000));
+						 getAcClassMap.get(subtitle).add(searchDto);					 
 					 }else {
 						 List<SearchDto> acClassList = new LinkedList<SearchDto>();
+						 searchDto.setTrastartdate(util.tagTrim(datas.get(i).select("trastartdate"), "trastartdate"));
+						 String[] strdate =searchDto.getTrastartdate().split("-");
+						 c1.set(Integer.parseInt(strdate[0]), Integer.parseInt(strdate[1])-1, Integer.parseInt(strdate[2]));
+						 long eventDay = c1.getTimeInMillis();
+						 searchDto.setDday((eventDay-today)/(60*60*24*1000));
 						 acClassList.add(searchDto);
 						 getAcClassMap.put(subtitle, (LinkedList<SearchDto>) acClassList);
 					 }
@@ -181,9 +191,8 @@ public class HomeController {
 					 count++;	
 				}
 			}//for
+
 		
-			System.out.println(getAcClassMap.entrySet().toString());
-			System.out.println("#### " +getAcClassMap.get("비트교육센터").toString());
 			System.out.println("출력 과정수 : "+count);	
 		} // if(
 		model.addAttribute("list", list);	
@@ -585,8 +594,9 @@ public class HomeController {
 		infoDto.setInonm(util.tagTrim(docInfo.select("inonm"),"inonm"));
 		infoDto.setTrprchaptel(util.tagTrim(docInfo.select("trprchaptel"),"trprchaptel"));
 		infoDto.setTrprnm(util.tagTrim(docInfo.select("trprnm"),"trprnm"));
-		model.addAttribute("infoDto", infoDto);
-		
+		model.addAttribute("infoDto", infoDto);		
+		model.addAttribute("aclist",getAcClassMap.get(subTitle));
+
 		List<commentDto> commentList = new ArrayList<commentDto>();
 		commentList = Iserv.getComment(subTitle);
 		if(!(commentList.size()==0)) {
