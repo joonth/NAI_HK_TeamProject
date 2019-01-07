@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -71,8 +72,8 @@ public class HomeController {
 	
 	/////////////////////	이한준	///////////////////////
 	Map<String,String> dupeCheck = new HashMap<String,String>();	// 학원평 재 작성시 포인트 중복추가 방지
-	Map<String,Integer> acListNum = new HashMap<String,Integer>();	//list에 들어가있는 학원의 인덱스, 학원명을 넣으면 해당 인덱스가 나온다.
-	
+	Map<String,LinkedList<SearchDto>> getAcClassMap = new HashMap<String,LinkedList<SearchDto>>();
+
 	@Autowired		//api로 얻어온 xml data의 tag를 없애는 util.
 	SearchUtil util;
 	@Autowired
@@ -167,12 +168,22 @@ public class HomeController {
 						  }  
 						  Sserv.addImgToDb(addImgDto);
 					 }	
-
-					 acListNum.put(subtitle, count);
+								 
+					 if(getAcClassMap.containsKey(subtitle)) {
+						 getAcClassMap.get(subtitle).add(searchDto);
+					 }else {
+						 List<SearchDto> acClassList = new LinkedList<SearchDto>();
+						 acClassList.add(searchDto);
+						 getAcClassMap.put(subtitle, (LinkedList<SearchDto>) acClassList);
+					 }
+					 
 					 list.add(searchDto); 
 					 count++;	
 				}
 			}//for
+		
+			System.out.println(getAcClassMap.entrySet().toString());
+			System.out.println("#### " +getAcClassMap.get("비트교육센터").toString());
 			System.out.println("출력 과정수 : "+count);	
 		} // if(
 		model.addAttribute("list", list);	
@@ -565,10 +576,9 @@ public class HomeController {
 	public String info(Locale locale, Model model, String subTitle) throws IOException {
 		
 		 org.jsoup.nodes.Document docInfo=
-					Jsoup.connect("http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA40/HRDPOA40_2.jsp?authKey="+key+"&returnType=XML&outType=2&srchTrprId="+list.get(acListNum.get(subTitle)).getTrprId()+"&srchTrprDegr=1")
+					Jsoup.connect("http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA40/HRDPOA40_2.jsp?authKey="+key+"&returnType=XML&outType=2&srchTrprId="+getAcClassMap.get(subTitle).get(0).getTrprId()+"&srchTrprDegr=1")
 					.timeout(80000).maxBodySize(10*1024*1024).get();
-		 //String subtitle = util.tagTrim(datas.get(i).select("subtitle"), "subtitle");
-		infoDto.setImg(list.get(acListNum.get(subTitle)).getImg());
+		infoDto.setImg(getAcClassMap.get(subTitle).get(0).getImg());
 		infoDto.setAddr1(util.tagTrim(docInfo.select("addr1"),"addr1"));
 		infoDto.setAddr2(util.tagTrim(docInfo.select("addr2"),"addr2"));
 		infoDto.setHpaddr(util.tagTrim(docInfo.select("hpaddr"),"hpaddr"));
@@ -599,8 +609,6 @@ public class HomeController {
 		
 		// 등록학원과 중복작성여부 체크
 		if(commentAddPermit.getAuth(subtitle, dto.getM_id()) && commentAddPermit.checkDupe(dto)) {
-			//학원평 작성시 평점 반영.
-			list.get(acListNum.get(subtitle)).setScore(Sserv.getScore(subtitle));
 			if(dupeCheck.get(member.getId()) ==null) {
 				//학원평 작성시 포인트 추가
 				member.setPoint(100);
@@ -630,7 +638,6 @@ public class HomeController {
 	public Map<String,Float> getList(Locale locale, Model model,String[] acTitle) throws IOException {
 		Map<String,Float> map = new HashMap<String,Float>();
 		for (int i = 0; i < acTitle.length; i++) {
-			list.get(acListNum.get(acTitle[i])).setScore(Sserv.getScore(acTitle[i]));
 			map.put(acTitle[i], Sserv.getScore(acTitle[i]));
 		}
 		model.addAttribute("map",map);
@@ -701,7 +708,7 @@ public class HomeController {
 		List<String> img = new ArrayList<String>();
 		List<BasketDto> myAcList = memberService.showMyAcList(m_id);
 		for(int i=0; i<myAcList.size(); i++) {
-			SearchDto dto = (SearchDto) list.get(acListNum.get(myAcList.get(i).getBaskAcademyName()));
+			SearchDto dto = (SearchDto) getAcClassMap.get((myAcList.get(i).getBaskAcademyName())).get(0);
 			img.add(dto.getImg());
 			img.add(dto.getSubTitle());
 		}
