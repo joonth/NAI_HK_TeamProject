@@ -22,13 +22,13 @@
 		<div class="input-group">
 			<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
 			<input type="text" id="id" name="id" class="form-control" placeholder="ID">
-			<span id="idChk"></span>
 		</div>
+		<span id="idChk"></span>
 		<div class="input-group">
 			<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
 			<input type="password" id="pw" name="pw" class="form-control" placeholder="Password">
-			<span id="pwChk"></span>
 		</div>
+		<span id="pwChk"></span>
 	</form>
 	
 	<!-- 암호화 form -->
