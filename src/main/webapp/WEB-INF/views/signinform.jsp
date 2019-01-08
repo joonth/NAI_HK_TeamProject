@@ -7,6 +7,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>로그인</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/signin.css">	
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript" src="resources/js/jsa/jsbn.js"></script>
 <script type="text/javascript" src="resources/js/jsa/rsa.js"></script>
@@ -14,29 +16,33 @@
 <script type="text/javascript" src="resources/js/jsa/rng.js"></script>
 </head>
 <body>
-<table>
-		<tr>
-			<th>아이디</th>
-			<td><input type="text" id="id" name="id"></td>
-			<td><span id="idChk"></span></td>
-		</tr>
-		<tr>
-			<th>비번</th>
-			<td><input type="password" id="pw" name="pw"></td>
-			<td><span id="pwChk"></span></td>
-		</tr>	
-</table>
-<!-- 암호화 form -->
-<input type="hidden" id="rsaPublicKeyModulus" value="${publicKeyModules}" />
-<input type="hidden" id="rsaPublicKeyExponent" value="${publicKeyExponent}" />
-<form id="securedLoginForm" name="securedLoginForm" action="signin.do" method="post" style="display: none;">
-	<input type="hidden" name="securedId" id="securedId" />
-	<input type="hidden" name="securedPassword" id="securedPassword" />
-</form>
-<button type="button" id="signinBtn" >로그인</button><br>
-<a href="#" id="findidBtn">아이디찾기</a>
-<a href="#" id="findpwdBtn">비밀번호찾기</a>
-<a href="signupform.do">국과수에 처음이신가요? 회원가입</a>
+<div id="signin-container" class="container">
+	<form>
+		<h1><img src="./resources/images/detective.png">국과수</h1>
+		<div class="input-group">
+			<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+			<input type="text" id="id" name="id" class="form-control" placeholder="ID">
+			<span id="idChk"></span>
+		</div>
+		<div class="input-group">
+			<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+			<input type="password" id="pw" name="pw" class="form-control" placeholder="Password">
+			<span id="pwChk"></span>
+		</div>
+	</form>
+	
+	<!-- 암호화 form -->
+	<input type="hidden" id="rsaPublicKeyModulus" value="${publicKeyModules}" />
+	<input type="hidden" id="rsaPublicKeyExponent" value="${publicKeyExponent}" />
+	<form id="securedLoginForm" name="securedLoginForm" action="signin.do" method="post" style="display: none;">
+		<input type="hidden" name="securedId" id="securedId" />
+		<input type="hidden" name="securedPassword" id="securedPassword" />
+	</form>
+	<p><button type="button" id="signinBtn" class="btn btn-primary" >로그인</button></p>
+	<p><a href="#" id="findidBtn">아이디찾기</a>
+	<a href="#" id="findpwdBtn">비밀번호찾기</a></p>
+	<p><a href="signupform.do">국과수에 처음이신가요? 회원가입</a></p>
+</div>
 
 <script type="text/javascript">
 	$("#findidBtn").click(function(){
