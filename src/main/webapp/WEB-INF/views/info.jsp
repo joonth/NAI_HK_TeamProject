@@ -54,6 +54,11 @@
     font-style: inherit;
     font-family: 'Godo', sans-serif;
 	}
+	
+	#centerimg{
+	text-align: -webkit-center;
+	   margin: 20px 0px;
+	}
 </style>
 	
 <body>
@@ -65,7 +70,7 @@
 			<h3 class="sectionTitle p-01">학원정보</h3>
 			<div class="line"></div>
 			<div class="row">
-				<div class="col-sm-5">
+				<div id="centerimg" class="col-sm-5">
 				<img alt="img" width="70%" height="70%" src="${infoDto.img}">
 				</div>
 				<div class="col-sm-7">
@@ -83,35 +88,57 @@
 				</div>
 				</div>
 			
-				<p class="m-t-10">	${infoDto.addr1}${infoDto.addr2}</p>
-				<p class="m-t-10">	${infoDto.hpaddr}</p>
-				<p class="m-t-10">	${infoDto.trprchaptel}</p>
-			
+				<div class="col-sm-8">
+					<p class="m-t-10">	${infoDto.addr1}${infoDto.addr2}</p>
+					<p class="m-t-10">	${infoDto.hpaddr}</p>
+					<p class="m-t-10">	${infoDto.trprchaptel}</p>
+				</div>
+				<div class="col-sm-2">
+					<button id="bk" class="btn btn-default">찜하기</button>
+				</div>
 				</div>
 			</div>			
-				<button id="bk">찜하기</button>
-		
-				<div class="innerbox">
-				<form id="commentForm" action="addComment.do" method="get">
+				<div class="panel-group">
+				<div class="panel panel-default">
+				<div class="panel-heading">
+				<h4 class="panel-title row">
+				<div class="input-group input-group-lg">
+				<form id="commentForm" action="addComment.do" method="get">	
 					<input type="hidden" name="ac_name" value="${infoDto.inonm}">
 					<input type="hidden" name="m_id" value="${sessionScope.member.id}" readonly>
-					<input type="text" name="ac_comment" placeholder="평을 작성하실때 과정명과 강사님 성함을 넣어주세요~!" >
-					<select name="ac_score">
-						<option value="5.0">5.0</option>
-						<option value="4.5">4.5</option>
-						<option value="4.0">4.0</option>
-						<option value="3.5">3.5</option>
-						<option value="3.0">3.0</option>
-						<option value="2.5">2.5</option>
-						<option value="2.0">2.0</option>
-						<option value="1.5">1.5</option>
-						<option value="1.0">1.0</option>
-						<option value="0.5">0.5</option>
-						<option value="0.0">0.0</option>
-					</select>
-					<input type="submit" value="글작성">
-					<input type="button" value="뒤로가기" onclick="location.href='main.do'">
+					<div class="col-sm-9">
+						<input type="text" class="form-control" size="70%" name="ac_comment" placeholder="평을 작성하실때 과정명과 강사님 성함을 넣어주세요~!" >
+					</div>
+					<div class="col-sm-2">
+					<select class="form-control" name="ac_score">
+							<option value="5.0">5.0</option>
+							<option value="4.5">4.5</option>
+							<option value="4.0">4.0</option>
+							<option value="3.5">3.5</option>
+							<option value="3.0">3.0</option>
+							<option value="2.5">2.5</option>
+							<option value="2.0">2.0</option>
+							<option value="1.5">1.5</option>
+							<option value="1.0">1.0</option>
+							<option value="0.5">0.5</option>
+							<option value="0.0">0.0</option>
+						</select>
+					</div>
+					<div class="col-sm-1">
+						<div class="input-group-btn">
+							<button type="submit" class="form-control" value="글작성">
+								 <i class="	glyphicon glyphicon-pencil"></i>
+							</button>
+						</div>
+					</div>
+					<!-- <input type="button" value="뒤로가기" onclick="location.href='main.do'"> -->
 				</form>
+				</div>
+				</h4>
+				</div>				
+				</div>
+				
+					
 			</div>
 		</div>
 		
@@ -150,7 +177,7 @@
 						<c:when test="${empty list}">
 						<div class="panel panel-default">		
 								<div class="panel-body">
-									---작성된 글이 없습니다.---
+									---작성된 수강평이 없습니다.---
 								</div>
 						</div>
 						</c:when>
