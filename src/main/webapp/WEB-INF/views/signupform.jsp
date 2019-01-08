@@ -328,7 +328,9 @@ $("#id").focusout(function(e){
 					alert("학원명을 입력하세요!");
 				}		
 	});
-
+	
+	var checkDoubleSmtFlag=true;
+	
 	//유효성검사
 	function checkRegx() {
 		//인증생이 아닐 경우(=일반) 학원명을 적었어도 submit 전에 없애줌
@@ -372,6 +374,15 @@ $("#id").focusout(function(e){
 		} else {
 			$("#emailChk").html("");
 		}
+		
+		//submit 중복 방지
+		if(checkDoubleSmtFlag){
+			checkDoubleSmtFlag = false;
+		} else {
+			alert("중복 submit X");
+			return false;
+		}
+		
 		return true;
 
 	}
