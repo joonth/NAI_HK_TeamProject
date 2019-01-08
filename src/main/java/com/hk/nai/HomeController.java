@@ -594,6 +594,7 @@ public class HomeController {
 		infoDto.setInonm(util.tagTrim(docInfo.select("inonm"),"inonm"));
 		infoDto.setTrprchaptel(util.tagTrim(docInfo.select("trprchaptel"),"trprchaptel"));
 		infoDto.setTrprnm(util.tagTrim(docInfo.select("trprnm"),"trprnm"));
+		infoDto.setScore(Sserv.getScore(subTitle));
 		model.addAttribute("infoDto", infoDto);		
 		model.addAttribute("aclist",getAcClassMap.get(subTitle));
 
