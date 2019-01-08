@@ -16,16 +16,45 @@ $(document).ready(function(){
 	            console.log('Submission was successful.');
 	        	var cmt = data.dto;
 		       	if(cmt.ac_comment != 'false'){
-		       		$('table').eq(1).append('<tr><td>'
-		       				+ cmt.ac_name+" "
-		       				+cmt.m_id+" "
-		       				+cmt.ac_comment+" "
-		       				+parseFloat(cmt.ac_score).toFixed(1)+" "+
-		       				"<button id='delete'> 삭제</button>"
-		       				+'</td></tr>');
-		       		//
+		       	
+		       		// 학원평 추가 ajax
+		       		$('.innerbox').append("<div class='panel panel-default'>" +
+				       		"  <div class='panel-heading font-gray'>"
+							+	cmt.ac_name+
+							"</div>" +
+							"<div class='panel-body'>" +
+							"	<div class='col-xs-3 intvw-left-side'>" +
+							"<div class='row'>" +
+							"<div style='CLEAR: both;	PADDING-RIGHT: 0px;	PADDING-LEFT: 0px;	BACKGROUND: url(./resources/images/icon_star2.gif) 0px 0px;	FLOAT: left;	PADDING-BOTTOM: 0px;	MARGIN: 0px;	WIDTH: 90px;	PADDING-TOP: 0px;	HEIGHT: 18px;'>" +
+							"<p style='WIDTH: ${dto.ac_score * 20}%; PADDING-RIGHT:0px;	PADDING-LEFT:0px;	BACKGROUND: url(./resources/images/icon_star.gif) 0px 0px;	PADDING-BOTTOM: 0px;	MARGIN: 0px;	PADDING-TOP: 0px;	HEIGHT: 18px;'>" +
+							"</p>" +
+							"</div>" +
+							"</div>" +
+							"<div class='row'>" +
+							parseFloat(cmt.ac_score).toFixed(1) +
+							"</div>" +
+							"</div>" +
+							"<div class='col-xs-8 mobile-intvw-p'>" +
+							"<div class='row'> "
+								+	cmt.m_id+
+							"</div>" +
+							"<div class='row'>" +
+							cmt.ac_comment +
+							"</div>" +
+							"</div>" +
+							"<div class='col-xs-1 mobile-intvw-p'>" +
+							"<c:choose>" +
+							"<c:when test='${sessionScope.member.id eq dto.m_id}'>" +
+							"<button id='delete'>삭제</button>" +
+							"</c:when>" +
+							"</c:choose>" +
+							"</div>	" +
+							"</div>" +
+							"</div>");
+
+		       		
 		       		$('#delete').click(function() {
-		       			$(this).parent().remove();
+		       			$(this).parents().eq(4).remove();
 		       			var m_id = $('#session').val();
 		       			var ac_name = $('#ac_name').text();
 		       			$.ajax({
@@ -43,6 +72,16 @@ $(document).ready(function(){
 		       			});
 
 		       	    });
+		       		
+		       		
+		       		
+		       		
+		       		
+		       		
+		       		
+		       		
+		       		
+		       		
 		       	}else{
 		       		alert('등록한 학원이 다르거나, 이미 학원평을 작성했습니다.');
 		       	}
@@ -97,7 +136,6 @@ $(document).ready(function(){
 });
 
 function showBasket(){
-	alert('되니?');
 	 var m_id = $('#session').val();
 		$.ajax({
 			type: "get",

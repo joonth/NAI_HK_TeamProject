@@ -172,7 +172,6 @@
 			<div class="panel-group">
 		
 			<div class="innerbox">
-				<table>
 					<c:choose>
 						<c:when test="${empty list}">
 						<div class="panel panel-default">		
@@ -199,30 +198,26 @@
 										${dto.ac_score}
 									</div>
 								</div>
-								<div class="col-xs-9 mobile-intvw-p">
+								<div class="col-xs-8 mobile-intvw-p">
 									<div class="row">
 									${dto.m_id}
 									</div>
 									<div class="row">
 									${dto.ac_comment}
 									</div>
-							
 								</div>
-								
-										
-										
+								<div class="col-xs-1 mobile-intvw-p">
 										<c:choose>
 											<c:when test="${sessionScope.member.id eq dto.m_id}">
 												<button id="delete">삭제</button>
 											</c:when>
 										</c:choose>
-								
+								</div>		
 							</div>
 							</div>
 							</c:forEach>
 						</c:otherwise>
 					</c:choose>
-				</table>
 			</div>
 			</div>
 		</div>
