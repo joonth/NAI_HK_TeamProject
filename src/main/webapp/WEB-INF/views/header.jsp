@@ -4,19 +4,22 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/hj/header.js"></script>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<!--test  -->
+
  <style type="text/css">
- 	body {margin:0;height:2000px;}
+ 	body {margin:0;height:100%;}
 
 #icon-bar {
   right: 1px;
   position: fixed;
-  top: 25%;
+  top: 40%;
   -webkit-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
@@ -49,7 +52,7 @@
 	<!-- 세션이 있을 때만 = 로그인되어있을 때만  -->
 	<c:if test="${sessionScope.member!=null}">
 		<span>${sessionScope.member.nickname} 님 환영합니다</span>
-		<span id="count" onclick="changeUrl('getMessageList.do?n_receiver=${sessionScope.member.id}')" class="badge bg-theme" data-toggle="modal" data-target="#myModal" >message</span>
+		<span id="count" onclick="changeUrl('getMessageList.do?n_receiver=${sessionScope.member.id}')" class="glyphicon glyphicon-bell" data-toggle="modal" data-target="#myModal" >message</span>
 		<a href="signout.do">로그아웃</a>
 		<a href="mypage.do">마이페이지</a>
 	</c:if>

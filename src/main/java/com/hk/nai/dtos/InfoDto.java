@@ -14,7 +14,14 @@ public class InfoDto implements Serializable {
 	private String trprchaptel;
 	private String trprnm;
 	private String img;
+	private Float score;
 	
+	public Float getScore() {
+		return score;
+	}
+	public void setScore(Float score) {
+		this.score = score;
+	}
 	public String getImg() {
 		return img;
 	}
