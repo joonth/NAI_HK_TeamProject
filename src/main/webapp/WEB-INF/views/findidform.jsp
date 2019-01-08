@@ -5,23 +5,25 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <title>아이디 찾기</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/signin.css">	
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
-<h3>아이디 찾기</h3>
-<table>
-		<tr>
-			<th>이메일</th>
-			<td><input type="text" id="email" name="email"></td>
-			<td><span id="emailChk"></span></td>
-		</tr>
-		<tr>
-			<td><input type="button" id="emailBtn" value="아이디찾기"></td>
-		</tr>
-</table>
-<a href="#" id="signinBtn">로그인하기</a>
-<a href="#" id="findpwdBtn">비밀번호찾기</a>
+<div id="signin-container" class="container">
+	<form>
+			<h3>아이디 찾기<img src="./resources/images/magnifying-glass.png"></h3>
+			<div class="input-group">
+				<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+				<input type="text" id="email" name="email" class="form-control" placeholder="Email">
+			</div>
+			<span id="emailChk"></span>
+	</form>
+	<p><button type="button" id="emailBtn" class="btn btn-primary">확인</button></p>
+	<p><a href="#" id="signinBtn">로그인하기</a></p>
+	<p><a href="#" id="findpwdBtn">비밀번호 찾기</a></p>
+</div>
 <script type="text/javascript">
 
 $("#signinBtn").click(function(){
