@@ -13,7 +13,11 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
  <style type="text/css">
- 	body {margin:0;height:100%;}
+ 	body {
+ 	margin:0;
+ 	height:100%;
+ 	background-color: #f6f6f6;
+ 	}
 
 #icon-bar {
   right: 1px;

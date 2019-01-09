@@ -146,8 +146,11 @@
 			<div class="line"></div>
 			<div class="panel-group">
 			<c:forEach var = "dto" items="${aclist}">
+			<c:choose>
+						<c:when test="${dto.dday <14}">
 			<div class="panel panel-default">
-				<div class="panel-heading">
+				<!-- <div class="panel-heading" style="color:yellow; background:linear-gradient(to right,#369,#885195); padding:20px";> -->
+				<div class="panel-heading" style="color:black; background:#369;";>
 				<h4 class="panel-title row">
 					<div class="col-sm-8">
 						${dto.title}
@@ -161,6 +164,25 @@
 				</h4>
 				</div>
 			</div>
+						</c:when>
+				<c:otherwise>
+					<div class="panel panel-default">
+					<div class="panel-heading">
+					<h4 class="panel-title row">
+					<div class="col-sm-8">
+						${dto.title}
+					</div>
+					<div class="col-sm-3">
+					 	${dto.trastartdate} 
+					</div>
+					<div class="col-sm-1 mobile-m-t-10">
+						${dto.dday}			
+						</div>
+					</h4>
+					</div>
+				</div>
+				</c:otherwise>
+			</c:choose>
 			</c:forEach>
 			</div>
 		</div>

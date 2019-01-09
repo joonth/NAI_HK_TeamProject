@@ -13,6 +13,8 @@ import java.security.spec.RSAPublicKeySpec;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -591,8 +593,12 @@ public class HomeController {
 		infoDto.setTrprchaptel(util.tagTrim(docInfo.select("trprchaptel"),"trprchaptel"));
 		infoDto.setTrprnm(util.tagTrim(docInfo.select("trprnm"),"trprnm"));
 		infoDto.setScore(Sserv.getScore(subTitle));
-		model.addAttribute("infoDto", infoDto);		
-		model.addAttribute("aclist",getAcClassMap.get(subTitle));
+		model.addAttribute("infoDto", infoDto);
+		// 개강일자가 빠른 순서대로 출력하기 위한 정렬
+		List<SearchDto> aclist = getAcClassMap.get(subTitle);
+		Collections.sort(aclist);
+		//
+		model.addAttribute("aclist",aclist);
 		List<commentDto> commentList = new ArrayList<commentDto>();
 		commentList = Iserv.getComment(subTitle);
 		if(!(commentList.size()==0)) {
