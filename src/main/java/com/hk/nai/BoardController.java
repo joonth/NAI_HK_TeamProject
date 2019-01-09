@@ -291,14 +291,12 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 			like_check=1;
 			b_like++;		
 			boardService.b_like_up(b_seq);
-			System.out.println(b_like+writer);
 		}else {
 			boardLikeService.like_check_cancle(ldto);
 			msgs.add("좋아요 취소");			
 			like_check=0;
 			b_like--;
-			boardService.b_like_down(b_seq);
-			System.out.println(b_like+writer);
+			boardService.b_like_down(b_seq);			
 		}
 		obj.put("b_seq", ldto.getB_seq());
 		obj.put("like_check",like_check);
