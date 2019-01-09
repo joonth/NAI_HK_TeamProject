@@ -295,7 +295,7 @@
 						(
 							select ROW_NUMBER() OVER ( ORDER BY b_seq desc) rn,b_seq,m_nick,b_title,b_content,b_regdate,b_readcount,b_like,cmt_count from board
 				 		)
- 			 where ceil(rn/10)=#{page}
+ 			 where ceil(rn/15)=#{page}
  			
 		]]>
     </select>
@@ -306,7 +306,7 @@
 						(
 							select ROW_NUMBER() OVER ( ORDER BY b_readcount desc,b_seq desc) rn,b_seq,m_nick,b_title,b_content,b_regdate,b_readcount,b_like,cmt_count from board
 				 		)
- 			 where ceil(rn/10)=#{page}
+ 			 where ceil(rn/15)=#{page}
  			
 		]]>
     </select>  
@@ -318,7 +318,7 @@
 						(
 							select ROW_NUMBER() OVER ( ORDER BY b_like desc,b_seq desc) rn,b_seq,m_nick,b_title,b_content,b_regdate,b_readcount,b_like,cmt_count from board
 				 		)
- 			 where ceil(rn/10)=#{page}
+ 			 where ceil(rn/15)=#{page}
  			
 		]]>
     </select>  
