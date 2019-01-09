@@ -18,6 +18,9 @@
 	table a:hover{
 		text-decoration:none;
 	}
+	table a{
+		color:blue;
+	}
 	.select-box{
     width: 77x;
     height: 30px;
