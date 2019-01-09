@@ -548,6 +548,7 @@ public class HomeController {
 	public String getAllBoard(Locale locale, Model model, String n_receiver) {
 		logger.info("메시지 리스트 출력", locale);
 		List<MessageDto> list = messageDao.getMessageList(n_receiver);
+		Collections.sort(list);
 		model.addAttribute("list", list);
 		return "messagelist";
 	}
@@ -564,6 +565,7 @@ public class HomeController {
 	@RequestMapping(value = "/sendMessage.do", method = RequestMethod.POST)
 	public String sendMessage(Locale locale, Model model, MessageDto dto) {
 		logger.info("메시지 전송", locale);
+		System.out.println(dto.toString());
 		messageDao.sendMessage(dto);
 		
 		return "../../index";

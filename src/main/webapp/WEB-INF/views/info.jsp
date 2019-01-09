@@ -150,7 +150,7 @@
 						<c:when test="${dto.dday <14}">
 			<div class="panel panel-default">
 				<!-- <div class="panel-heading" style="color:yellow; background:linear-gradient(to right,#369,#885195); padding:20px";> -->
-				<div class="panel-heading" style="color:black; background:#369;";>
+				<div class="panel-heading" style="color:black; background:#2114;">
 				<h4 class="panel-title row">
 					<div class="col-sm-8">
 						${dto.title}

@@ -87,6 +87,10 @@
 a{
 	    color: rgba(255,255,255,.699);
 }
+
+#if{
+	max-width: -webkit-fill-available;
+}
  </style>
 </head>
 
@@ -116,7 +120,7 @@ a{
 			<div class="nav-right">
 					<span>${sessionScope.member.nickname} 님 환영합니다</span>
 					<a href="signout.do">로그아웃</a>
-					<span id="count" onclick="changeUrl('getMessageList.do?n_receiver=${sessionScope.member.id}')" class="glyphicon glyphicon-bell" data-toggle="modal" data-target="#myModal" >message</span>
+					<span id="count" onclick="changeUrl('getMessageList.do?n_receiver=${sessionScope.member.id}')" class="glyphicon glyphicon-envelope" data-toggle="modal" data-target="#myModal" >message</span>
 			</div>
 		</div>
 	</div>

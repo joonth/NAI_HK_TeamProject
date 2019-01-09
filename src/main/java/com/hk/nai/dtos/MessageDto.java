@@ -1,6 +1,6 @@
 package com.hk.nai.dtos;
 
-public class MessageDto {
+public class MessageDto implements Comparable<MessageDto> {
 
 	private int n_seq;
 	private String n_receiver;
@@ -50,6 +50,16 @@ public class MessageDto {
 	public String toString() {
 		return "MessageDto [n_seq=" + n_seq + ", n_receiver=" + n_receiver + ", n_sender=" + n_sender + ", n_time="
 				+ n_time + ", n_content=" + n_content + ", ns_state_code=" + ns_state_code + "]";
+	}
+	@Override
+	public int compareTo(MessageDto m1) {
+		if(m1.getN_seq() > n_seq) {
+			return 1;
+		}else if(m1.getN_seq() < n_seq) {
+			return -1;
+		}else {
+			return 0;
+		}
 	}
 	
 	
