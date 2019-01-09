@@ -1,0 +1,33 @@
+@charset "UTF-8";
+
+
+#signin-container{
+	position: absolute;
+	top:50%;
+	left: 50%;
+	margin-top: -170px;
+    margin-left: -180px;
+	height: 280px;
+	width: 360px;
+	
+}
+
+#signin-container button {
+	width: 330px;
+}
+#signin-container h1 {
+	margin-left:30%;
+}
+#signin-container p{
+	text-align: center;
+}
+
+@media only screen and (max-width: 640px){
+	#signin-container {
+		width: auto;
+	}
+	
+	#signin-container button {
+		width: auto;
+	}
+}

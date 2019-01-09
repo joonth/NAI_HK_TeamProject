@@ -11,7 +11,7 @@ public class CriteriaDto { //Criteria 클래스 : 페이징 처리를 위해서 
 
     public CriteriaDto() { // 최초 default 생성자로 기본 객체 생성시 초기값을 지정한다. (1페이지, 10개씩)
         this.page = 1;  // 사용자가 세팅하지 않으면 기본 1
-        this.perPageNum = 10; // 페이지당 기본 10개씩 출력하도록 세팅
+        this.perPageNum = 15; // 페이지당 기본 10개씩 출력하도록 세팅
     }
     
  // getter setter
@@ -32,7 +32,7 @@ public class CriteriaDto { //Criteria 클래스 : 페이징 처리를 위해서 
     }
     public void setPerPageNum(int perPageNum) {
         if ( perPageNum <= 0 || perPageNum > 100 ) {
-            this.perPageNum = 10;
+            this.perPageNum = 15;
         }else {
             this.perPageNum = perPageNum;
         }

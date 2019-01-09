@@ -1,13 +1,10 @@
 package com.hk.nai;
 
 
-
-
-
 import java.util.ArrayList;
 
 
-import java.util.HashMap;
+
 import java.util.List;
 
 import java.util.Locale;
@@ -47,7 +44,7 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 	
 	//게시판 글 목록 조회  --> 기본은 최신순으로 10개씩 정렬
 	@RequestMapping(value="/boardlist.do", method= RequestMethod.GET)
-	public String boardList(@ModelAttribute("cri") CriteriaDto cri, HttpServletRequest request, Locale locale, Model model,String page,String pagelist) throws Exception {
+	public String boardList(@ModelAttribute("cri") CriteriaDto cri, HttpServletRequest request,HttpSession session ,Locale locale, Model model,String page,String pagelist) throws Exception {
 				
 		logger.info("글목록조회{}.", locale);
 
@@ -56,15 +53,15 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 		
 	
 		List<BoardDto> dto=null;
+		
 	     		 
         //view jsp 페이지에서 페이징 처리를 위해 사용할 PageMaker 객체를 생성
 		PageMakerDto pageMaker = new PageMakerDto();
 		pageMaker.setCri(cri);
 		Integer totalNum = boardService.totalCount();
 		pageMaker.setTotalCount(totalNum);
-	
-		
-		
+
+
 		//조회순,추천순,최신순 파라미터값을 받아옴
 		pagelist = request.getParameter("pagelist");
 		
