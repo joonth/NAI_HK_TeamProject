@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
@@ -136,9 +137,7 @@
 				</div>
 				</h4>
 				</div>				
-				</div>
-				
-					
+				</div>		
 			</div>
 		</div>
 		
@@ -165,17 +164,15 @@
 			</c:forEach>
 			</div>
 		</div>
-		
 			<div class="box">	
 			<h3 class="sectionTitle p-01">학원 수강평</h3>
 			<div class="line"></div>
 			<div class="panel-group">
-		
 			<div class="innerbox">
 					<c:choose>
 						<c:when test="${empty list}">
 						<div class="panel panel-default">		
-								<div class="panel-body">
+								<div id="empty" class="panel-body">
 									---작성된 수강평이 없습니다.---
 								</div>
 						</div>
@@ -184,8 +181,8 @@
 							<c:forEach var = "dto" items="${list}">
 								<div class="panel panel-default">
 							<div class="panel-heading font-gray">
-									${dto.ac_name}
-							</div>
+								${dto.ac_name}&nbsp;&nbsp; <fmt:formatDate pattern="yyyy-MM-dd" value="${dto.cmt_date}"/>
+							</div> 
 							<div class="panel-body">
 								<div class="col-xs-3 intvw-left-side">
 									<div class="row">
@@ -207,11 +204,11 @@
 									</div>
 								</div>
 								<div class="col-xs-1 mobile-intvw-p">
-										<c:choose>
-											<c:when test="${sessionScope.member.id eq dto.m_id}">
-												<button id="delete">삭제</button>
-											</c:when>
-										</c:choose>
+									<c:choose>
+										<c:when test="${sessionScope.member.id eq dto.m_id}">
+											<button id="delete">삭제</button>
+										</c:when>
+									</c:choose>
 								</div>		
 							</div>
 							</div>

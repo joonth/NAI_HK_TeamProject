@@ -15,12 +15,19 @@ $(document).ready(function(){
 	        success: function (data) {
 	            console.log('Submission was successful.');
 	        	var cmt = data.dto;
+	        	console.log(cmt);
 		       	if(cmt.ac_comment != 'false'){
 		       	
+		       		//수강평 첫 작성시 ('수강평이 없습니다' 삭제)
+		       		if($('#empty') != null){
+		       			$('#empty').remove();
+		       		}
+		       		
 		       		// 학원평 추가 ajax
 		       		$('.innerbox').append("<div class='panel panel-default'>" +
 				       		"  <div class='panel-heading font-gray'>"
-							+	cmt.ac_name+
+		       																						// 아직 date 값을 넣지 않음.
+							+	cmt.ac_name+"&nbsp;&nbsp; <fmt:formatDate pattern='yyyy-MM-dd' value='"+cmt.cmt_date+"'/>"+
 							"</div>" +
 							"<div class='panel-body'>" +
 							"	<div class='col-xs-3 intvw-left-side'>" +
@@ -51,8 +58,8 @@ $(document).ready(function(){
 							"</div>	" +
 							"</div>" +
 							"</div>");
-
 		       		
+		       		//학원평 삭제 ajax
 		       		$('#delete').click(function() {
 		       			$(this).parents().eq(4).remove();
 		       			var m_id = $('#session').val();
@@ -70,18 +77,7 @@ $(document).ready(function(){
 		       					console.log('실패');
 		       				},
 		       			});
-
 		       	    });
-		       		
-		       		
-		       		
-		       		
-		       		
-		       		
-		       		
-		       		
-		       		
-		       		
 		       	}else{
 		       		alert('등록한 학원이 다르거나, 이미 학원평을 작성했습니다.');
 		       	}
@@ -113,7 +109,7 @@ $(document).ready(function(){
 	
 	
 	$('#delete').click(function() {
-		$(this).parent().remove();
+		$(this).parents().eq(2).remove();
 		var m_id = $('#session').val();
 		var ac_name = $('#ac_name').text();
 		$.ajax({
