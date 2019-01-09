@@ -12,6 +12,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <style>
 .srchTraArea1, .process_Kword {
@@ -97,12 +98,14 @@ p {
 		var yyyyMMdd=YEAR+MONTH+date;
 		alert(yyyyMMdd);
 	});
+	
 
 
 </script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>캘린더</title>
 </head>
+<%@include file="header.jsp" %>
 <%
 	String paramYear=request.getParameter("year");
 	String paramMonth=request.getParameter("month");
@@ -142,8 +145,8 @@ p {
 	
 	<h2>지역</h2>
 	<div id="Search">
-		<form name="form1" method="GET" action="calSearch.do">
-			<div id="area">
+		<!-- <form name="form1" id="searchCal" method="GET" action="calSearch.do"> -->
+		<!-- 	<div id="area">
 				<ul class="srchTraArea1">
 					<li><input type="checkbox" name="chk_area" value="서울">서울</li>
 					<li><input type="checkbox" name="chk_area" value="경기">경기</li>
@@ -168,17 +171,22 @@ p {
 					<li><input type="checkbox" name="chk_lang" value="JSP">JSP</li>
 					<li><input type="checkbox" name="chk_lang" value="JAVASCRIPT">JAVASCRIPT</li>
 				</ul>
-			</div>
+			</div> -->
+			
 			<div id="aca_name">
 				<span><input type="text" name="academy_search" id="AcademySearch" placeholder="검색명을 입력해주세요"></span>
-				<span><input type="submit" id="submit" value="검색"
+				<span><input type="button" id="submit" value="검색"
 						style="float: left;"></span>
+				<span id="searchResult"></span>
 			</div>
-			</form>
+			
+			
+		<!-- 	</form> -->
 	</div>
 
 	<div id="Calendar">
 		<table id="caltable">
+		<div class="lastDayNum" style="diplay:none;"> <%=lastDay%></div>
 			<caption>
 				<a href="calendar.do?year=<%=year-1%>&month=<%=month%>">◁</a> <a
 					href="calendar.do?year=<%=year%>&month=<%=month-1%>">◀</a> <span
@@ -204,33 +212,33 @@ p {
         for(int i=1;i<=lastDay;i++){
   %>
 				<td><a style="color:<%=CalUtil.fontColor(i, dayOfWeek)%>"
-					class="dateNum"> <%=i%> <%
+					class="dateNum"> <%=i%> <% 
                	String yyyyMMdddd =year+"-"+CalUtil.isTwo(String.valueOf(month))+"-"+CalUtil.isTwo(String.valueOf(i));
                             	pageContext.setAttribute("yyyyMMdddd", yyyyMMdddd.trim());
                %>
 				</a>
-					<div class="clist">
+				<div class="yyyyMMdddd" style="display:none;"> ${yyyyMMdddd}</div>
+ 					<div class="clist">
 						<c:choose>
-							<c:when test="${empty calViewList}">
-					----------검색된 일정이 없습니다-----------
+							<c:when test="${empty calViewList}">	
 							</c:when>
 							<c:otherwise>
 								<c:set var="yyyyMMdddd" value="${yyyyMMdddd}" />
 								<c:set var="count" value="0" />
-
+								<div class="acName" >
 								<c:forEach items="${calViewList}" var="list">
 									<c:set var="ac_cre_date" value="${list.ac_cre_date}" />
 									<c:choose>
 										<c:when test="${yyyyMMdddd eq ac_cre_date && count <3}">
-											<!-- 개강일이 같은 학원명 3개 출력 -->
-
-											<a href="calDetail.do?ac_seq=${list.ac_seq}">${list.ac_name}</a>
+											<!-- 개강일이 같은 학원명 3개 출력 -->								
+												<a target="_blank" href="calDetail.do?ac_seq=${list.ac_seq}&ac_name=${list.ac_name}">${list.ac_name}</a>							
 											<br />
 											<c:set var="count" value="${count + 1}" />
 											<!-- for문을 돌때마다 count 증가 -->
 										</c:when>
 									</c:choose>
 								</c:forEach>
+								</div>
 							</c:otherwise>
 						</c:choose>
 					</div></td>
@@ -247,11 +255,165 @@ p {
 			</tr>
 		</table>
 	</div>
-	<button type="button" id="CartAcademyRk"
-		onclick="location.href='acDayRank.do'">일별랭킹 학원순위보기</button>
-	<button type="button" id="CartAcademyCal"
-		onclick="location.href='myacademylist.do'">찜한 학원일정 보기</button>
+	<button type="button" id="AcademyRk" onclick="location.href='acDayRank.do'">일별랭킹 보기</button>
+	<button type="button" id="CartAcademyCal" onclick="location.href='cartAcademyCal.do'">찜한 학원일정 보기</button>
+	<button type="button" onclick="location.href='main.do'">메인화면으로 돌아가기</button>
+
+<!-- 검색결과가 없을때 나타나는 문구 -->
+<script type="text/javascript">
+	
+	//검색 결과값이 없을때 출력		$("#submit").click(function() {
+			var lastDay = $(".lastDayNum").text().trim();
+			for(var i=0; i<lastDay; i++){
+				$(".acName").eq(i).empty();
+			}
+			
+			$.ajax({
+				url : "calSearch.do",
+				data : {
+					"search" : $("#AcademySearch").val()
+				},
+				datatype : "json",
+				method : "POST",
+				success : function(obj) {
+					if (obj == null) {
+						$("#searchResult").html("검색결과가 존재하지 않습니다.");
+					} else {
+						var ac_cre_date =  []; 
+						var yyyyMMdddd = $(".yyyyMMdddd");
+						var count = 0;
+						alert(yyyyMMdddd.eq(0).text() + ac_cre_date[0]);
+						
+						for(var i=0; i<obj.length; i++){
+							ac_cre_date.push(obj[i]["ac_cre_date"]);
+							console.log("aaaa"+ac_cre_date[0]);
+							
+							for(var j=0; j<lastDay; j++){	
+							$(".acName").eq(j).each(function(count){
+								if(ac_cre_date[i] == yyyyMMdddd.eq(j).text().trim()  && count<4){ 	
+									$(".acName").eq(j).append("<a target='blank' href=calDetail.do?ac_seq="
+												+obj[i]['ac_seq']+"&ac_name="+obj[i]['ac_name']
+												+">"+obj[i]['ac_name']+"</a>"+"</br>");	
+									count++;
+									
+									}	
+							});
+						
+								}
+							}
+						}			
+					},
+				error : function() {
+					alert("서버 통신 실패");
+				}
+			}); //ajax
+		}); // click
+		
+	/* 	//검색 결과값이 없을때 출력
+				$("#submit").click(function() {
+					var lastDay = $(".lastDayNum").text().trim();
+					for(var i=0; i<lastDay; i++){
+						$(".acName").eq(i).empty();
+					}
+					
+					$.ajax({
+						url : "calSearch.do",
+						data : {
+							"search" : $("#AcademySearch").val()
+						},
+						datatype : "json",
+						method : "POST",
+						success : function(obj) {
+							if (obj == null) {
+								$("#searchResult").html("검색결과가 존재하지 않습니다.");
+							} else {
+								var ac_cre_date =  []; 
+								var yyyyMMdddd = $(".yyyyMMdddd");
+								var count = 0;
+								alert(yyyyMMdddd.eq(0).text() + ac_cre_date[0]);
+								
+								for(var i=0; i<obj.length; i++){
+									ac_cre_date.push(obj[i]["ac_cre_date"]);
+									console.log("aaaa"+ac_cre_date[0]);
+									
+									for(var j=0; j<lastDay; j++){	
+										
+										if(ac_cre_date[i] == yyyyMMdddd.eq(j).text().trim()){ 	
+											$(".acName").eq(j).append("<a target='blank' href=calDetail.do?ac_seq="
+														+obj[i]['ac_seq']+"&ac_name="+obj[i]['ac_name']
+														+">"+obj[i]['ac_name']+"</a>"+"</br>");	
+											}		
+								
+										}
+									}
+								}			
+							},
+						error : function() {
+							alert("서버 통신 실패");
+						}
+					}); //ajax
+				}); // click */
+	 
+	/* 	$("#submit").click(function() {
+			var lastDay = $(".lastDayNum").text().trim();
+			
+			$.ajax({
+				url : "calSearch.do",
+				data : {
+					"search" : $("#AcademySearch").val()
+				},
+				datatype : "json",
+				method : "POST",
+				success : function(obj) {
+					if (obj == null) {
+						$("#searchResult").html("검색결과가 존재하지 않습니다.");
+					} else {
+						var ac_cre_date =  []; 
+						var yyyyMMdddd = $(".yyyyMMdddd");
+						alert(yyyyMMdddd.eq(0).text() + ac_cre_date[0]);
+						
+						for(var i=0; i<obj.length; i++){
+							ac_cre_date.push(obj[i]["ac_cre_date"]);
+							console.log("aaaa"+ac_cre_date[0]);
+							for(var j=0; j<lastDay; j++){
+								if(ac_cre_date[i] == yyyyMMdddd.eq(j).text().trim() ){ 
+									console.log("같다");
+								$(".acName").eq(j).html("<a href=calDetail.do?ac_seq="
+											+obj[i]['ac_seq']+"&ac_name="+obj[i]['ac_name']
+												+">"+obj[i]['ac_name']+"</a>");	
+								}
+							}
+						}			
+					}
+				},
+				error : function() {
+					alert("서버 통신 실패");
+				}
+			})
+		});
+	  */
+/* 	 $(function (){ */
+/* 		 	var url =  $(".acName").eq(1).text();
+		    $(".acName").eq(1).click().load(url, function(){
+		        $('div.modal').modal("show");
+		    })
+		}); */
+		/*     $(".acName").text().click(function(){
+		        $('div.modal').modal();
+		    })
+		});
+		 */
+	/* 	$(document).ready(function(){
+		    $(".acName").click(function(){
+		        $("#myModal").modal();
+		    });
+		}); */
+
+ 
+	
+</script>	
 </body>
 </html>
+
 
 

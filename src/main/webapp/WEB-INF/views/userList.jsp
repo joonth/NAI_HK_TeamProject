@@ -3,12 +3,9 @@
 <%@page import="com.hk.nai.daos.AdminDaoImpl"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
-<%
-	request.setCharacterEncoding("utf-8");
-%>
-<%
-	response.setContentType("text/html; charset=utf-8");
-%>
+
+<%	request.setCharacterEncoding("utf-8");%>
+<%response.setContentType("text/html; charset=utf-8");%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,11 +13,86 @@
 	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/hj/main_message.js"></script>
 	<!-- 이한준 -->	
+	  <link href="http://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css" rel="stylesheet">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<style type="text/css">
+
+ body{
+	
+} 
+
+#centerContent{
+	background-color: yellow;
+	
+}
+
+#userListbar{
+	max-width: 1023px;
+	background-color: darkturquoise;
+	border-radius: 7px;
+	height: 60px;
+	}
+	
+#title{
+	font-family: 'Nanum Gothic Coding', serif;
+	font-weight: 700;
+	color: white;
+	font-size: 24px;
+	padding-top: 27px;
+	padding-left: 0.2%;
+}
+
+.table{
+	max-width: 1023px;
+	border-color: black;
+}
+
+th{
+	color: #6e6e77;
+}
+
+footer {
+      background-color: #555;
+      color: white;
+      padding: 15px;
+    }
+    
+.sidenav {
+      padding-top: 20px;
+      background-color: #f1f1f1;
+      height: 100%;
+      float: right;
+    }
+
+@media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      
+@media (min-width: 768px)
+.col-sm-8 {
+    width: 66.66666667%;
+}
+
+@media (min-width: 768px)
+.col-sm-2 {
+    width: 16.66666667%;
+}
+
+@media (min-width: 768px)
+#centerContent {
+    width: 16.66666667%;
+}
+
+	 
+	 
+</style>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>회원관리페이지</title>
 </head>
 <body>
-	<%@include file="header.jsp" %>
+<%@include file="header.jsp" %>
 <script type="text/javascript">
 	//전체 선택 체크박스 
 	function allSel(bool){
@@ -57,7 +129,11 @@
 <%
 	AdminDaoImpl dao = new AdminDaoImpl();
 %>
-<h1>회원목록</h1>
+
+
+<h1 id="title">회원목록</h1>
+<div id="userListbar" class="col-sm-8 text-left"> 
+<div id="centerContent">
 <!-- 체크박스의 회원번호를 submit할 폼 -->
 <form action="checkDel.do" method="post" onsubmit="return confirmChk()"> 
 <table class ="table">
@@ -66,7 +142,7 @@
 	<col width="80px">
 	<col width="100px">
 	<col width="100px">
-	<col width="130px">
+	<col width="150px">
 	<col width="90px">
 	<col width="140px">
 	<col width="120px">
@@ -119,6 +195,7 @@
 	</c:otherwise>
 	</c:choose>
 </table>
+</div>
 	<input type="submit" value="선택삭제"/>
 </form>
 
@@ -129,6 +206,7 @@
 
 </script>
 
+<div id="회원선택">
 <!-- 이한준 -->
 	<hr>
 	<form id="messageForm" action="sendMessage.do" method="post">
@@ -149,6 +227,21 @@
 	  	<input type="radio" name="ns_state_code" value="e"> 이벤트
 		<input type="submit" value="전송">
 	</form>
+</div>
+
+
+</div>
 <!-- 이한준 -->
+  <div class="col-sm-2 sidenav">
+  	<p>LeftsideBar</p>
+  </div>
+
+<div class="col-sm-2 sidenav">
+	<p>RightsideBar</p>
+</div>
+
+<footer class="container-fluid text-center">
+	<p>footer</p>
+</footer>
 </body>
 </html>

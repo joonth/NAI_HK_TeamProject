@@ -4,6 +4,7 @@ public class BasketDto {
 	private int baskSeq;
 	private String baskId;
 	private String baskAcademyName;
+
 	public BasketDto() {
 		super();
 		// TODO Auto-generated constructor stub

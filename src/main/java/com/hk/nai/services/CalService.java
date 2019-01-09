@@ -1,5 +1,6 @@
 package com.hk.nai.services;
 
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -27,9 +28,23 @@ public class CalService implements ICalService{
 		return calDao.getCalRk();
 	}
 
+	
 	@Override
-	public CalDto getCalDetail(int ac_seq) {
-		return calDao.getCalDetail(ac_seq);
+	public CalDto getCalDetail(CalDto dto) {
+		return calDao.getCalDetail(dto);
 	}
+	
+	
+	@Override
+	public List<CalDto> getCartAcademy(String ac_name) {
+		return calDao.getCartAcademy(ac_name);
+	}
+	
+	@Override
+	public CalDto getCalAcImg(String ac_name) {
+		return calDao.getCalAcImg(ac_name);
+	
+	}
+
 	
 }

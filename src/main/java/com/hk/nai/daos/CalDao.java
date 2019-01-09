@@ -29,11 +29,26 @@ public class CalDao implements ICalDao{
 		return sqlSession.selectList(namespace+"getCalRK");
 	}
 			
-	//학원 상세조회
-	@Override
-	public CalDto getCalDetail(int ac_seq) {
-		return sqlSession.selectOne(namespace+"getCalDetail", ac_seq);
+	//찜한학원 강좌 가져오기
+	public List<CalDto> getCartAcademy(String ac_name){
+		return sqlSession.selectList(namespace+"getCartAcademy", ac_name);
 	}
+	
+	@Override
+	public CalDto getCalDetail(CalDto dto) {
+		return sqlSession.selectOne(namespace+"getCalDetail", dto);
+	}
+	
+	//학원 이미지 가져오기
+	public CalDto getCalAcImg(String ac_name) {
+		return sqlSession.selectOne(namespace+"getCalAcImg", ac_name);
+	}
+
+
+
+
+
+
 	
 	
 

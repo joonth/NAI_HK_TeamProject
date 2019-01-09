@@ -11,12 +11,13 @@ public class CalDto implements Serializable {
 	private String ac_location; //지역명
 	private String ac_cre_date; //개강일
 	private String ac_end_date; //종강일
-	private String rk;
+	private String rk;  //랭킹
+	private String img; //이미지
 	public CalDto() {
 	}
 
 	public CalDto(int m_seq, String m_id, int ac_seq, String ac_name, String ac_class, String ac_location,
-			String ac_cre_date, String ac_end_date) {
+			String ac_cre_date, String ac_end_date, String img) {
 		super();
 		this.m_seq = m_seq;
 		this.m_id = m_id;
@@ -26,6 +27,7 @@ public class CalDto implements Serializable {
 		this.ac_location = ac_location;
 		this.ac_cre_date = ac_cre_date;
 		this.ac_end_date = ac_end_date;
+		this.img = img;
 	}
 
 	public int getM_seq() {
@@ -101,11 +103,21 @@ public class CalDto implements Serializable {
 	public void setRk(String rk) {
 		this.rk = rk;
 	}
+	
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
+	}
+	
+	
 
 	@Override
 	public String toString() {
 		return "CalDto [m_seq=" + m_seq + ", m_id=" + m_id + ", ac_seq=" + ac_seq + ", ac_name=" + ac_name
-				+ ", ac_class=" + ac_class + ", ac_location=" + ac_location + ", ac_cre_date=" + ac_cre_date + "]";
+				+ ", ac_class=" + ac_class + ", ac_location=" + ac_location + ", ac_cre_date=" + ac_cre_date + ", img=" + img + "]";
 	}
 
 }
