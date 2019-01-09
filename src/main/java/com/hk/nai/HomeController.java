@@ -10,12 +10,14 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPublicKeySpec;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -44,7 +46,6 @@ import com.hk.nai.dtos.AuthDto;
 import com.hk.nai.dtos.MemberDto;
 import com.hk.nai.services.MemberService;
 import com.hk.nai.HomeController;
-import com.hk.nai.daos.CommentDao;
 import com.hk.nai.dtos.InfoDto;
 import com.hk.nai.dtos.SearchDto;
 import com.hk.nai.dtos.StartClassDto;
@@ -55,6 +56,7 @@ import com.hk.nai.dtos.BasketDto;
 import com.hk.nai.dtos.AcademyDto;
 import com.hk.nai.dtos.AddImgDto;
 import com.hk.nai.services.CommentAddPermitService;
+import com.hk.nai.services.CommentService;
 import com.hk.nai.services.CacheService;
 import com.hk.nai.dtos.MessageDto;
 import com.hk.nai.daos.MessageDao;
@@ -71,13 +73,14 @@ public class HomeController {
 	
 	/////////////////////	이한준	///////////////////////
 	Map<String,String> dupeCheck = new HashMap<String,String>();	// 학원평 재 작성시 포인트 중복추가 방지
-	Map<String,Integer> acListNum = new HashMap<String,Integer>();	//list에 들어가있는 학원의 인덱스 학원명을 넣으면 해당 인덱스가 나온다.
+	Map<String,LinkedList<SearchDto>> getAcClassMap = new HashMap<String,LinkedList<SearchDto>>();
+
 	@Autowired		//api로 얻어온 xml data의 tag를 없애는 util.
 	SearchUtil util;
 	@Autowired
 	MessageDao messageDao;
 	@Autowired
-	CommentDao commentDao;
+	CommentService Cserv;
 	@Autowired
 	PointHandleDao pointDao;
 	@Autowired
@@ -114,6 +117,7 @@ public class HomeController {
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");	
 		    Calendar c1 = Calendar.getInstance();
+		    long today = c1.getTimeInMillis();
 		    String strToday = sdf.format(c1.getTime());
 			
 			org.jsoup.nodes.Document doc=
@@ -151,7 +155,6 @@ public class HomeController {
 					 if(Sserv.getImg(subtitle) != null) {
 						 searchDto.setImg(Sserv.getImg(subtitle));						 
 					 }else {
-						 System.out.println("test!");
 					    org.jsoup.nodes.Document imgData=
 						Jsoup.connect("http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA40/HRDPOA40_2.jsp?authKey="+key+"&returnType=XML&outType=2&srchTrprId="+trprid+"&srchTrprDegr=1")
 						.timeout(80000).maxBodySize(10*1024*1024).get();
@@ -166,11 +169,31 @@ public class HomeController {
 						  }  
 						  Sserv.addImgToDb(addImgDto);
 					 }	
-					 acListNum.put(subtitle, count);
+								 
+					 if(getAcClassMap.containsKey(subtitle)) {
+						 searchDto.setTrastartdate(util.tagTrim(datas.get(i).select("trastartdate"), "trastartdate"));
+						 String[] strdate =searchDto.getTrastartdate().split("-");
+						 c1.set(Integer.parseInt(strdate[0]), Integer.parseInt(strdate[1])-1, Integer.parseInt(strdate[2]));
+						 long eventDay = c1.getTimeInMillis();
+						 searchDto.setDday((eventDay-today)/(60*60*24*1000));
+						 getAcClassMap.get(subtitle).add(searchDto);					 
+					 }else {
+						 List<SearchDto> acClassList = new LinkedList<SearchDto>();
+						 searchDto.setTrastartdate(util.tagTrim(datas.get(i).select("trastartdate"), "trastartdate"));
+						 String[] strdate =searchDto.getTrastartdate().split("-");
+						 c1.set(Integer.parseInt(strdate[0]), Integer.parseInt(strdate[1])-1, Integer.parseInt(strdate[2]));
+						 long eventDay = c1.getTimeInMillis();
+						 searchDto.setDday((eventDay-today)/(60*60*24*1000));
+						 acClassList.add(searchDto);
+						 getAcClassMap.put(subtitle, (LinkedList<SearchDto>) acClassList);
+					 }
+					 
 					 list.add(searchDto); 
 					 count++;	
 				}
 			}//for
+
+		
 			System.out.println("출력 과정수 : "+count);	
 		} // if(
 		model.addAttribute("list", list);	
@@ -525,6 +548,7 @@ public class HomeController {
 	public String getAllBoard(Locale locale, Model model, String n_receiver) {
 		logger.info("메시지 리스트 출력", locale);
 		List<MessageDto> list = messageDao.getMessageList(n_receiver);
+		Collections.sort(list);
 		model.addAttribute("list", list);
 		return "messagelist";
 	}
@@ -541,6 +565,7 @@ public class HomeController {
 	@RequestMapping(value = "/sendMessage.do", method = RequestMethod.POST)
 	public String sendMessage(Locale locale, Model model, MessageDto dto) {
 		logger.info("메시지 전송", locale);
+		System.out.println(dto.toString());
 		messageDao.sendMessage(dto);
 		
 		return "../../index";
@@ -553,9 +578,6 @@ public class HomeController {
 		List<MessageDto> list = messageDao.getMessageList(n_receiver);
 		model.addAttribute("n_receiver", n_receiver);	
 		model.addAttribute("list", list);
-		
-			
-		
 		return "messagelist";
 	}
 	
@@ -563,18 +585,22 @@ public class HomeController {
 	public String info(Locale locale, Model model, String subTitle) throws IOException {
 		
 		 org.jsoup.nodes.Document docInfo=
-					Jsoup.connect("http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA40/HRDPOA40_2.jsp?authKey="+key+"&returnType=XML&outType=2&srchTrprId="+list.get(acListNum.get(subTitle)).getTrprId()+"&srchTrprDegr=1")
+					Jsoup.connect("http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA40/HRDPOA40_2.jsp?authKey="+key+"&returnType=XML&outType=2&srchTrprId="+getAcClassMap.get(subTitle).get(0).getTrprId()+"&srchTrprDegr=1")
 					.timeout(80000).maxBodySize(10*1024*1024).get();
-		 //String subtitle = util.tagTrim(datas.get(i).select("subtitle"), "subtitle");
-		infoDto.setImg(list.get(acListNum.get(subTitle)).getImg());
+		infoDto.setImg(getAcClassMap.get(subTitle).get(0).getImg());
 		infoDto.setAddr1(util.tagTrim(docInfo.select("addr1"),"addr1"));
 		infoDto.setAddr2(util.tagTrim(docInfo.select("addr2"),"addr2"));
 		infoDto.setHpaddr(util.tagTrim(docInfo.select("hpaddr"),"hpaddr"));
 		infoDto.setInonm(util.tagTrim(docInfo.select("inonm"),"inonm"));
 		infoDto.setTrprchaptel(util.tagTrim(docInfo.select("trprchaptel"),"trprchaptel"));
 		infoDto.setTrprnm(util.tagTrim(docInfo.select("trprnm"),"trprnm"));
+		infoDto.setScore(Sserv.getScore(subTitle));
 		model.addAttribute("infoDto", infoDto);
-		
+		// 개강일자가 빠른 순서대로 출력하기 위한 정렬
+		List<SearchDto> aclist = getAcClassMap.get(subTitle);
+		Collections.sort(aclist);
+		//
+		model.addAttribute("aclist",aclist);
 		List<commentDto> commentList = new ArrayList<commentDto>();
 		commentList = Iserv.getComment(subTitle);
 		if(!(commentList.size()==0)) {
@@ -594,11 +620,8 @@ public class HomeController {
 		MemberDto member = (MemberDto) session.getAttribute("member");
 		String subtitle = dto.getAc_name();
 		dto.setAc_name(subtitle);
-		
 		// 등록학원과 중복작성여부 체크
 		if(commentAddPermit.getAuth(subtitle, dto.getM_id()) && commentAddPermit.checkDupe(dto)) {
-			//학원평 작성시 평점 반영.
-			list.get(acListNum.get(subtitle)).setScore(Sserv.getScore(subtitle));
 			if(dupeCheck.get(member.getId()) ==null) {
 				//학원평 작성시 포인트 추가
 				member.setPoint(100);
@@ -611,11 +634,9 @@ public class HomeController {
 					messageDao.sendMessage(mdto);
 				}
 			}
-			commentDao.addComment(dto);
-			
+			Cserv.addComment(dto);
 			dupeCheck.put(member.getId(), member.getId());
 			map.put("dto", dto);
-	
 		}else {
 			dto.setAc_comment("false");
 			map.put("dto", dto);
@@ -628,7 +649,6 @@ public class HomeController {
 	public Map<String,Float> getList(Locale locale, Model model,String[] acTitle) throws IOException {
 		Map<String,Float> map = new HashMap<String,Float>();
 		for (int i = 0; i < acTitle.length; i++) {
-			list.get(acListNum.get(acTitle[i])).setScore(Sserv.getScore(acTitle[i]));
 			map.put(acTitle[i], Sserv.getScore(acTitle[i]));
 		}
 		model.addAttribute("map",map);
@@ -688,7 +708,7 @@ public class HomeController {
 	@RequestMapping(value = "/deleteComment.do", method = RequestMethod.GET)
 	public void deleteComment(Locale locale, Model model, String m_id, String ac_name) throws IOException {
 		logger.info("학원평 삭제", locale);
-		commentDao.deleteComment(m_id);
+		Cserv.deleteComment(m_id);
 	}
 	
 	
@@ -699,7 +719,7 @@ public class HomeController {
 		List<String> img = new ArrayList<String>();
 		List<BasketDto> myAcList = memberService.showMyAcList(m_id);
 		for(int i=0; i<myAcList.size(); i++) {
-			SearchDto dto = (SearchDto) list.get(acListNum.get(myAcList.get(i).getBaskAcademyName()));
+			SearchDto dto = (SearchDto) getAcClassMap.get((myAcList.get(i).getBaskAcademyName())).get(0);
 			img.add(dto.getImg());
 			img.add(dto.getSubTitle());
 		}

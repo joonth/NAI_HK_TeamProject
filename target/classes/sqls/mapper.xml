@@ -188,11 +188,11 @@
   	</select>
   	
   	<select id="getComment" parameterType="String" resultType="CommentDto">
-  		SELECT ac_name,ac_comment,ac_score,m_id FROM ac_comment WHERE ac_name = #{subTitle} order by cmt_num
+  		SELECT ac_name,ac_comment,ac_score,m_id,cmt_date FROM ac_comment WHERE ac_name = #{subTitle} order by cmt_num
   	</select>
   	
   	<insert id="addComment" parameterType="CommentDto">
-  		insert into ac_comment values(#{ac_name},#{ac_comment},#{ac_score},#{m_id},cmtnum_seq.nextval)
+  		insert into ac_comment values(#{ac_name},#{ac_comment},#{ac_score},#{m_id},cmtnum_seq.nextval,sysdate)
   	</insert>
   	
   	<select id="checkAuth" resultMap="AuthDto">
@@ -214,11 +214,15 @@
   	<insert id="addImgToDb" parameterType="AddImgDto">
   		INSERT INTO AC_IMG VALUES(#{ac_name},#{img})
   	</insert>
+  	
+  	<update id="updateCheck" parameterType="MemberDto">
+  		update member set M_CHECK = #{writeCheck} where M_ID = #{id}
+  	</update>
   	 
   	 
   	<!-- websocket message -->
   	<insert id="sendMessage" parameterType="MessageDto">
-  		insert into notice values(message_seq.nextval,#{n_receiver},#{n_sender},sysdate,#{n_content},#{ns_state_code})
+  		insert into notice values(message_seq.nextval,#{n_receiver},#{n_sender},to_char(sysdate,'MM-DD'),#{n_content},#{ns_state_code})
   	</insert>
   	
   	<delete id="deleteMessage" parameterType="int">
@@ -307,7 +311,7 @@
 						(
 							select ROW_NUMBER() OVER ( ORDER BY b_seq desc) rn,b_seq,m_nick,b_title,b_content,b_regdate,b_readcount,b_like,cmt_count from board
 				 		)
- 			 where ceil(rn/10)=#{page}
+ 			 where ceil(rn/15)=#{page}
  			
 		]]>
     </select>
@@ -318,7 +322,7 @@
 						(
 							select ROW_NUMBER() OVER ( ORDER BY b_readcount desc,b_seq desc) rn,b_seq,m_nick,b_title,b_content,b_regdate,b_readcount,b_like,cmt_count from board
 				 		)
- 			 where ceil(rn/10)=#{page}
+ 			 where ceil(rn/15)=#{page}
  			
 		]]>
     </select>  
@@ -330,7 +334,7 @@
 						(
 							select ROW_NUMBER() OVER ( ORDER BY b_like desc,b_seq desc) rn,b_seq,m_nick,b_title,b_content,b_regdate,b_readcount,b_like,cmt_count from board
 				 		)
- 			 where ceil(rn/10)=#{page}
+ 			 where ceil(rn/15)=#{page}
  			
 		]]>
     </select>  

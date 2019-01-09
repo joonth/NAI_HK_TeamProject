@@ -6,13 +6,27 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SearchDto implements Serializable {
+public class SearchDto implements Serializable ,Comparable<SearchDto> {
 	private String img;
 	private String title;
 	private String subTitle;
 	private String address;
 	private Float score;
+	private String trastartdate;
+	private long dday;
 	
+	public long getDday() {
+		return dday;
+	}
+	public void setDday(long dday) {
+		this.dday = dday;
+	}
+	public String getTrastartdate() {
+		return trastartdate;
+	}
+	public void setTrastartdate(String trastartdate) {
+		this.trastartdate = trastartdate;
+	}
 	public String getTrprId() {
 		return trprId;
 	}
@@ -58,6 +72,17 @@ public class SearchDto implements Serializable {
 				+ ", score=" + score + ", trprId=" + trprId + "]";
 	}
 	
+	@Override
+	public int compareTo(SearchDto d1) {
+		if(d1.getDday() > dday) {
+			return -1;
+		}else if(d1.getDday() < dday) {
+			return 1;
+		}else {
+			return 0;
+		}
+	}
+
 	
 
 	

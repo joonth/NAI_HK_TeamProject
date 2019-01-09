@@ -1,0 +1,59 @@
+@charset "UTF-8";
+
+
+#signup-container{
+	position: absolute;
+	top:40%;
+	left: 50%;
+	margin-top: -170px;
+    margin-left: -200px;
+	height: 280px;
+	width: 360px;
+	
+}
+
+#academyName, #authcode{
+	width: 215px;
+}
+
+#signup-container #authBtn{
+	width: 330px;
+	margin: 5px 0;
+}
+
+#signup-container #searchBtn{
+	width: 80px;
+	margin-left: 10px;
+}
+
+#signup-container #authBtn2{
+	width: 80px;
+	margin-left: 10px;
+}
+
+#signup-container #submitBtn{
+	width: 330px;
+	height: 50px;
+	margin-top: 40px;
+}
+#signup-container h1 {
+	margin-left:30%;
+}
+
+#signup-container h3 {
+	margin-left:30%;
+}
+
+#signup-container span{
+	text-align: center;
+}
+
+@media only screen and (max-width: 640px){
+	#signup-container {
+		width: auto;
+	}
+	
+	#signup-container button {
+		width: auto;
+	}
+}

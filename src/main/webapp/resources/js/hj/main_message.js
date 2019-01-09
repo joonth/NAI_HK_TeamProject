@@ -8,10 +8,11 @@ $(document).ready(function(){
 		
 		frm.submit(function (e) {
 		for(var i=0; i<$('#b').children('div').length; i++){
+			var ns_state_code = $(":input:radio[class=pick]:checked").val();
 			var n_sender = 'admin';
 			var n_receiver = $('#b').children('div').eq(i).attr('value');	
 			var n_content = $('#allContent').val();
-			var ns_state_code = 'a';
+
 		
 		    e.preventDefault();
 		    $.ajax({

@@ -1,7 +1,5 @@
 package com.hk.nai.daos;
 
-import java.util.HashMap;
-import java.util.List;
 
 import com.hk.nai.dtos.LikeDto;
 

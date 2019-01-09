@@ -1,7 +1,10 @@
 package com.hk.nai.utils;
 
+
+
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
+
 
 @Component
 public class SearchUtil {
@@ -23,4 +26,5 @@ public class SearchUtil {
 		}
 		return text.substring(text.indexOf("<"+tagName+">")+tagName.length()+2, text.indexOf("</"+tagName+">")).trim();
 	}
+
 }
