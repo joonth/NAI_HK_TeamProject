@@ -176,11 +176,11 @@
   	</select>
   	
   	<select id="getComment" parameterType="String" resultType="CommentDto">
-  		SELECT ac_name,ac_comment,ac_score,m_id FROM ac_comment WHERE ac_name = #{subTitle} order by cmt_num
+  		SELECT ac_name,ac_comment,ac_score,m_id,cmt_date FROM ac_comment WHERE ac_name = #{subTitle} order by cmt_num
   	</select>
   	
   	<insert id="addComment" parameterType="CommentDto">
-  		insert into ac_comment values(#{ac_name},#{ac_comment},#{ac_score},#{m_id},cmtnum_seq.nextval)
+  		insert into ac_comment values(#{ac_name},#{ac_comment},#{ac_score},#{m_id},cmtnum_seq.nextval,sysdate)
   	</insert>
   	
   	<select id="checkAuth" resultMap="AuthDto">
@@ -210,7 +210,7 @@
   	 
   	<!-- websocket message -->
   	<insert id="sendMessage" parameterType="MessageDto">
-  		insert into notice values(message_seq.nextval,#{n_receiver},#{n_sender},sysdate,#{n_content},#{ns_state_code})
+  		insert into notice values(message_seq.nextval,#{n_receiver},#{n_sender},to_char(sysdate,'MM-DD'),#{n_content},#{ns_state_code})
   	</insert>
   	
   	<delete id="deleteMessage" parameterType="int">

@@ -142,11 +142,12 @@
 	<button id="passAll" onclick="stateClick('all')">전체선택</button>
 	<div id="a" style="border:1px solid black;"></div>
 	<div id="b" style="border:1px solid black;"></div>
+	
 	<form id="messageAllForm" action="sendMessage.do" method="post">
 		<input type="hidden" name="n_sender" value="admin">
 		내용 <input id="allContent" type="text" name="n_content">
-		<input type="radio" name="ns_state_code" checked="checked" value="a"> 공지사항
-	  	<input type="radio" name="ns_state_code" value="e"> 이벤트
+		<input class="pick" type="radio" name="ns_state_code" checked="checked" value="a"> 공지사항
+	  	<input class="pick" type="radio" name="ns_state_code" value="e"> 이벤트
 		<input type="submit" value="전송">
 	</form>
 <!-- 이한준 -->
