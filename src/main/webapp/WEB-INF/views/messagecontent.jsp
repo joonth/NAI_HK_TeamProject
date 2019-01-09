@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -10,18 +11,42 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
 <body>
-	<table>
-		<tr>
 
+<div class="container">
+	  <c:choose>
+		<c:when test="${dto.ns_state_code eq 'a'}">
+		<span class="glyphicon glyphicon-bullhorn" style="color:red;"></span>
+		</c:when>
+		<c:otherwise>
+		<span class="glyphicon glyphicon-gift" style="color:yellow;" ></span>
+		</c:otherwise>
+	</c:choose>
+	${dto.n_time}
+  <div class="jumbotron">
+  ${dto.n_content}
+  </div>
+  </div>
+
+
+<%-- 	<table class="table table-bordered">
+		<tr>
+			<th></th>
 			<th>시간</th>
 			<th>내용</th>
 		</tr>
 		<tr>
-
+						<c:choose>
+							<c:when test="${dto.ns_state_code eq 'a'}">
+							<td><span class="glyphicon glyphicon-bullhorn" style="color:red;"></span></td>
+							</c:when>
+							<c:otherwise>
+							<td><span class="glyphicon glyphicon-gift" style="color:yellow;" ></span></td>
+							</c:otherwise>
+						</c:choose>
 			<td>${dto.n_time}</td>
 			<td>${dto.n_content}</td>
 		</tr>
-	</table>
+	</table> --%>
 	<a href="getMessageList.do?n_receiver=${sessionScope.member.id}">뒤로</a>
 </body>
 </html>
