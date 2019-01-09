@@ -289,6 +289,9 @@
   	<delete id="delBoard" parameterType="int">
   		DELETE FROM BOARD WHERE B_SEQ=#{b_seq}
   	</delete>
+  	<select id="getB_like" resultType="int" parameterType="BoardDto">
+  		select b_like from board where b_seq=#{b_seq}
+  	</select>
   	
   	<!-- 페이징 처리 -->
     
@@ -411,6 +414,9 @@
 		WHERE B_SEQ=#{b_seq} AND M_NICK=#{m_nick}
 	</select>
 	
+	<update id="addPoint1" parameterType="MemberDto">
+  		UPDATE MEMBER SET M_POINT = M_POINT + #{point} WHERE M_NICK =#{nickname}
+  	</update>
 	
 <!-- 					김설백					-->
 <!-- 관리자 회원관리 기능 -->
