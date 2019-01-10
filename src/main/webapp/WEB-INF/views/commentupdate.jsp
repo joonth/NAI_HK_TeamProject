@@ -14,8 +14,18 @@
 		width: 1000px;		
 		margin: 0 auto; /* 0 :위,아래 auto :좌우를 자동으로 조정*/
 		overflow :auto;
-	}
+	}	
 </style>
+<script type="text/javascript">
+	function checkForm(){
+		var r_content = document.getElementById('r_content');
+		if(replyForm.r_content.value==""){
+			alert("댓글을 작성해주세요");
+			r_content.focus();
+			return false;
+		}
+	}
+</script>
 </head>
 <body>
 <%@include file="header.jsp" %>
@@ -47,7 +57,7 @@
 </table>
 </div>
 <br /><br />
-<form action="updatecomment.do" method="post">
+<form action="updatecomment.do" method="post" name="replyForm" onsubmit="return checkForm();">
 <input type ="hidden" name="page" value="${cri.page}" /> 
 <input type ="hidden" name="perPageNum" value="${cri.perPageNum}" /> 
 <input type ="hidden" name="b_seq" value="${dto.b_seq}" /> 
