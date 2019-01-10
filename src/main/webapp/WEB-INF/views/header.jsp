@@ -75,6 +75,10 @@ body {
     display:inline-block;
 }
 
+.nav-content a{
+	text-decoration:none;
+}
+
 .nav-right{
     font-family: 'Godo', sans-serif;
     font-size: 18px;

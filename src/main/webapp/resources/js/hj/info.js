@@ -13,12 +13,12 @@ $(document).ready(function(){
 	        url: frm.attr('action'),
 	        data: frm.serialize(),
 	        success: function (data) {
-	        	alert('학원평이 작성되었습니다.');
 	            console.log('Submission was successful.');
 	        	var cmt = data.dto;
 	        	console.log(cmt);
 		       	if(cmt.ac_comment != 'false'){
 		       	
+		       		alert('학원평이 작성되었습니다.');
 		       		//수강평 첫 작성시 ('수강평이 없습니다' 삭제)
 		       		if($('#empty') != null){
 		       			$('#empty').remove();
