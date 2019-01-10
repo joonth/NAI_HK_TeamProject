@@ -210,7 +210,7 @@
   	 
   	<!-- websocket message -->
   	<insert id="sendMessage" parameterType="MessageDto">
-  		insert into notice values(message_seq.nextval,#{n_receiver},#{n_sender},to_char(sysdate,'MM-DD'),#{n_content},#{ns_state_code})
+  		insert into notice values(message_seq.nextval,#{n_receiver},#{n_sender},to_char(sysdate,'MM-DD hh24:mi'),#{n_content},#{ns_state_code})
   	</insert>
   	
   	<delete id="deleteMessage" parameterType="int">

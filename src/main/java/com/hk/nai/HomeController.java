@@ -718,10 +718,12 @@ public class HomeController {
 		logger.info("장바구니 출력", locale);
 		List<String> img = new ArrayList<String>();
 		List<BasketDto> myAcList = memberService.showMyAcList(m_id);
-		for(int i=0; i<myAcList.size(); i++) {
-			SearchDto dto = (SearchDto) getAcClassMap.get((myAcList.get(i).getBaskAcademyName())).get(0);
-			img.add(dto.getImg());
-			img.add(dto.getSubTitle());
+		if(myAcList != null) {	
+			for(int i=0; i<myAcList.size(); i++) {
+				SearchDto dto = (SearchDto) getAcClassMap.get((myAcList.get(i).getBaskAcademyName())).get(0);
+				img.add(dto.getImg());
+				img.add(dto.getSubTitle());
+			}	
 		}
 		Map<String,List<String>> list = new HashMap<String,List<String>>();
 		list.put("list", img);

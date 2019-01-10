@@ -21,7 +21,7 @@
 <style>
 
 .sticker{
-height:40px;
+height:27px;
 overflow:hidden;
 margin:0;
 padding:0;
@@ -69,31 +69,59 @@ margin: 0px 5px;
 	<div class="bgImg">
 	</div>
 	
-	<div class="ranking">
-	<p>---학원랭킹---</p>
-		<table border="1">
-		<c:choose>
-			<c:when test="${ranking != null}">
-				<c:forEach items="${ranking}" var="rk" varStatus="status">
+	
+		<div class="ranking">
+		<h4 class="sectionTitle">학원 랭킹</h4>
+	<div class="box">
+			<table class="table" style="margin-bottom:0px;">
+			<c:choose>
+				<c:when test="${ranking != null}">
+					<c:forEach items="${ranking}" var="rk" varStatus="status">
+						<c:choose>
+							<c:when test="${status.index == 0}">	
+						<tr class="Danger">
+							<td>${status.count}</td>
+							<td>${rk.rankAcademyName}</td>
+							<td>${rk.rankScoreAverage}</td>
+						</tr>
+							</c:when>
+							<c:when test="${status.index == 1}">	
+						<tr class="Warning">
+							<td>${status.count}</td>
+							<td>${rk.rankAcademyName}</td>
+							<td>${rk.rankScoreAverage}</td>
+						</tr>
+							</c:when>
+							<c:when test="${status.index == 2}">	
+						<tr class="Active">
+							<td>${status.count}</td>
+							<td>${rk.rankAcademyName}</td>
+							<td>${rk.rankScoreAverage}</td>
+						</tr>
+							</c:when>
+							<c:otherwise>
+							<tr>
+							<td>${status.count}</td>
+							<td>${rk.rankAcademyName}</td>
+							<td>${rk.rankScoreAverage}</td>
+							</tr>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
 					<tr>
-						<td>${status.count}</td>
-						<td>${rk.rankAcademyName}</td>
-						<td>${rk.rankScoreAverage}</td>
+						<td>ranking 비어있음</td>
 					</tr>
-				</c:forEach>
-			</c:when>
-			<c:otherwise>
-				<tr>
-					<td>ranking 비어있음</td>
-				</tr>
-			</c:otherwise>
-		</c:choose>
-		</table>
+				</c:otherwise>
+			</c:choose>
+			</table>
+		</div>
 	</div>
 
-
 	<div class="startClass">
-	<p>----개강임박과정----</p>
+	<h4 class="sectionTitle">개강임박과정</h4>
+	<div class="box">
 		<ul id="startClass" class="sticker">
 			<c:choose>
 				<c:when test="${startclass != null}">
@@ -107,7 +135,9 @@ margin: 0px 5px;
 			</c:choose>
 		</ul>
 	</div>
+	</div>
 </div>
+
 <div class="app-footer">
 	<p> Copyright ©2018 NAI, Inc. </p>
 </div>

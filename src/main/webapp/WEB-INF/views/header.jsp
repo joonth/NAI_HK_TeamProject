@@ -4,6 +4,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+	<link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/images/favicon.ico" type="image/x-icon">
+	<link rel="icon" href="${pageContext.request.contextPath}/resources/images/favicon.ico" type="image/x-icon">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
@@ -13,11 +15,11 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
  <style type="text/css">
- 	body {
- 	margin:0;
- 	height:100%;
- 	background-color: #f6f6f6;
- 	}
+body {
+	margin:0;
+	height:100%;
+	background-color: #f6f6f6;
+}
 
 #icon-bar {
   right: 1px;
@@ -38,7 +40,11 @@
 }
 
 #icon-bar a:hover {
-  background-color: #343;
+  background-color: #a9a9a9;
+}
+
+#icon-bar h4{
+	text-align:center;
 }
 
 .ac {
@@ -99,7 +105,7 @@ a{
 		<div class="container-fluid">
 			<div class="f-left nav-logo">
 				<a class="navbar-brand" href="main.do">
-					<img class="nav-logo-img" alt="logo" src="./resources/images/logo.png">
+					<img class="nav-logo-img" alt="logo" src="./resources/images/detective.png">
 					<span class="f-left">&nbsp; NAI</span>
 				</a>
 			</div>
@@ -127,8 +133,9 @@ a{
 		
 	
 	<!-- 찜한 학원  -->
-	<div id="icon-bar">
-		<span>내가 찜한 학원</span>
+
+	<div id="icon-bar" >
+
 	</div>
 	<!-- 찜한 학원 -->
 	<!-- Modal -->

@@ -21,9 +21,9 @@
 
 	<table class="table table-hover">
 			<tr>
-				<th colspan="1" width="10%">date</th>
-				<th colspan="1" width="10">type</th>
-				<th colspan="1" width="75">contents</th>
+				<th colspan="1" width="18%">date</th>
+				<th colspan="1" width="8">type</th>
+				<th colspan="1" width="69">contents</th>
 				<th colspan="1" width="5"></th>
 			</tr>
 		<c:choose>
@@ -50,7 +50,6 @@
 								<td>${dto.n_content}</td>
 								</c:otherwise>
 							</c:choose>
-						<%-- <td>${dto.ns_state_code}</td> --%>
 						<td><a id="delete" href="deleteMessage.do?n_seq=${dto.n_seq}&n_receiver=${sessionScope.member.id}"><span class="glyphicon glyphicon-trash"></span></a></td>		
 					</tr>
 						<input type="hidden" id="session" value="${dto.n_receiver}" >

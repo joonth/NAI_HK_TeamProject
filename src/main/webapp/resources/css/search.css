@@ -72,7 +72,7 @@
 	.ranking{
 		left:45%;
 	    position: absolute;
-	    top: 60%;
+	    top: 50%;
         z-index: -2;
 	}
 	
@@ -103,3 +103,20 @@
 	#myInput{
 		top:20%;
 	}
+	
+	.box{
+		box-sizing: border-box;
+	    margin: 0 0 20px 0;
+	    padding: 5px;
+	    background-color: white;
+	    border-radius: 2px;
+	    -webkit-box-shadow: 1px 1px 5px 0px #a8bff9;
+	    box-shadow: 1px 1px 5px 0px #a8bff9;
+	    overflow:auto;
+	}
+	
+	.sectionTitle {
+	    font-weight: bolder;
+	    font-family: 'Godo', sans-serif;
+	}
+	

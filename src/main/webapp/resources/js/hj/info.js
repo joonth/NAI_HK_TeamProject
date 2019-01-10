@@ -13,6 +13,7 @@ $(document).ready(function(){
 	        url: frm.attr('action'),
 	        data: frm.serialize(),
 	        success: function (data) {
+	        	alert('학원평이 작성되었습니다.');
 	            console.log('Submission was successful.');
 	        	var cmt = data.dto;
 	        	console.log(cmt);

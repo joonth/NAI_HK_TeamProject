@@ -1,10 +1,6 @@
 $(document).ready(function(){
 	var sock = new SockJS('.do');
 	
-	/*$(document).ajaxComplete(function() {
-		 sock.send($("#session").val());
-	});*/
-	
 	$("#messageForm").submit(function(event) {
      sock.send($("#n_receiver").val());
 		alert('보냄');
@@ -61,4 +57,6 @@ $(document).ready(function(){
 function changeUrl(url){
 	document.getElementById("if").src=url;	
 }
+
+
 
