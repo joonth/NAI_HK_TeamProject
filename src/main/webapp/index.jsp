@@ -40,7 +40,6 @@ margin: 0px 5px;
 </style>
 
 </head>
->>>>>>> branch 'master' of https://github.com/joonth/NAI_HK_TeamProject.git
 <body>
 <%@include file="WEB-INF/views/header.jsp" %>
 	
