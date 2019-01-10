@@ -11,13 +11,12 @@
 	<script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/hj/header.js"></script>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
  <style type="text/css">
- 	body {
- 	margin:0;
- 	height:100%;
- 	background-color: #f6f6f6;
- 	}
+body {
+	margin:0;
+	height:100%;
+	background-color: #f6f6f6;
+}
 
 #icon-bar {
   right: 1px;
@@ -38,7 +37,11 @@
 }
 
 #icon-bar a:hover {
-  background-color: #343;
+  background-color: #a9a9a9;
+}
+
+#icon-bar h4{
+	text-align:center;
 }
 
 .ac {
@@ -56,6 +59,7 @@
     height: 50px;
     padding: 15px 15px;
     line-height: 32px;
+        display:inline-block;
 }
 
 .nav-logo-img{
@@ -67,8 +71,12 @@
 .nav-content{
     font-size: 20px;
     font-weight: bolder;
-    padding: 18px 15px;
-    position:absolute;
+    padding: 10px 15px;
+    display:inline-block;
+}
+
+.nav-content a{
+	text-decoration:none;
 }
 
 .nav-right{
@@ -81,8 +89,15 @@
     text-align: right;
     float: right;
 }
+.nav-image{
+    width: 33px;
+    margin: -5px -10px 5px -5px;
+}
+
 .navbar{
 	background:linear-gradient(to right,#369,#885195);
+	max-height: 50px;
+    overflow: hidden;
 }
 a{
 	    color: rgba(255,255,255,.699);
@@ -91,44 +106,51 @@ a{
 #if{
 	max-width: -webkit-fill-available;
 }
+
+.container-fluid{
+	text-align:center;
+}
  </style>
 </head>
 
 <body>
 	<div class="navbar">
 		<div class="container-fluid">
-			<div class="f-left nav-logo">
-				<a class="navbar-brand" href="main.do">
-					<img class="nav-logo-img" alt="logo" src="./resources/images/logo.png">
-					<span class="f-left">&nbsp; NAI</span>
+				<div class="nav-content">
+				<a  href="main.do" >
+				<img class="nav-image" alt="logo" src="./resources/images/detective.png">
+					<span>&nbsp; NAI</span>
 				</a>
-			</div>
+				</div>
+		
 			
-			<div class="col-sm-10">
+	
 				<div class="nav-content">
 			 	<input id="session" type="hidden" value="${sessionScope.member.id}" >
 				<!-- 세션이 있을 때만 = 로그인되어있을 때만  -->
 				<c:if test="${sessionScope.member!=null}">
 					<a href="mypage.do">마이페이지</a>
 					<a href="main.do">메인</a>
-					<a href="#">캘린더</a>
+					<a href="calendar.do">캘린더</a>
 					<a href="boardlist.do?page=1&pagelist=first">게시판</a>
 					<a href="userList.do">회원목록</a>
 				</c:if>
 				</div>
-			</div>
-			<div class="nav-right">
+			<div class="nav-content" style="width:250px">
 					<span>${sessionScope.member.nickname} 님 환영합니다</span>
+			</div>
+			<div class="nav-content">
 					<a href="signout.do">로그아웃</a>
-					<span id="count" onclick="changeUrl('getMessageList.do?n_receiver=${sessionScope.member.id}')" class="glyphicon glyphicon-envelope" data-toggle="modal" data-target="#myModal" >message</span>
+			</div>
+			<div class="nav-content">
+				<span style="color:white" id="count" onclick="changeUrl('getMessageList.do?n_receiver=${sessionScope.member.id}')" class="glyphicon glyphicon-envelope" data-toggle="modal" data-target="#myModal" ></span>
 			</div>
 		</div>
 	</div>
 		
 	
 	<!-- 찜한 학원  -->
-	<div id="icon-bar">
-		<span>내가 찜한 학원</span>
+	<div id="icon-bar" >
 	</div>
 	<!-- 찜한 학원 -->
 	<!-- Modal -->

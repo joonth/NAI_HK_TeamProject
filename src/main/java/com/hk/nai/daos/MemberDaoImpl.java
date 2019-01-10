@@ -128,7 +128,8 @@ public class MemberDaoImpl implements MemberDao{
 
 	@Override
 	public List<BasketDto> showMyAcList(String baskId) {
-		return sqlSession.selectList(namespace+"showmyaclist", baskId);
+		if(sqlSession.selectList(namespace+"showmyaclist", baskId).isEmpty()) return null;
+		else return sqlSession.selectList(namespace+"showmyaclist", baskId);
 	}
 
 	@Override

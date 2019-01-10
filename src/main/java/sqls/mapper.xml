@@ -45,6 +45,18 @@
 		<resultMap id="AcademyDto" type="com.hk.nai.dtos.AcademyDto" >
 	        <result property="academyName" column="AC_NAME"/>
 	    </resultMap>
+	    
+	    <resultMap id="CalDto" type="com.hk.nai.dtos.CalDto">
+	  		<result property="m_seq" column="M_SEQ"/>
+	  		<result property="m_id" column="M_ID"/> 
+	  		<result property="ac_seq" column="AC_SEQ"/>
+	  		<result property="ac_name" column="AC_NAME"/>
+	  		<result property="ac_class" column="AC_CLASS"/>	
+	  		<result property="ac_location" column="AC_LOCATION"/>
+	  		<result property="ac_cre_date" column="AC_CRE_DATE"/>	
+	  		<result property="ac_end_date" column="AC_END_DATE"/>	
+	  		<result property="rk" column="RK"/>	
+  		</resultMap>
 <!-- 					수민 					-->
 
 	<!-- 회원가입 -->    
@@ -210,7 +222,7 @@
   	 
   	<!-- websocket message -->
   	<insert id="sendMessage" parameterType="MessageDto">
-  		insert into notice values(message_seq.nextval,#{n_receiver},#{n_sender},to_char(sysdate,'MM-DD'),#{n_content},#{ns_state_code})
+  		insert into notice values(message_seq.nextval,#{n_receiver},#{n_sender},to_char(sysdate,'MM-DD hh24:mi'),#{n_content},#{ns_state_code})
   	</insert>
   	
   	<delete id="deleteMessage" parameterType="int">
@@ -433,24 +445,72 @@
   		select m_id from member where m_nick = #{nickname}
   	</select>
 <!-- 					김설백					-->
-<!-- 관리자 회원관리 기능 -->
-<select id="getUserList" resultMap="MemberDto">	
+<!-- 캘린더 기능 -->
+ <select id="getCalList" resultMap="CalDto"> 
+  	<![CDATA[	  
+	 SELECT AC_SEQ, AC_NAME,AC_CLASS, AC_CRE_DATE, AC_END_DATE,AC_LOCATION
+	 FROM ACADEMY
+	]]>
+  </select>
+  
+  <select id="getCalDetail" resultMap="CalDto" parameterType="CalDto">
+  SELECT A.AC_NAME, A.AC_CLASS, A.AC_LOCATION, A.AC_CRE_DATE, A.AC_END_DATE, B.IMG
+	FROM ACADEMY A INNER JOIN AC_IMG B
+	ON A.AC_NAME = B.AC_NAME 
+	WHERE A.AC_NAME=#{ac_name} AND AC_SEQ=#{ac_seq}
+  </select>
+  
+ <!--  <select id="getCalDetail" resultMap="CalDto" parameterType="int">
+  	SELECT AC_SEQ, AC_NAME, AC_CLASS, AC_LOCATION, AC_CRE_DATE, AC_END_DATE
+  	FROM ACADEMY
+  	WHERE AC_SEQ=#{ac_seq}
+  </select> -->
+  
+  
+   <!-- 학원 이미지 가져오기 -->
+ 	<select id="getCalAcImg" resultMap="CalDto" >
+    SELECT A.AC_NAME, B.IMG
+	FROM ACADEMY A INNER JOIN AC_IMG B
+	ON A.AC_NAME = B.AC_NAME 
+	WHERE ROWNUM = 1 AND A.AC_NAME=#{ac_name}
+	</select>  
+  
+<!--   	개강일별 순위 -->
+  <select id="getCalRK" resultMap="CalDto"> 
+    SELECT A.AC_NAME,A.AC_CLASS,A.AC_CRE_DATE,B.SCORE_AVG,
+ 	ROW_NUMBER() OVER(PARTITION BY A.AC_CRE_DATE ORDER BY B.SCORE_AVG DESC) AS RK
+ 	FROM ACADEMY A, VIEW_AC_RANKING B
+ 	WHERE A.AC_NAME=B.AC_NAME 
+ 	ORDER BY A.AC_CRE_DATE ASC
+  </select>
+  
+ <!--  찜한 학원의 강좌 출력 -->
+  <select id="getCartAcademy" resultMap="CalDto"> 
+  	SELECT AC_SEQ, AC_NAME, AC_CLASS, AC_LOCATION, AC_CRE_DATE, AC_END_DATE
+ 	FROM ACADEMY 
+	WHERE AC_NAME =#{ac_name}
+  </select>
+  
+  
+  <!-- 관리자 회원관리 기능 -->
+	<select id="getUserList" resultMap="MemberDto">	
   		SELECT ROWNUM, M_SEQ, M_ID, M_PW, M_NICK, M_EMAIL, M_GRADE,M_POINT,M_CHECK
  		FROM MEMBER ORDER BY M_SEQ ASC
 
   	</select>
-  	
+  <!-- 회원 상세보기 -->
   	<select id="getUser" resultMap="MemberDto" parameterType="int">
   		SELECT M_SEQ, M_ID, M_PW, M_NICK, M_EMAIL, M_GRADE, M_POINT, M_CHECK 
   		FROM MEMBER 
   		WHERE M_SEQ=#{seq}
   	</select>
   	
-  	<!-- 등급 변경 기능 -->
+  <!-- 등급 변경 기능 -->
   	<update id="updateGrade" parameterType="MemberDto">
   		 UPDATE MEMBER
 		 SET M_GRADE=#{grade} WHERE M_SEQ=#{seq}
   	</update>
+  	
   	<!-- 회원정보 수정기능 -->
   	<update id="userUpdate" parameterType="MemberDto">
   		UPDATE MEMBER
@@ -462,9 +522,11 @@
   	<delete id="checkDel" parameterType="java.lang.String"  statementType="PREPARED">
  		 DELETE FROM MEMBER WHERE M_ID=#{id}	
   	</delete>
+  	
 	<!-- 회원삭제기능 -->
   	<delete id="delUser" parameterType="int">
   		DELETE FROM MEMBER WHERE M_SEQ=#{seq}
   	</delete>
+  	
  
 </mapper>

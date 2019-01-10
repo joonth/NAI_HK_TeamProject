@@ -51,7 +51,7 @@
 	
 	
 	.content{
-	    height: 86%;
+ 	    height: 86%;
 	    margin: 0px;
 	    min-height: 86%;
 	    min-width: 100%;
@@ -61,32 +61,101 @@
 	    display: flex;
 	    max-width: 100%;
 	    place-content: center flex-start;
-	    align-items: center;
+	    align-items: center; 
 	}
 	
 	.app-footer{
         height: 50px;
-   		 text-align: center;
+   		text-align: center;
+	}
+	
+	.start-class{
+		width:220px;
+		position: absolute;
+	    left: 5%;
+	}
+	
+	.sticker{
+		height:35px;
+		overflow:hidden;
+		margin:0;
+		padding:0;
+		list-style:none;
+	}
+	
+	.sticker li{
+		height: 25px;
+		margin: 5px;
+		line-height: 2.0;
+		cursor: pointer; 
+	}
+	
+	.start-class-content{
+		height: 38px;
+		border: 1px solid lightgrey;
+		border-radius: 5px;
+		background: white;
+		padding: 0px 0px 5px 0px;
+	}
+	
+	.dday{
+		background: red;
+		color: white;
+		font-weight: bold;
 	}
 	
 	.ranking{
-		left:45%;
+		width:350px;
 	    position: absolute;
+	   	left:45%;
 	    top: 60%;
-        z-index: -2;
+        background: white;
 	}
 	
 	.ranking td{
 		background-color : white;
 	}
 	
-	.startClass{
-	    left: 30%;
-    	position: absolute;
-    	top: 80%;
-   	    z-index: -2;
+	.ranking-sticker{
+		width: 180px;
+		height: 35px;
+		overflow: hidden;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		float:left;
+
 	}
-	
+	.ranking-title{
+		height: 25px;
+		margin: 5px;
+		line-height: 2.0;
+	}
+	.ranking-sticker li{
+		width:200px;
+		height: 25px;
+		margin: 5px;
+		line-height: 2.0;
+		cursor: pointer;
+		border: 0;
+	}
+	.ranking-table{
+		background: white;
+		padding: 20px;
+		height: auto;
+		width:350px; 
+	}
+
+	.ranking-table td {
+		padding: 10px 20px 0 0;
+	}
+	.ranking-table-fir-td{
+		font-weight: bold;
+		color: navy;
+	}
+	.ranking-table-sec-td{
+		width: 240px;
+	}
 	.bgImg{
 		height: 300px;
 	    max-width: 1180px;
@@ -103,3 +172,20 @@
 	#myInput{
 		top:20%;
 	}
+	
+	.box{
+		box-sizing: border-box;
+	    margin: 0 0 20px 0;
+	    padding: 5px;
+	    background-color: white;
+	    border-radius: 2px;
+	    -webkit-box-shadow: 1px 1px 5px 0px #a8bff9;
+	    box-shadow: 1px 1px 5px 0px #a8bff9;
+	    overflow:auto;
+	}
+	
+	.sectionTitle {
+	    font-weight: bolder;
+	    font-family: 'Godo', sans-serif;
+	}
+	

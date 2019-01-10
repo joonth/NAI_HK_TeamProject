@@ -22,7 +22,7 @@
 	<!-- ecache annotation -->
 	<cache:annotation-driven cache-manager="cacheManager"/>
 	
-	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->	
 	<resources mapping="/js/**" location="/resources/js/" />
 	<resources mapping="/resources/**" location="/resources/" />
 
@@ -51,6 +51,5 @@
 		<websocket:sockjs/>
 	</websocket:handlers>
 	<beans:bean id="EchoHandler" class="com.hk.nai.EchoHandler"/>
-	
 	
 </beans:beans>
