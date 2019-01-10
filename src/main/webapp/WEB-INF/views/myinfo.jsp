@@ -7,89 +7,101 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>마이페이지</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui
 .css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/myinfo.css">	
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" >
+/* 모바일 메뉴 드롭다운 */
+$(function(){
+	$("#mobile-myinfo-sidemenu-bar ul.mobile-myinfo-sidemenu-sub").hide();
+	$("#mobile-myinfo-sidemenu-bar ul.mobile-myinfo-sidemenu-menu li").click(function(){
+		$("ul",this).slideToggle("fast");
+	});
+});
+</script>
 </head>
-
 <body>
+<%@include file="header.jsp" %>
+<div id="myinfo-container" class="container">
+<!-- 모바일용 사이드메뉴 -->
+<div id="mobile-myinfo-sidemenu-bar">
+	<ul class="mobile-myinfo-sidemenu-menu">
+		<li><a href="mypage.do">마이페이지</a> <a id="mobile-myinfo-dropdown">▼</a>
+			<ul class="mobile-myinfo-sidemenu-sub">
+				<li><a href="myacademylist.do">찜한 학원 보기</a></li>
+				<li><a href="withdrawform.do">회원 탈퇴</a></li>
+			</ul>
+		</li>
+	</ul>
+</div>
 <form action="updatemyinfo.do" method="post" onsubmit="return checkRegx();">
-<!-- Modal -->
-<div class="modal fade" id="myModal" role="dialog">
-	<div class="modal-dialog">  
-	<!-- Modal content-->
-		<div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">학원명 검색</h4>
-        </div>
-		<div class="modal-body">
-			<input type="text" autofocus="autofocus" id="searchAcName" name="searchAcName" placeholder="학원명">      
-			<button type="button" id="searchBtn2" class="btn btn-default" >검색</button>
-        </div>
-        <div class="modal-footer">
-			<div id="searchAcNmResult" style="float: left;"></div>
-			<div id="searchBtns" style="float: right;">
-			<button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-        	<button type="button" id="searchSubmitBtn" class="btn btn-default">확인</button>
-        	</div>
-        </div> 
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" role="dialog">
+		<div class="modal-dialog">  
+		<!-- Modal content-->
+			<div class="modal-content">
+	        <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	          <h4 class="modal-title">학원명 검색</h4>
+	        </div>
+			<div class="modal-body">
+				<input type="text" autofocus="autofocus" id="searchAcName" name="searchAcName" placeholder="학원명">      
+				<button type="button" id="searchBtn2" class="btn btn-default" >검색</button>
+	        </div>
+	        <div class="modal-footer">
+				<div id="searchAcNmResult" style="float: left;"></div>
+				<div id="searchBtns" style="float: right;">
+				<button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+	        	<button type="button" id="searchSubmitBtn" class="btn btn-default">확인</button>
+	        	</div>
+	        </div> 
+			</div>
 		</div>
 	</div>
-</div>
-<h1>마이페이지</h1>
-<table>
-		<tr>
-			<th>아이디</th>
-			<td><input type="text" id="id" name="id" value="${member.id}" readonly="readonly"></td>
-			<td><span id="idChk"></span></td>
-		</tr>
-		<tr>
-			<th>비번</th>
-			<td><input type="password" id="pw" name="pw" ></td>
-			<td><span id="pwChk"></span></td>
-		</tr>
-		<tr>
-			<th>비번 확인</th>
-			<td><input type="password" id="pw2" name="pw2" ></td>
-			<td><span id="pw2Chk"></span></td>
-		</tr>		
-		<tr>
-			<th>닉네임</th>
-			<td><input type="text" id="nickname" name="nickname" value="${member.nickname}"></td>		
-			<td><span id="nicknameChk"></span></td>
-		</tr>
-		<tr>
-			<th>이메일</th>
-			<td><input type="text" id="email" name="email" value="${member.email}"></td>	
-			<td><span id="emailChk"></span></td>
-		</tr>
-		<tr>
-			<th>학원명</th>
-			<td>
-			<input type="text" id="academyName" name="academyName" value="${auth.academyName}">	
-			<button type="button" id="searchBtn" data-toggle="modal" data-target="#myModal">검색</button></td>	
-		</tr>
-		<tr>
-			<th>(학원생 인증을 원할 경우 전송된 인증코드를 등록해야합니다)</th>
-			<td><a href="#" id="authBtn">인증코드 받기</a></td>
-		</tr>
-		<tr>
-			<th>인증코드</th>
-			<td><input type="text" id="authcode" name="authcode" placeholder="인증코드 입력"></td> 		
-		</tr>
-		<tr>
-			<th>인증코드 확인</th>
-			<td><a href="#" id="authBtn2">인증 확인</a></td> 		
-		</tr>
-		<tr>
-			<th>등급</th>
-			<td>
-			
+	<h1>마이페이지</h1>
+	<div class="input-group">
+		<span class="input-group-addon"></span>
+		<input type="text" id="id" name="id" value="${member.id}" class="form-control" readonly="readonly">
+	</div>
+	<span id="idChk"></span>
+	<div class="input-group">
+		<span class="input-group-addon"></span>
+		<input type="password" id="pw" name="pw" class="form-control" placeholder="비밀번호">
+	</div>
+		<span id="pwChk"></span>
+	<div class="input-group">
+		<span class="input-group-addon"></span>
+		<input type="password" id="pw2" name="pw2"  class="form-control" placeholder="비밀번호 확인" >
+	</div>
+	<span id="pw2Chk"></span>
+	<div class="input-group">
+		<span class="input-group-addon"></span>
+		<input type="text" id="nickname" name="nickname" value="${member.nickname}" class="form-control">
+	</div>	
+	<span id="nicknameChk"></span>
+	<div class="input-group">
+		<span class="input-group-addon"></span>
+		<input type="text" id="email" name="email" value="${member.email}" class="form-control">
+	</div>	
+	<span id="emailChk"></span>
+	<div class="input-group">
+		<span class="input-group-addon"></span>
+		<input type="text" id="academyName" name="academyName" value="${auth.academyName}">	
+		<button type="button" id="searchBtn" data-toggle="modal" data-target="#myModal" class="btn btn-primary">검색</button>	
+	</div>
+	<span style="font-size:12px;">학원생 인증시 이메일로 전송된 인증코드를 등록해야합니다</span>
+	<button type="button" id="authBtn" class="btn btn-primary">인증코드 받기</button>
+	<div class="input-group">
+		<span class="input-group-addon"></span>
+		<input type="text" id="authcode" name="authcode" class="form-control" placeholder="인증코드 입력">
+		<button type="button" id="authBtn2" class="btn btn-primary">확인</button>
+	</div>
+	<div class="input-group">
+		<label class="radio-inline">
 			<c:choose>
 				<c:when test="${member.grade == 'C'}">
 					<input type="radio" id="c" name="grade" value="C" checked="checked" onclick="return false;"> 일반
@@ -98,23 +110,23 @@
 					<input type="radio" id="b" name="grade" value="B" checked="checked" onclick="return false;"> 학원생
 				</c:when>
 			</c:choose>
-			</td>		
-		</tr>				
-		<tr>
-			<td colspan="2">
-				<input type="submit" id="submitBtn" value="수정하기" class="btn btn-primary">
-			</td>
-		</tr>
-</table>
+		</label>			
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon"></span>
+		<input type="text" id="point" class="form-control" readonly="readonly" placeholder="포인트  ${member.point}">
+	</div>
+	<p><input type="submit" id="submitBtn" value="수정하기" class="btn btn-primary" ></p>
 </form>
-<a href="main.do">메인</a>
-<a href="#">캘린더</a>
-<a href="boardlist.do?page=1&pagelist=first">게시판</a>
-<br>
-마이페이지
-<a href="mypage.do">마이페이지</a>
-<a href="myacademylist.do">찜한 학원 보기</a>
-<a href="withdrawform.do">회원 탈퇴</a>
+</div>
+<!-- 사이드 메뉴 -->
+<div id="myinfo-sidemenu-bar">
+	<ul class="nav nav-pills nav-stacked">
+		<li class="active"><a href="mypage.do">마이페이지</a></li>
+		<li><a href="myacademylist.do">찜한 학원</a></li>
+		<li><a href="withdrawform.do">회원 탈퇴</a></li>
+	</ul>
+</div>
 <script type="text/javascript">
 //닉네임 중복 체크 ajax
 $("#nickname").focusout(function() {
