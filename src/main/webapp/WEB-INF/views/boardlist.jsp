@@ -106,9 +106,10 @@
 
 		</table>
 	</form>
-<br /><br />
+<br />
  	<div class="right-sort">
-    	<a href='insertform.do' class="btn btn-primary">글쓰기</a>            
+		<a href='insertform.do'><img src="./resources/images/write.png"></a>
+<!--     	<a href='insertform.do' class="btn btn-primary">글쓰기</a>             -->
 	</div>
 	</div> 
 </div>
