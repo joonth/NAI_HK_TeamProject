@@ -69,34 +69,7 @@
    		text-align: center;
 	}
 	
-	.start-class{
-		width:220px;
-		position: absolute;
-	    left: 5%;
-	}
 	
-	.sticker{
-		height:35px;
-		overflow:hidden;
-		margin:0;
-		padding:0;
-		list-style:none;
-	}
-	
-	.sticker li{
-		height: 25px;
-		margin: 5px;
-		line-height: 2.0;
-		cursor: pointer; 
-	}
-	
-	.start-class-content{
-		height: 38px;
-		border: 1px solid lightgrey;
-		border-radius: 5px;
-		background: white;
-		padding: 0px 0px 5px 0px;
-	}
 	
 	.dday{
 		background: red;
