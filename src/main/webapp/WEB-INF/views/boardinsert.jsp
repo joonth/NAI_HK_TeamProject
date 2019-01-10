@@ -9,6 +9,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>게시글 쓰기</title>
+<style type="text/css">
+	#table-container{
+		width: 1000px;		
+		margin: 0 auto; /* 0 :위,아래 auto :좌우를 자동으로 조정*/
+		overflow :auto;
+	}
+</style>
 </head>
 <body>
 <script type="text/javascript" src="http://code.jquery.com/jquery-Latest.js"></script>
@@ -36,27 +43,34 @@
 <body>
 <%@include file="header.jsp" %>
 <div>
-<h2>게시글 작성</h2>
+<h2 style="text-align:center">게시글 작성</h2>
+<br /><br />
     <form action="insertboard.do" method="post">
     <input type="hidden" name="pagelist" value="${dto.b_regdate }"/>
-    
-        <table class="table table-striped table-hover">
+    	
+        <table class="table table-striped" id="table-container">
         	<col width="100px"><col width="400px">
         	<tr>
         		<th>작성자</th>
-        		<td><input type="text" name="m_nick" value="${sessionScope.member.nickname}" readonly="readonly" /></td>
+        		<td><input type="text" name="m_nick" value="${sessionScope.member.nickname}" readonly="readonly" class="form-control" /></td>
         	</tr>
         	<tr>
         		<th>제목</th>
-        		<td><input type="text" name="b_title" /></td>
+        		<td><input type="text" name="b_title"  class="form-control" placeholder="제목을 작성해주세요" maxlength="50" /></td>
         	</tr>
+        	
         	<tr>
         		<th>내용</th>
-        		<td><textarea rows="10" cols="50" name="b_content"></textarea></td>
+        		<td><textarea class="form-control"rows="20" cols="50" name="b_content" placeholder="내용을 작성해주세요"></textarea></td>
         	</tr>
+        	
         	<tr>
         		<td colspan="2">
-        			<input type="submit" value="글 등록" /> 
+        			<div style="text-align:center">
+        			<br />
+        			<input type="submit" value="글 등록" class="btn btn-default"/> 
+					<button type="button" onclick="location.href='boardlist.do?page=1&pagelist=${pagelist}'" class="btn btn-default">취소</button>
+					</div>
 				</td>
         	</tr>
         </table>

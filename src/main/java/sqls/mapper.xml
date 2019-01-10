@@ -176,11 +176,11 @@
   	</select>
   	
   	<select id="getComment" parameterType="String" resultType="CommentDto">
-  		SELECT ac_name,ac_comment,ac_score,m_id FROM ac_comment WHERE ac_name = #{subTitle} order by cmt_num
+  		SELECT ac_name,ac_comment,ac_score,m_id,cmt_date FROM ac_comment WHERE ac_name = #{subTitle} order by cmt_num
   	</select>
   	
   	<insert id="addComment" parameterType="CommentDto">
-  		insert into ac_comment values(#{ac_name},#{ac_comment},#{ac_score},#{m_id},cmtnum_seq.nextval)
+  		insert into ac_comment values(#{ac_name},#{ac_comment},#{ac_score},#{m_id},cmtnum_seq.nextval,sysdate)
   	</insert>
   	
   	<select id="checkAuth" resultMap="AuthDto">
@@ -210,7 +210,7 @@
   	 
   	<!-- websocket message -->
   	<insert id="sendMessage" parameterType="MessageDto">
-  		insert into notice values(message_seq.nextval,#{n_receiver},#{n_sender},sysdate,#{n_content},#{ns_state_code})
+  		insert into notice values(message_seq.nextval,#{n_receiver},#{n_sender},to_char(sysdate,'MM-DD'),#{n_content},#{ns_state_code})
   	</insert>
   	
   	<delete id="deleteMessage" parameterType="int">
@@ -289,6 +289,9 @@
   	<delete id="delBoard" parameterType="int">
   		DELETE FROM BOARD WHERE B_SEQ=#{b_seq}
   	</delete>
+  	<select id="getB_like" resultType="int" parameterType="BoardDto">
+  		select b_like from board where b_seq=#{b_seq}
+  	</select>
   	
   	<!-- 페이징 처리 -->
     
@@ -299,7 +302,7 @@
 						(
 							select ROW_NUMBER() OVER ( ORDER BY b_seq desc) rn,b_seq,m_nick,b_title,b_content,b_regdate,b_readcount,b_like,cmt_count from board
 				 		)
- 			 where ceil(rn/10)=#{page}
+ 			 where ceil(rn/15)=#{page}
  			
 		]]>
     </select>
@@ -310,7 +313,7 @@
 						(
 							select ROW_NUMBER() OVER ( ORDER BY b_readcount desc,b_seq desc) rn,b_seq,m_nick,b_title,b_content,b_regdate,b_readcount,b_like,cmt_count from board
 				 		)
- 			 where ceil(rn/10)=#{page}
+ 			 where ceil(rn/15)=#{page}
  			
 		]]>
     </select>  
@@ -322,7 +325,7 @@
 						(
 							select ROW_NUMBER() OVER ( ORDER BY b_like desc,b_seq desc) rn,b_seq,m_nick,b_title,b_content,b_regdate,b_readcount,b_like,cmt_count from board
 				 		)
- 			 where ceil(rn/10)=#{page}
+ 			 where ceil(rn/15)=#{page}
  			
 		]]>
     </select>  
@@ -411,6 +414,9 @@
 		WHERE B_SEQ=#{b_seq} AND M_NICK=#{m_nick}
 	</select>
 	
+	<update id="addPoint1" parameterType="MemberDto">
+  		UPDATE MEMBER SET M_POINT = M_POINT + #{point} WHERE M_NICK =#{nickname}
+  	</update>
 	
 <!-- 					김설백					-->
 <!-- 관리자 회원관리 기능 -->

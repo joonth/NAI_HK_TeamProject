@@ -69,6 +69,11 @@ public class BoardDao implements IBoardDao{
 		count = sqlSession.delete(namespace+"delBoard", b_seq);
 		return count>0?true:false;
 	}
+	@Override
+	public int getB_like(int b_seq) {
+		int count = sqlSession.selectOne(namespace+"getB_like", b_seq);
+		return count;
+	}
 //------------------------페이징----------------------
 	@Override
 	public List<BoardDto> listCriteria(String page) throws Exception {
@@ -83,6 +88,7 @@ public class BoardDao implements IBoardDao{
 	public List<BoardDto> listCriteria2(String page) throws Exception {
 		return sqlSession.selectList(namespace+"listCriteria2", page);
 	}
+	
 //-----------------게시글 전체 수 구하기----------------------------
 	@Override
 	public Integer TotalCount() throws Exception {
@@ -134,6 +140,10 @@ public class BoardDao implements IBoardDao{
 		count = sqlSession.update(namespace+"downComment", b_seq);
 		return count>0?true:false;
 	}
+
+	
+
+	
 
 	
 	

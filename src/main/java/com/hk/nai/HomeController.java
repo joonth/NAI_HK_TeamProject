@@ -10,11 +10,12 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPublicKeySpec;
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -547,6 +548,7 @@ public class HomeController {
 	public String getAllBoard(Locale locale, Model model, String n_receiver) {
 		logger.info("메시지 리스트 출력", locale);
 		List<MessageDto> list = messageDao.getMessageList(n_receiver);
+		Collections.sort(list);
 		model.addAttribute("list", list);
 		return "messagelist";
 	}
@@ -563,6 +565,7 @@ public class HomeController {
 	@RequestMapping(value = "/sendMessage.do", method = RequestMethod.POST)
 	public String sendMessage(Locale locale, Model model, MessageDto dto) {
 		logger.info("메시지 전송", locale);
+		System.out.println(dto.toString());
 		messageDao.sendMessage(dto);
 		
 		return "../../index";
@@ -575,9 +578,6 @@ public class HomeController {
 		List<MessageDto> list = messageDao.getMessageList(n_receiver);
 		model.addAttribute("n_receiver", n_receiver);	
 		model.addAttribute("list", list);
-		
-			
-		
 		return "messagelist";
 	}
 	
@@ -595,9 +595,12 @@ public class HomeController {
 		infoDto.setTrprchaptel(util.tagTrim(docInfo.select("trprchaptel"),"trprchaptel"));
 		infoDto.setTrprnm(util.tagTrim(docInfo.select("trprnm"),"trprnm"));
 		infoDto.setScore(Sserv.getScore(subTitle));
-		model.addAttribute("infoDto", infoDto);		
-		model.addAttribute("aclist",getAcClassMap.get(subTitle));
-
+		model.addAttribute("infoDto", infoDto);
+		// 개강일자가 빠른 순서대로 출력하기 위한 정렬
+		List<SearchDto> aclist = getAcClassMap.get(subTitle);
+		Collections.sort(aclist);
+		//
+		model.addAttribute("aclist",aclist);
 		List<commentDto> commentList = new ArrayList<commentDto>();
 		commentList = Iserv.getComment(subTitle);
 		if(!(commentList.size()==0)) {
@@ -617,7 +620,6 @@ public class HomeController {
 		MemberDto member = (MemberDto) session.getAttribute("member");
 		String subtitle = dto.getAc_name();
 		dto.setAc_name(subtitle);
-		
 		// 등록학원과 중복작성여부 체크
 		if(commentAddPermit.getAuth(subtitle, dto.getM_id()) && commentAddPermit.checkDupe(dto)) {
 			if(dupeCheck.get(member.getId()) ==null) {
@@ -633,10 +635,8 @@ public class HomeController {
 				}
 			}
 			Cserv.addComment(dto);
-			
 			dupeCheck.put(member.getId(), member.getId());
 			map.put("dto", dto);
-	
 		}else {
 			dto.setAc_comment("false");
 			map.put("dto", dto);

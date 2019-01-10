@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SearchDto implements Serializable {
+public class SearchDto implements Serializable ,Comparable<SearchDto> {
 	private String img;
 	private String title;
 	private String subTitle;
@@ -72,6 +72,17 @@ public class SearchDto implements Serializable {
 				+ ", score=" + score + ", trprId=" + trprId + "]";
 	}
 	
+	@Override
+	public int compareTo(SearchDto d1) {
+		if(d1.getDday() > dday) {
+			return -1;
+		}else if(d1.getDday() < dday) {
+			return 1;
+		}else {
+			return 0;
+		}
+	}
+
 	
 
 	

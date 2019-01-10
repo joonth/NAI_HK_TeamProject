@@ -1,6 +1,7 @@
 package com.hk.nai.dtos;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import org.springframework.stereotype.Component;
 
@@ -11,7 +12,14 @@ public class commentDto implements Serializable {
 	private String m_id;
 	private String ac_comment;
 	private Float ac_score;
+	private Date cmt_date;
 	
+	public Date getCmt_date() {
+		return cmt_date;
+	}
+	public void setCmt_date(Date cmt_date) {
+		this.cmt_date = cmt_date;
+	}
 	public String getAc_name() {
 		return ac_name;
 	}

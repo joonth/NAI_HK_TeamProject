@@ -11,38 +11,39 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>게시글 상세보기</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<style type="text/css">
+	#table-container{
+		width: 1000px;		
+		margin: 0 auto; /* 0 :위,아래 auto :좌우를 자동으로 조정*/
+		overflow :auto;
+	}
+</style>
 <script type="text/javascript">
 ////ajax좋아요
 function like_func(){
 	var frm_read = $("#frm_read");
 	var b_seq = $('#b_seq').val();
 	var m_nick=$('#m_nick').val();
-// 	var b_like=$('#b_like').val();
+	var b_like=$('#b_like').val();
+	var writer=$('#writer').val();
 
-	
 	$.ajax({
 		url: "like.do",
-		data: {'b_seq':b_seq,'m_nick':m_nick,'b_like':b_like},
+		data: {'b_seq':b_seq,'m_nick':m_nick,'b_like':b_like,'writer':writer},
 		dataType:"json",
 		cache: false,
 		type:"GET",
 		traditional:true,
 		success:function(data){
 			var msg='';
-// 			var like_img='';
 			msg+=data.msg;
 			alert(msg);
 			
 			if(data.like_check==0){
-// 				like_img="./resources/dislike.png";
 				$('#like_img').attr('src',"./resources/images/dislike.png");
 			}else{
-// 				like_img="./resources/like.png";
 				$('#like_img').attr('src',"./resources/images/like.png");
 			}
-// 			$('#like_img',frm_read).attr('src',like_img);
-// 			$('#b_like').html(data.b_like);
-// 			$('#like_check').html(data.like_check);
 		},
 		error:function(){
 			alert("서버에러");
@@ -54,46 +55,43 @@ function like_func(){
 </head>
 <body>
 <%@include file="header.jsp" %>
-<h2>게시글 상세보기</h2>
+<h2 style="text-align:center">게시글 상세보기</h2>
+<br /><br />
 
 <form id="frm_read" name="frm_read" method="get">
 <input type="hidden" id="b_seq" name="b_seq" value="${dto.b_seq }" />
 <input type="hidden" id="m_nick" name="m_nick" value="${sessionScope.member.nickname}" />
-<input type="hidden" id="b_like" name="b_like" value="${dto.b_like }" />
 
-<table>
-	<tr>
-		<th>글 번호</th>
-		<td>${dto.b_seq}</td>
-	</tr>
+<table class="table table-bordered"id="table-container">
+	
 	<tr>
 		<th>작성자</th>
-		<td>${dto.m_nick}</td>
+		<td><input type="text" id="writer" name="writer" value="${dto.m_nick}" readonly="readonly" class="form-control"/></td>
 	</tr>
-	<tr>
-		<th>작성일</th>
-		<td><fmt:formatDate value="${dto.b_regdate}" pattern="yyyy-MM-dd a HH:mm"/></td>
-	</tr>
+	
 	<tr>
 		<th>제목</th>
-		<td>${dto.b_title}</td>
+		<td><input type="text" value="${dto.b_title}" readonly="readonly" class="form-control" /></td>
 	</tr>
 	<tr>
 		<th>내용</th>
-		<td><textarea rows="10" cols="60" readonly="readonly">${dto.b_content}</textarea>
-	
-		<a href='javascript:like_func();'><img src="./resources/images/${dto.like_check==1?'like.png':'dislike.png'}" id="like_img" alt="하트사진"></a>		
-
-		Likes
+		<td><textarea rows="20" cols="50" readonly="readonly" class="form-control">${dto.b_content}</textarea>
+		<div style="text-align:center">
+			<a href='javascript:like_func();'><img src="./resources/images/${dto.like_check==1?'like.png':'dislike.png'}" id="like_img" alt="하트사진"></a>Likes		
+		</div>
+		
 		</td>
 	</tr>
 	<tr>
+		<th></th>
 		<td colspan="2">
-			<c:if test="${sessionScope.member.nickname eq dto.m_nick}">
-				<button type="button" onclick="updateForm('${dto.b_seq}')">수정</button>
-				<button type="button" onclick="delBoard('${dto.b_seq}')">삭제</button>
+			<div style="text-align:center">
+			<c:if test="${sessionScope.member.nickname eq dto.m_nick}">			
+				<button type="button" onclick="updateForm('${dto.b_seq}')" class="btn btn-default" >수정</button>
+				<button type="button" onclick="delBoard('${dto.b_seq}')" class="btn btn-default">삭제</button>					
 			</c:if>
-			<button type="button" onclick="location.href='boardlist.do?page=${cri.page}&pagelist=${pagelist}'">글목록</button>
+				<button type="button" onclick="location.href='boardlist.do?page=${cri.page}&pagelist=${pagelist}'" class="btn btn-default">글목록</button>
+			</div>
 		</td>
 	</tr>
 </table>

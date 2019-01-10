@@ -13,7 +13,11 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
  <style type="text/css">
- 	body {margin:0;height:100%;}
+ 	body {
+ 	margin:0;
+ 	height:100%;
+ 	background-color: #f6f6f6;
+ 	}
 
 #icon-bar {
   right: 1px;
@@ -83,6 +87,10 @@
 a{
 	    color: rgba(255,255,255,.699);
 }
+
+#if{
+	max-width: -webkit-fill-available;
+}
  </style>
 </head>
 
@@ -112,7 +120,7 @@ a{
 			<div class="nav-right">
 					<span>${sessionScope.member.nickname} 님 환영합니다</span>
 					<a href="signout.do">로그아웃</a>
-					<span id="count" onclick="changeUrl('getMessageList.do?n_receiver=${sessionScope.member.id}')" class="glyphicon glyphicon-bell" data-toggle="modal" data-target="#myModal" >message</span>
+					<span id="count" onclick="changeUrl('getMessageList.do?n_receiver=${sessionScope.member.id}')" class="glyphicon glyphicon-envelope" data-toggle="modal" data-target="#myModal" >message</span>
 			</div>
 		</div>
 	</div>

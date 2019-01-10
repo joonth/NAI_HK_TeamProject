@@ -18,6 +18,7 @@ private static final long serialVersionUID = 1L;
 	private String pagelist;
 	private int like_check;
 	private int cmt_count;
+//	private String my_board;
 	public BoardDto() {
 		
 	}
@@ -100,6 +101,16 @@ private static final long serialVersionUID = 1L;
 	public void setCmt_count(int cmt_count) {
 		this.cmt_count = cmt_count;
 	}
+
+
+//	public String getMy_board() {
+//		return my_board;
+//	}
+//
+//
+//	public void setMy_board(String my_board) {
+//		this.my_board = my_board;
+//	}
 
 
 	public static long getSerialversionuid() {
