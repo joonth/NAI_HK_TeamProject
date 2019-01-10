@@ -7,39 +7,56 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>찜한 학원 목록</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/myinfo.css">	
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" >
+/* 모바일 메뉴 드롭다운 */
+$(function(){
+	$("#mobile-myinfo-sidemenu-bar ul.mobile-myinfo-sidemenu-sub").hide();
+	$("#mobile-myinfo-sidemenu-bar ul.mobile-myinfo-sidemenu-menu li").click(function(){
+		$("ul",this).slideToggle("fast");
+	});
+});
+</script>
 </head>
 <body>
-<h1>찜한 학원 목록</h1>
-<table border="1">
-<c:choose>
-	<c:when test="${myAcList != null}">
-		<c:forEach items="${myAcList}" var="ac">
-			<tr>
-				<td><a href="info.do?subTitle=${ac.baskAcademyName}" target="_blank">${ac.baskAcademyName}</a></td>
-				<td><input type="checkbox" name="delMyAc" checked="checked" value="${ac.baskSeq}">삭제(체크풀시 삭제)</td>
-			</tr>
-		</c:forEach>
-	</c:when>
-</c:choose>
-</table>
-<a href="#" id="delAllMyAc">전체 삭제</a>
-<br>
-<div>
-<ul>
-<li><a href="main.do">메인</a></li>
-<li><a href="#">캘린더</a></li>
-<li><a href="boardlist.do?page=1&pagelist=first">게시판</a></li>
-</ul>
+<%@include file="header.jsp" %>
+<div id="myac-container" class="container">
+	<!-- 모바일용 사이드메뉴 -->
+	<div id="mobile-myinfo-sidemenu-bar">
+		<ul class="mobile-myinfo-sidemenu-menu">
+			<li><a href="mypage.do">마이페이지</a> <a id="mobile-myinfo-dropdown">▼</a>
+				<ul class="mobile-myinfo-sidemenu-sub">
+					<li><a href="myacademylist.do">찜한 학원 보기</a></li>
+					<li><a href="withdrawform.do">회원 탈퇴</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+	<h1>찜한 학원</h1>
+	<table class="table table-condensed">
+	<c:choose>
+		<c:when test="${myAcList != null}">
+			<c:forEach items="${myAcList}" var="ac">
+				<tr>
+					<td><a href="info.do?subTitle=${ac.baskAcademyName}" target="_blank">${ac.baskAcademyName}</a></td>
+					<td><a href="#"><img src="./resources/images/like.png" alt="하트사진" name="delheart" style="width:28px;"></a></td>
+					<td style="display:none;"><input type="checkbox" name="delMyAc" checked="checked" value="${ac.baskSeq}">삭제(체크풀시 삭제)</td>
+				</tr>
+			</c:forEach>
+			<a href="#" id="delAllMyAc"> 전체 삭제</a>
+		</c:when>
+	</c:choose>
+	</table>
 </div>
-<br>
-<div>
-마이페이지
-<ul>
-<li><a href="mypage.do">마이페이지</a></li>
-<li><a href="myacademylist.do">찜한 학원 보기</a></li>
-<li><a href="withdrawform.do">회원 탈퇴</a></li>
-</ul>
+<!-- 사이드 메뉴 -->
+<div id="myinfo-sidemenu-bar">
+		<ul class="nav nav-pills nav-stacked">
+			<li><a href="mypage.do">마이페이지</a></li>
+			<li class="active"><a href="myacademylist.do">찜한 학원</a></li>
+			<li><a href="withdrawform.do">회원 탈퇴</a></li>
+		</ul>
 </div>
 <script type="text/javascript">
 	//전체 삭제
@@ -49,17 +66,15 @@
 		ajax(myAcSeqs);
 	});
 	
-	$("input[name='delMyAc']").click(function(){
-		if($(this).attr('checked',false)){
-
-			var myAcSeq = $(this).val();
-			$(this).parent("td").parent("tr").remove();
-			ajax(myAcSeq);
-
+	$("img[name='delheart']").click(function(){
+		var delchk =  $(this).parent("a").parent("td").next("td").children("input");
+		if(delchk.attr('checked',false)){
+			$(this).attr('src',"./resources/images/dislike.png");
+			ajax(delchk.val(), this);
 		}
 	});
 	
-	function ajax(data){
+	function ajax(data, delheart){
 		$.ajax({
 			url: "delmyacademy.do",
 			data: {"myAcSeq":data},
@@ -67,7 +82,10 @@
 			method: "post",
 			success:function(obj){ //컨트롤에서 전달받은 객체map -> obj
 				var msg = obj["msg"];
-				console.log(msg);
+				setTimeout(function() {
+					$(delheart).parent("a").parent("td").parent("tr").remove();
+				}, 1000);
+				
 			},
 			error: function(){
 				alert("서버 통신 실패");
