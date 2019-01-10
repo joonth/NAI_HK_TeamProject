@@ -131,7 +131,7 @@ a{
 				<c:if test="${sessionScope.member!=null}">
 					<a href="mypage.do">마이페이지</a>
 					<a href="main.do">메인</a>
-					<a href="#">캘린더</a>
+					<a href="calendar.do">캘린더</a>
 					<a href="boardlist.do?page=1&pagelist=first">게시판</a>
 					<a href="userList.do">회원목록</a>
 				</c:if>

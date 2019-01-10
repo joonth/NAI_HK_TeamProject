@@ -24,6 +24,7 @@ public List<BoardDto> getAllList(); //전체 게시글 보기
 	
 	public boolean b_like_down(int b_seq); //게시글 추천수 감소
 
+	public int getB_like(int b_seq);
 	
 	// [ 페이징 처리를 위한 메서드 ]
     public List<BoardDto> listCriteria(String page) throws Exception;//최신순 10개씩

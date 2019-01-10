@@ -17,7 +17,7 @@
 			<h3>아이디 찾기<img src="./resources/images/magnifying-glass.png"></h3>
 			<div class="input-group">
 				<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-				<input type="text" id="email" name="email" class="form-control" placeholder="Email">
+				<input type="text" id="email" name="email" class="form-control" placeholder="이메일">
 			</div>
 			<span id="emailChk"></span>
 	</form>

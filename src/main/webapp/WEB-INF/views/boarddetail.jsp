@@ -24,10 +24,12 @@ function like_func(){
 	var frm_read = $("#frm_read");
 	var b_seq = $('#b_seq').val();
 	var m_nick=$('#m_nick').val();
+	var b_like=$('#b_like').val();
+	var writer=$('#writer').val();
 
 	$.ajax({
 		url: "like.do",
-		data: {'b_seq':b_seq,'m_nick':m_nick,'b_like':b_like},
+		data: {'b_seq':b_seq,'m_nick':m_nick,'b_like':b_like,'writer':writer},
 		dataType:"json",
 		cache: false,
 		type:"GET",
@@ -59,13 +61,12 @@ function like_func(){
 <form id="frm_read" name="frm_read" method="get">
 <input type="hidden" id="b_seq" name="b_seq" value="${dto.b_seq }" />
 <input type="hidden" id="m_nick" name="m_nick" value="${sessionScope.member.nickname}" />
-<input type="hidden" id="b_like" name="b_like" value="${dto.b_like }" />
 
 <table class="table table-bordered"id="table-container">
 	
 	<tr>
 		<th>작성자</th>
-		<td><input type="text" value="${dto.m_nick}" readonly="readonly" class="form-control"/></td>
+		<td><input type="text" id="writer" name="writer" value="${dto.m_nick}" readonly="readonly" class="form-control"/></td>
 	</tr>
 	
 	<tr>

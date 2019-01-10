@@ -267,7 +267,7 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 	//좋아요기능	
 	@ResponseBody
 	@RequestMapping(value="/like.do",method=RequestMethod.GET, produces="text/plain;charset=UTF-8")
-	public String like(int b_seq,String m_nick,HttpSession session,HttpServletRequest request,Model model) {
+	public String like(int b_seq,String writer,String m_nick,HttpSession session,HttpServletRequest request,Model model) {
 		JSONObject obj = new JSONObject();
 		
 		ArrayList<String> msgs = new ArrayList<String>();
@@ -275,12 +275,11 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 		LikeDto ldto = new LikeDto();
 		ldto.setB_seq(b_seq);
 		ldto.setM_nick(m_nick);
+			
+		int b_like = boardService.getB_like(b_seq); //게시판의 좋아요카운트
 		
-		BoardDto dto = boardService.getBoard(new BoardDto(b_seq));
 		
-		int b_like=dto.getB_like(); //게시판의 좋아요카운트
-	
-				
+		
 		if(boardLikeService.countbyLike(ldto)==0) {
 			boardLikeService.create(ldto);			
 		}
@@ -290,15 +289,14 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 			boardLikeService.like_check(ldto);
 			msgs.add("좋아요!");			
 			like_check=1;
-			b_like++;
-			boardService.b_like_up(b_seq);	
+			b_like++;		
+			boardService.b_like_up(b_seq);
 		}else {
 			boardLikeService.like_check_cancle(ldto);
 			msgs.add("좋아요 취소");			
 			like_check=0;
 			b_like--;
-			boardService.b_like_down(b_seq);
-			
+			boardService.b_like_down(b_seq);			
 		}
 		obj.put("b_seq", ldto.getB_seq());
 		obj.put("like_check",like_check);

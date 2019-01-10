@@ -6,29 +6,30 @@
 <head>
 <link rel="shortcut icon" href="./resources/images/favicon.ico">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>비번 찾기</title>
+<title>비밀번호 찾기</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/signin.css">	
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
-<h3>비번 찾기</h3>
-<table>
-		<tr>
-			<th>아이디</th>
-			<td><input type="text" id="id" name="id"></td>
-			<td><span id="idChk"></span></td>
-		</tr>
-		<tr>
-			<th>이메일</th>
-			<td><input type="text" id="email" name="email"></td>
-			<td><span id="emailChk"></span></td>
-		</tr>
-		<tr>
-			<th>이메일로 임시 비밀번호 전송</th>
-			<td><input type="button" id="emailBtn" value="전송"></td>
-		</tr>
-</table>
-<a href="#" id="signinBtn">로그인하기</a>
-<a href="#" id="findiddBtn">아이디찾기</a>
+<div id="signin-container" class="container">
+<form>
+	<h3>비밀번호 찾기<img src="./resources/images/magnifying-glass.png"></h3>
+	<div class="input-group">	
+		<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+		<input type="text" id="id" name="id" class="form-control" placeholder="아이디">
+	</div>
+	<span id="idChk"></span>
+	<div class="input-group">
+		<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+		<input type="text" id="email" name="email" class="form-control" placeholder="이메일">
+	</div>
+	<span id="emailChk"></span>
+</form>
+<p><button type="button" id="emailBtn" class="btn btn-primary">임시 비밀번호 전송</button></p>
+<p><a href="#" id="signinBtn">로그인하기</a></p>
+<p><a href="#" id="findidBtn">아이디찾기</a></p>
+</div>
 <script type="text/javascript">
 
 $("#signinBtn").click(function(){

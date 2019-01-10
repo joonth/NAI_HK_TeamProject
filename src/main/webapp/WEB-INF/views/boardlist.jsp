@@ -68,7 +68,9 @@
 	<div >
 	<form id="read" name="read" method="get">
 	<input type="hidden" id="m_nick" name="m_nick" value="${sessionScope.member.nickname}" />
+	<input type="hidden" id="writer" name="writer" value="${dto.m_nick}" />
 	<input type="hidden" id="b_seq" name="b_seq" value="${dto.b_seq}" />
+	<input type="hidden" id="b_like" name="b_like" value="${dto.b_like }" />
 		<table class="table table-hover">
 			<col width = 50px>
 			<col width = 100px>
@@ -105,9 +107,10 @@
 
 		</table>
 	</form>
-<br /><br />
+<br />
  	<div class="right-sort">
-    	<a href='insertform.do' class="btn btn-primary">글쓰기</a>            
+		<a href='insertform.do'><img src="./resources/images/write.png" ></a>
+<!--     	<a href='insertform.do' class="btn btn-primary">글쓰기</a>             -->
 	</div>
 	</div> 
 </div>

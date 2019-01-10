@@ -22,12 +22,12 @@
 		<h1><img src="./resources/images/detective.png">국과수</h1>
 		<div class="input-group">
 			<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-			<input type="text" id="id" name="id" class="form-control" placeholder="ID">
+			<input type="text" id="id" name="id" class="form-control" placeholder="아이디">
 		</div>
 		<span id="idChk"></span>
 		<div class="input-group">
 			<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-			<input type="password" id="pw" name="pw" class="form-control" placeholder="Password">
+			<input type="password" id="pw" name="pw" class="form-control" placeholder="비밀번호">
 		</div>
 		<span id="pwChk"></span>
 	</form>
