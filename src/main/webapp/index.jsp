@@ -18,12 +18,7 @@
 		response.sendRedirect("signinform.do");
 	}
 %>
-<<<<<<< HEAD
-</head>
-	
-=======
 <style>
-
 .sticker{
 height:40px;
 overflow:hidden;
@@ -38,11 +33,9 @@ padding:5px;
 margin: 0px 5px;
 }
 </style>
-
 </head>
 <body>
 <%@include file="WEB-INF/views/header.jsp" %>
-	
 <div class="content">
 	<div class="start-class">
 		<div class="start-class-title" style="font-weight:bold;">개강임박과정</div>
