@@ -13,22 +13,28 @@
 	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/hj/main_message.js"></script>
 	<!-- 이한준 -->	
+	<!-- 폰트추가 -->
 	  <link href="http://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css" rel="stylesheet">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <style type="text/css">
 
- body{
+body{
+  	margin-right: auto;
+    margin-left: auto;
 	
 } 
 
-#centerContent{
-	
+#centerContent{	
 	
 }
 
 #userListbar{
 	
 	}
+
+hr{
+	border: solid 10px black;
+}
 	
 #title{
 	font-family: 'Nanum Gothic Coding', serif;
@@ -46,6 +52,7 @@
 	max-width: 1023px;
 	border-color: black;
 	background-color: white;
+	text-align: center;
 }
 
 #Thbar{
@@ -71,8 +78,6 @@ font-family: 'Nanum Gothic Coding', serif;
 	padding: 11px;
 	padding-top: 70%;
 }
-
-
 
 @media (min-width: 980px)
 #centerContent {
@@ -102,7 +107,7 @@ font-family: 'Nanum Gothic Coding', serif;
     padding: 0;
 }
 
-/* 셀렉트박스  */
+/* 셀렉트박스   */
 .selectGrade {
 	display: block;
     width: 65%;
@@ -135,9 +140,6 @@ font-family: 'Nanum Gothic Coding', serif;
     background-image: none;
     border: 1px solid transparent;
     border-radius: 4px;
-
-
-
 }
 
 .btn{
@@ -148,7 +150,35 @@ font-family: 'Nanum Gothic Coding', serif;
 #grade{
 	display: -webkit-inline-box;
 }
-
+ 
+.chkDeleteBtn{
+	-webkit-appearance: button;
+    cursor: pointer;
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    text-align: center;
+    margin-right:96%; 
+}
+  
 
 	 
 	 
@@ -234,8 +264,8 @@ font-family: 'Nanum Gothic Coding', serif;
 				<td>${memberdto.nickname}</td>
 				<td>${memberdto.email}</td>
 				<td>
+				
 				<!-- 회원 등급 변경후 submit하는 폼-->
-
 			<form name="gradeChange" method="post" action="updateGrade.do" >
 				<input type="hidden" name="seq" value="${memberdto.seq}" >
 				<div id="grade">
@@ -246,22 +276,24 @@ font-family: 'Nanum Gothic Coding', serif;
 					</select>
 					<!-- 회원의 등급을 바꿔줌 -->
 				<a><input type="submit" value="변경" class="gradeChangeBtn" onclick="confirmChangeGrade();"></a></div>
-				</td>
+				</form> <!-- 등급변경 폼 -->
+				</td> 
 				<td>${memberdto.point}</td>
 				<td>${memberdto.writeCheck}</td>
 				<td>
-					<button class="btn" id="modifi" onclick="location.href='userDetail.do?seq='+'${memberdto.seq}'"><img class="btn-img" src="./resources/images/gear.png"></button>
-					<button class="btn" onclick="location.href='userDelete.do?seq='+'${memberdto.seq}'"><img class="btn-img" src="./resources/images/trash.png"></button>		
-				</form>		
+					<button type ="button" class="btn" id="modifi" onclick="location.href='userDetail.do?seq='+'${memberdto.seq}'"><img class="btn-img" src="./resources/images/gear.png"></button>
+					<button type ="button" class="btn" onclick="location.href='userDelete.do?seq='+'${memberdto.seq}'"><img class="btn-img" src="./resources/images/trash.png"></button>		
+			
 				</td>
 				</tr>
 		</c:forEach>
 	</c:otherwise>
 	</c:choose>
 </table>
-</div>
-	<input type="submit" class="btn btn-default" value="선택삭제"/>
+	<input type="submit" class="chkDeleteBtn" value="선택삭제"/>
 </form>
+<!-- 체크박스 삭제 폼  -->
+</div>
 
 <script type="text/javascript">
 	function userDetail(){

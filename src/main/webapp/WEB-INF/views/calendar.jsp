@@ -188,11 +188,13 @@ p {
 		<table id="caltable">
 		<div class="lastDayNum" style="diplay:none;"> <%=lastDay%></div>
 			<caption>
-				<a href="calendar.do?year=<%=year-1%>&month=<%=month%>">◁</a> <a
-					href="calendar.do?year=<%=year%>&month=<%=month-1%>">◀</a> <span
-					class="y"><%=year%></span>년 <span class="m"><%=month%></span>월 <a
-					href="calendar.do?year=<%=year%>&month=<%=month+1%>">▶</a> <a
-					href="calendar.do?year=<%=year+1%>&month=<%=month%>">▷</a>
+			<div class="calPage">
+				<a href="calendar.do?year=<%=year-1%>&month=<%=month%>">◁</a> 
+				<a href="calendar.do?year=<%=year%>&month=<%=month-1%>">◀</a> 
+				<span class="y"><%=year%></span>년 <span class="m"><%=month%></span>월 
+				<a href="calendar.do?year=<%=year%>&month=<%=month+1%>">▶</a> 
+				<a href="calendar.do?year=<%=year+1%>&month=<%=month%>">▷</a>
+				</div>
 			</caption>
 			<tr>
 				<th>일</th>
@@ -231,7 +233,7 @@ p {
 									<c:choose>
 										<c:when test="${yyyyMMdddd eq ac_cre_date && count <3}">
 											<!-- 개강일이 같은 학원명 3개 출력 -->								
-												<a target="_blank" href="calDetail.do?ac_seq=${list.ac_seq}&ac_name=${list.ac_name}">${list.ac_name}</a>							
+												<a target='blank' href="calDetail.do?ac_seq=${list.ac_seq}&ac_name=${list.ac_name}">${list.ac_name}</a>							
 											<br />
 											<c:set var="count" value="${count + 1}" />
 											<!-- for문을 돌때마다 count 증가 -->
@@ -242,6 +244,7 @@ p {
 							</c:otherwise>
 						</c:choose>
 					</div></td>
+				
 				<% 
          //행을 바꿔주기---> 토요일은 공백수+현재날짜==7배수
          if((dayOfWeek-1+i)%7==0){//토요일이냐??
@@ -259,10 +262,13 @@ p {
 	<button type="button" id="CartAcademyCal" onclick="location.href='cartAcademyCal.do'">찜한 학원일정 보기</button>
 	<button type="button" onclick="location.href='main.do'">메인화면으로 돌아가기</button>
 
+
+
+	
 <!-- 검색결과가 없을때 나타나는 문구 -->
 <script type="text/javascript">
-	
-	//검색 결과값이 없을때 출력		$("#submit").click(function() {
+	//검색 결과값이 없을때 출력		
+	$("#submit").click(function() {
 			var lastDay = $(".lastDayNum").text().trim();
 			for(var i=0; i<lastDay; i++){
 				$(".acName").eq(i).empty();
@@ -281,24 +287,20 @@ p {
 					} else {
 						var ac_cre_date =  []; 
 						var yyyyMMdddd = $(".yyyyMMdddd");
-						var count = 0;
-						alert(yyyyMMdddd.eq(0).text() + ac_cre_date[0]);
 						
 						for(var i=0; i<obj.length; i++){
 							ac_cre_date.push(obj[i]["ac_cre_date"]);
 							console.log("aaaa"+ac_cre_date[0]);
 							
 							for(var j=0; j<lastDay; j++){	
-							$(".acName").eq(j).each(function(count){
-								if(ac_cre_date[i] == yyyyMMdddd.eq(j).text().trim()  && count<4){ 	
-									$(".acName").eq(j).append("<a target='blank' href=calDetail.do?ac_seq="
-												+obj[i]['ac_seq']+"&ac_name="+obj[i]['ac_name']
-												+">"+obj[i]['ac_name']+"</a>"+"</br>");	
-									count++;
-									
-									}	
-							});
-						
+								if(ac_cre_date[i] == yyyyMMdddd.eq(j).text().trim()){ 
+									if($(".acName").eq(j).children().length<=4){
+										$(".acName").eq(j).append("<a target='blank' href=calDetail.do?ac_seq="
+													+obj[i]['ac_seq']+"&ac_name="+obj[i]['ac_name']
+													+">"+obj[i]['ac_name']+"</a>"+"</br>");	
+									}
+							
+									}				
 								}
 							}
 						}			
@@ -308,109 +310,15 @@ p {
 				}
 			}); //ajax
 		}); // click
+/* 		
+		$("#AcademyRk").click(function() {
+			for(var i=0; i<5; i++){
+				var s = $(".calPage a").text();
+			alert(s);
+			}
+		}); */
 		
-	/* 	//검색 결과값이 없을때 출력
-				$("#submit").click(function() {
-					var lastDay = $(".lastDayNum").text().trim();
-					for(var i=0; i<lastDay; i++){
-						$(".acName").eq(i).empty();
-					}
-					
-					$.ajax({
-						url : "calSearch.do",
-						data : {
-							"search" : $("#AcademySearch").val()
-						},
-						datatype : "json",
-						method : "POST",
-						success : function(obj) {
-							if (obj == null) {
-								$("#searchResult").html("검색결과가 존재하지 않습니다.");
-							} else {
-								var ac_cre_date =  []; 
-								var yyyyMMdddd = $(".yyyyMMdddd");
-								var count = 0;
-								alert(yyyyMMdddd.eq(0).text() + ac_cre_date[0]);
-								
-								for(var i=0; i<obj.length; i++){
-									ac_cre_date.push(obj[i]["ac_cre_date"]);
-									console.log("aaaa"+ac_cre_date[0]);
-									
-									for(var j=0; j<lastDay; j++){	
-										
-										if(ac_cre_date[i] == yyyyMMdddd.eq(j).text().trim()){ 	
-											$(".acName").eq(j).append("<a target='blank' href=calDetail.do?ac_seq="
-														+obj[i]['ac_seq']+"&ac_name="+obj[i]['ac_name']
-														+">"+obj[i]['ac_name']+"</a>"+"</br>");	
-											}		
-								
-										}
-									}
-								}			
-							},
-						error : function() {
-							alert("서버 통신 실패");
-						}
-					}); //ajax
-				}); // click */
-	 
-	/* 	$("#submit").click(function() {
-			var lastDay = $(".lastDayNum").text().trim();
-			
-			$.ajax({
-				url : "calSearch.do",
-				data : {
-					"search" : $("#AcademySearch").val()
-				},
-				datatype : "json",
-				method : "POST",
-				success : function(obj) {
-					if (obj == null) {
-						$("#searchResult").html("검색결과가 존재하지 않습니다.");
-					} else {
-						var ac_cre_date =  []; 
-						var yyyyMMdddd = $(".yyyyMMdddd");
-						alert(yyyyMMdddd.eq(0).text() + ac_cre_date[0]);
-						
-						for(var i=0; i<obj.length; i++){
-							ac_cre_date.push(obj[i]["ac_cre_date"]);
-							console.log("aaaa"+ac_cre_date[0]);
-							for(var j=0; j<lastDay; j++){
-								if(ac_cre_date[i] == yyyyMMdddd.eq(j).text().trim() ){ 
-									console.log("같다");
-								$(".acName").eq(j).html("<a href=calDetail.do?ac_seq="
-											+obj[i]['ac_seq']+"&ac_name="+obj[i]['ac_name']
-												+">"+obj[i]['ac_name']+"</a>");	
-								}
-							}
-						}			
-					}
-				},
-				error : function() {
-					alert("서버 통신 실패");
-				}
-			})
-		});
-	  */
-/* 	 $(function (){ */
-/* 		 	var url =  $(".acName").eq(1).text();
-		    $(".acName").eq(1).click().load(url, function(){
-		        $('div.modal').modal("show");
-		    })
-		}); */
-		/*     $(".acName").text().click(function(){
-		        $('div.modal').modal();
-		    })
-		});
-		 */
-	/* 	$(document).ready(function(){
-		    $(".acName").click(function(){
-		        $("#myModal").modal();
-		    });
-		}); */
-
- 
-	
+		
 </script>	
 </body>
 </html>

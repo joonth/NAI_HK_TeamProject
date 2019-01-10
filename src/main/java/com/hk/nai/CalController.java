@@ -84,7 +84,7 @@ public class CalController {
 		for(int i=0; i<calViewList.size(); i++) {
 			CalDto dto =calViewList.get(i);	
 
-			if(dto.getAc_class().contains(search) 
+			if(dto.getAc_class().contains(search)
 					|| dto.getAc_location().contains(search)
 					|| dto.getAc_name().contains(search)) {
 				selectList.add(dto);

@@ -10,21 +10,61 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>회원 조회/상세보기</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+ <link href="http://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css" rel="stylesheet">
+<style type="text/css">
+
+body{
+  	margin-right: auto;
+    margin-left: auto;
+	
+} 
+#title{
+	font-family: 'Nanum Gothic Coding', serif;
+	font-weight: 700;
+	color: black;
+	font-size: 24px;
+	text-align: left;
+    padding-left: 20%;
+	margin-right: auto;
+    margin-left: auto;
+ 
+}
+
+#table{
+	max-width: 1023px;
+	border-color: black;
+	background-color: white;
+	text-align: center;
+	width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+	
+}
+
+@media (min-width: 980px)
+#table {
+    width: 66.66666667%;
+}
+
+
+</style>
 </head>
 <body>
+<%@include file="header.jsp" %>
 <%
 	AdminDaoImpl dao = new AdminDaoImpl();
 %>
-<h1>회원정보 조회/수정</h1>
+<h1 id="title">회원정보 조회/수정</h1>
 <script type="text/javascript">
 	function updateUser(){
 		alert("회원정보가 변경되었습니다.");
 	}
 </script>
+
 <div id="container">
 <form action="userUpdateform.do" method="post" onsubmit="return checkRegx();">
-<input type="hidden" name="seq" value="${dto.seq}"/>
-<table>	
+<input type="hidden"  name="seq" value="${dto.seq}"/>
+<table id="table">	
 	<col width="80px">
 	<col width="80px">
 	<col width="100px">
@@ -37,7 +77,7 @@
 	</tr>
 	<tr>
 		<th>닉네임</th>
-		<td><input type="text" id="nickname" name="nickname" value="${dto.nickname}"></td>
+		<td><input type="text"  id="nickname" name="nickname" value="${dto.nickname}"></td>
 		<td><span id="nicknameChk"></span></td>
 	</tr>
 	<tr>

@@ -16,7 +16,7 @@
 	<col width="100px">
 	<tr>
 		<th>이미지</th>
-		<td><img alt="<c:out value="${calDto.ac_name}"/>" src="<c:out value="${calDto.img}"/>"></td>
+		<td><img alt="<c:out value="${calDto.ac_name}"/>" src="<c:out value="${calDto.img}"/>" style="max-width: 200px; height: 110px;" ></td>
 	</tr>
 	<tr>
 		<th>학원명</th>
@@ -31,12 +31,8 @@
 		<td><c:out value="${calDto.ac_location}"/></td>
 	</tr>
 	<tr>
-		<th>개강일</th>
-		<td><c:out value="${calDto.ac_cre_date}"/><td>
-	</tr>
-	<tr>
-		<th>종강일</th>
-		<td><c:out value="${calDto.ac_end_date}"/></td>
+		<th>훈련기간</th>
+		<td style="color: blue;"><c:out value="${calDto.ac_cre_date}"/> ~ <c:out value="${calDto.ac_end_date}"/><td>
 	</tr>
 	
 </body>
