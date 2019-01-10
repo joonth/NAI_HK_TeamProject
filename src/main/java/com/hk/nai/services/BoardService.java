@@ -60,7 +60,10 @@ public class BoardService implements IBoardService {
 		public int getB_like(int b_seq) {
 			return boardDao.getB_like(b_seq);
 		}
-
+		@Override
+		public int getPointCheck(int b_seq) {
+			return boardDao.getPointCheck(b_seq);
+		}
 		
 	//---------------------------페이징------------------------------------
 		@Override
@@ -117,6 +120,8 @@ public class BoardService implements IBoardService {
 		public boolean downComment(int b_seq) {
 			return boardDao.downComment(b_seq);
 		}
+
+		
 
 	
 		

@@ -259,7 +259,7 @@
   
   	<insert id="insertBoard" parameterType="BoardDto">
   		INSERT INTO BOARD VALUES
-  		(BOARD_SEQ.NEXTVAL,#{m_nick},#{b_title},#{b_content},SYSDATE,0,0,0)
+  		(BOARD_SEQ.NEXTVAL,#{m_nick},#{b_title},#{b_content},SYSDATE,0,0,0,0)
   	</insert>
   	
   	<select id="getBoard" resultType="BoardDto" parameterType="int">
@@ -291,6 +291,10 @@
   	</delete>
   	<select id="getB_like" resultType="int" parameterType="BoardDto">
   		select b_like from board where b_seq=#{b_seq}
+  	</select>
+  	
+  	<select id="getPointCheck" resultType="int" parameterType="BoardDto">
+  		SELECT POINTCHECK FROM BOARD WHERE B_SEQ=#{b_seq}
   	</select>
   	
   	<!-- 페이징 처리 -->
@@ -418,6 +422,16 @@
   		UPDATE MEMBER SET M_POINT = M_POINT + #{point} WHERE M_NICK =#{nickname}
   	</update>
 	
+	<select id="checkPoint1" parameterType="String" resultType="int" >
+  		select M_POINT from MEMBER where M_NICK = #{nickname}
+  	</select>
+  	<update id="pointCheckUp" parameterType="int">
+  		UPDATE BOARD SET POINTCHECK = 1 WHERE B_SEQ=#{b_seq}
+  	</update>
+  	
+  	<select id="getIdByNick" parameterType="String" resultType="String">
+  		select m_id from member where m_nick = #{nickname}
+  	</select>
 <!-- 					김설백					-->
 <!-- 관리자 회원관리 기능 -->
 <select id="getUserList" resultMap="MemberDto">	

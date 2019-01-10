@@ -26,6 +26,8 @@ public List<BoardDto> getAllList(); //전체 게시글 보기
 
 	public int getB_like(int b_seq);
 	
+	public int getPointCheck(int b_seq);
+	
 	// [ 페이징 처리를 위한 메서드 ]
     public List<BoardDto> listCriteria(String page) throws Exception;//최신순 10개씩
 	public List<BoardDto> listCriteria1(String page) throws Exception;//조회순 10개씩

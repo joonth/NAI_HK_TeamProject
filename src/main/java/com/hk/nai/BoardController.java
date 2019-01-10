@@ -23,11 +23,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.hk.nai.daos.MessageDao;
+import com.hk.nai.daos.PointHandleDao;
 import com.hk.nai.dtos.BoardDto;
 import com.hk.nai.dtos.CommentDto1;
 import com.hk.nai.dtos.CriteriaDto;
 import com.hk.nai.dtos.LikeDto;
 import com.hk.nai.dtos.MemberDto;
+import com.hk.nai.dtos.MessageDto;
 import com.hk.nai.dtos.PageMakerDto;
 import com.hk.nai.services.BoardLikeService;
 import com.hk.nai.services.IBoardService;
@@ -41,7 +44,10 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 	private IBoardService boardService; //객체생성안하고 스프링이 만들어서 넣어줄거임
 	@Autowired
 	private BoardLikeService boardLikeService;
-	
+	@Autowired
+	private PointHandleDao pointDao;
+	@Autowired
+	MessageDao messageDao;
 	//게시판 글 목록 조회  --> 기본은 최신순으로 10개씩 정렬
 	@RequestMapping(value="/boardlist.do", method= RequestMethod.GET)
 	public String boardList(@ModelAttribute("cri") CriteriaDto cri, HttpServletRequest request,HttpSession session ,Locale locale, Model model,String page,String pagelist) throws Exception {
@@ -276,9 +282,13 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 		ldto.setB_seq(b_seq);
 		ldto.setM_nick(m_nick);
 			
+		MemberDto mdto = (MemberDto)session.getAttribute("member");
+		mdto.setNickname(writer);
 		int b_like = boardService.getB_like(b_seq); //게시판의 좋아요카운트
 		
+//		BoardDto dto = new BoardDto();
 		
+		int pointcheck = boardService.getPointCheck(b_seq);
 		
 		if(boardLikeService.countbyLike(ldto)==0) {
 			boardLikeService.create(ldto);			
@@ -291,12 +301,18 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 			like_check=1;
 			b_like++;		
 			boardService.b_like_up(b_seq);
+			//좋아요 5개 달성시 포인트부여
+			if(b_like==5 && pointcheck==0 ) {
+				mdto.setPoint(30);//포인트30점부여
+				pointDao.addPoint1(mdto);
+				pointDao.pointCheckUp(b_seq); //pointcheck를 1로 해주며 중복부여 방지
+			}
 		}else {
 			boardLikeService.like_check_cancle(ldto);
 			msgs.add("좋아요 취소");			
 			like_check=0;
 			b_like--;
-			boardService.b_like_down(b_seq);			
+			boardService.b_like_down(b_seq);
 		}
 		obj.put("b_seq", ldto.getB_seq());
 		obj.put("like_check",like_check);

@@ -74,6 +74,11 @@ public class BoardDao implements IBoardDao{
 		int count = sqlSession.selectOne(namespace+"getB_like", b_seq);
 		return count;
 	}
+	@Override
+	public int getPointCheck(int b_seq) {
+		int count = sqlSession.selectOne(namespace+"getPointCheck", b_seq);
+		return count;
+	}
 //------------------------페이징----------------------
 	@Override
 	public List<BoardDto> listCriteria(String page) throws Exception {
@@ -140,6 +145,8 @@ public class BoardDao implements IBoardDao{
 		count = sqlSession.update(namespace+"downComment", b_seq);
 		return count>0?true:false;
 	}
+
+	
 
 	
 
