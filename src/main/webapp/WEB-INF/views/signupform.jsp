@@ -8,7 +8,6 @@
 <title>회원가입</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/signup.css">	
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui
 .css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -16,31 +15,31 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
+<div id="signup-container" class="container">
 <form action="signup.do" method="post" onsubmit="return checkRegx();">
-<!-- Modal -->
-<div class="modal fade" id="myModal" role="dialog">
-	<div class="modal-dialog">  
-	<!-- Modal content-->
-		<div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">학원명 검색</h4>
-        </div>
-		<div class="modal-body">
-			<input type="text" autofocus="autofocus" id="searchAcName" name="searchAcName" placeholder="학원명">      
-			<button type="button" id="searchBtn2" class="btn btn-default" >검색</button>
-        </div>
-        <div class="modal-footer">
-			<div id="searchAcNmResult" style="float: left;"></div>
-			<div id="searchBtns" style="float: right;">
-			<button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-        	<button type="button" id="searchSubmitBtn" class="btn btn-default">확인</button>
-        	</div>
-        </div> 
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" role="dialog">
+		<div class="modal-dialog">  
+		<!-- Modal content-->
+			<div class="modal-content">
+	        <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	          <h4 class="modal-title">학원명 검색</h4>
+	        </div>
+			<div class="modal-body">
+				<input type="text" autofocus="autofocus" id="searchAcName" name="searchAcName" placeholder="학원명">      
+				<button type="button" id="searchBtn2" class="btn btn-default" >검색</button>
+	        </div>
+	        <div class="modal-footer">
+				<div id="searchAcNmResult" style="float: left;"></div>
+				<div id="searchBtns" style="float: right;">
+				<button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+	        	<button type="button" id="searchSubmitBtn" class="btn btn-default">확인</button>
+	        	</div>
+	        </div> 
+			</div>
 		</div>
 	</div>
-</div>
-<div id="signup-container" class="container">
 	<h3>회원 가입</h3>
 	<div class="input-group">
 		<span class="input-group-addon"></span>
@@ -88,13 +87,11 @@
 		</label>	
 	</div>				
 	<p><input type="submit" id="submitBtn" value="가입하기" class="btn btn-primary"></p>
-</div>
 </form>
+</div>
 <script type="text/javascript">
-
 //아이디 중복 체크 ajax
 $("#id").focusout(function(e){
-
 	$.ajax({
 			url : "idcheck.do",
 			data : {
