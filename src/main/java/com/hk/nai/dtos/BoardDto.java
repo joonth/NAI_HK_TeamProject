@@ -18,6 +18,7 @@ private static final long serialVersionUID = 1L;
 	private String pagelist;
 	private int like_check;
 	private int cmt_count;
+	private int pointcheck;
 //	private String my_board;
 	public BoardDto() {
 		
@@ -103,14 +104,14 @@ private static final long serialVersionUID = 1L;
 	}
 
 
-//	public String getMy_board() {
-//		return my_board;
-//	}
-//
-//
-//	public void setMy_board(String my_board) {
-//		this.my_board = my_board;
-//	}
+	public int getPointcheck() {
+		return pointcheck;
+	}
+
+
+	public void setPointcheck(int pointcheck) {
+		this.pointcheck = pointcheck;
+	}
 
 
 	public static long getSerialversionuid() {

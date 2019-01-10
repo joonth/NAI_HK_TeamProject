@@ -27,6 +27,7 @@ function like_func(){
 	var b_like=$('#b_like').val();
 	var writer=$('#writer').val();
 
+	
 	$.ajax({
 		url: "like.do",
 		data: {'b_seq':b_seq,'m_nick':m_nick,'b_like':b_like,'writer':writer},
@@ -61,7 +62,6 @@ function like_func(){
 <form id="frm_read" name="frm_read" method="get">
 <input type="hidden" id="b_seq" name="b_seq" value="${dto.b_seq }" />
 <input type="hidden" id="m_nick" name="m_nick" value="${sessionScope.member.nickname}" />
-
 <table class="table table-bordered"id="table-container">
 	
 	<tr>
