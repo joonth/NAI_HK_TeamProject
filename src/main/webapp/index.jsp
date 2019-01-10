@@ -36,16 +36,13 @@ margin: 0px 5px;
 </style>
 
 </head>
-<<<<<<< HEAD
 	<%@include file="WEB-INF/views/header.jsp" %>
 	<a href="main.do">메인</a>
 	<a href="calendar.do">캘린더</a>
 	<a href="boardlist.do?page=1&pagelist=first">게시판</a>
 	<a href="userList.do">회원목록</a>
 	<hr>
-=======
-	
->>>>>>> branch 'master' of https://github.com/joonth/NAI_HK_TeamProject.git
+
 <body>
 
 	<%@include file="WEB-INF/views/header.jsp" %>

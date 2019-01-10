@@ -22,68 +22,133 @@
 } 
 
 #centerContent{
-	background-color: yellow;
+	
 	
 }
 
 #userListbar{
-	max-width: 1023px;
-	background-color: darkturquoise;
-	border-radius: 7px;
-	height: 60px;
+	
 	}
 	
 #title{
 	font-family: 'Nanum Gothic Coding', serif;
 	font-weight: 700;
-	color: white;
+	color: black;
 	font-size: 24px;
-	padding-top: 27px;
-	padding-left: 0.2%;
+	text-align: left;
+    padding-left: 20%;
+	margin-right: auto;
+    margin-left: auto;
+    
 }
 
 .table{
 	max-width: 1023px;
 	border-color: black;
+	background-color: white;
 }
 
-th{
-	color: #6e6e77;
+#Thbar{
+font-family: 'Nanum Gothic Coding', serif;
+	font-weight: 700;
+	font-size: 15px;
+	max-width: 1023px;
+	border-radius: 8px;
+	margin-right: auto;
+    margin-left: auto;
+	color: white;
+	background-color: #4866a9;
+	height: 60px;
+	
 }
 
-footer {
-      background-color: #555;
-      color: white;
-      padding: 15px;
-    }
-    
-.sidenav {
-      padding-top: 20px;
-      background-color: #f1f1f1;
-      height: 100%;
-      float: right;
-    }
+#Thbar >th{
+	text-align: center;	
+	padding-top: 30px;
+}
 
-@media screen and (max-width: 767px) {
-      .sidenav {
-        height: auto;
-        padding: 15px;
-      }
-      
-@media (min-width: 768px)
-.col-sm-8 {
+#Thbar >th>td{
+	padding: 11px;
+	padding-top: 70%;
+}
+
+
+
+@media (min-width: 980px)
+#centerContent {
     width: 66.66666667%;
 }
 
-@media (min-width: 768px)
-.col-sm-2 {
-    width: 16.66666667%;
+@media (min-width: 992px)
+.container {
+    width: 970px;
 }
 
-@media (min-width: 768px)
-#centerContent {
-    width: 16.66666667%;
+.container {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
 }
+
+.text-center {
+    text-align: center;
+}
+
+#allChk{
+	margin: 4px 0 0;
+	line-height: normal;
+	box-sizing: border-box;
+    padding: 0;
+}
+
+/* 셀렉트박스  */
+.selectGrade {
+	display: block;
+    width: 65%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.gradeChangeBtn{
+	color: #333;
+    background-color: #f7f6f9;
+    border-color: #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    touch-action: manipulation;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+
+
+
+}
+
+.btn{
+	border: 0;
+	background-color: white;
+}
+
+#grade{
+	display: -webkit-inline-box;
+}
+
 
 	 
 	 
@@ -132,12 +197,11 @@ footer {
 
 
 <h1 id="title">회원목록</h1>
-<div id="userListbar" class="col-sm-8 text-left"> 
-<div id="centerContent">
+<div id="userListbar" > 
+<div id="centerContent" class="container text-center">
 <!-- 체크박스의 회원번호를 submit할 폼 -->
 <form action="checkDel.do" method="post" onsubmit="return confirmChk()"> 
 <table class ="table">
-	<col width="80px">
 	<col width="80px">
 	<col width="80px">
 	<col width="100px">
@@ -146,9 +210,8 @@ footer {
 	<col width="90px">
 	<col width="140px">
 	<col width="120px">
-	<tr>
-		<th><input type="checkbox" name="all" onclick="allSel(this.checked)" /></th>
-		<th>회원번호</th>
+	<tr id="Thbar">
+		<th><input type="checkbox" id="allChk" name="all" onclick="allSel(this.checked)" /></th>
 		<th>아이디</th>
 		<th>닉네임</th>
 		<th>이메일</th>
@@ -167,27 +230,28 @@ footer {
 			<td>
 					<input type="checkbox" name="chk" value="${memberdto.id}"/>
 			</td>
-				<td>${memberdto.seq}</td>
 				<td>${memberdto.id}</td>
 				<td>${memberdto.nickname}</td>
 				<td>${memberdto.email}</td>
 				<td>
 				<!-- 회원 등급 변경후 submit하는 폼-->
+
 			<form name="gradeChange" method="post" action="updateGrade.do" >
 				<input type="hidden" name="seq" value="${memberdto.seq}" >
-					<select name="grade">
+				<div id="grade">
+					<select name="grade" class="selectGrade">
 						<option value="A" id="adminChk" <c:if test="${memberdto.grade eq 'A'}" >selected</c:if>>관리자</option>
 				 		<option value="C" <c:if test="${memberdto.grade eq 'C'}" >selected</c:if>>일반회원</option>
 				 		<option value="B" <c:if test="${memberdto.grade eq 'B'}" >selected</c:if>>학원생</option>
 					</select>
 					<!-- 회원의 등급을 바꿔줌 -->
-				<input type="submit" value="변경" onclick="confirmChangeGrade();">
+				<a><input type="submit" value="변경" class="gradeChangeBtn" onclick="confirmChangeGrade();"></a></div>
 				</td>
 				<td>${memberdto.point}</td>
 				<td>${memberdto.writeCheck}</td>
 				<td>
-					<button type="button" onclick="location.href='userDetail.do?seq='+'${memberdto.seq}'">수정</button>
-					<button type="button" onclick="location.href='userDelete.do?seq='+'${memberdto.seq}'">삭제</button>		
+					<button class="btn" id="modifi" onclick="location.href='userDetail.do?seq='+'${memberdto.seq}'"><img class="btn-img" src="./resources/images/gear.png"></button>
+					<button class="btn" onclick="location.href='userDelete.do?seq='+'${memberdto.seq}'"><img class="btn-img" src="./resources/images/trash.png"></button>		
 				</form>		
 				</td>
 				</tr>
@@ -196,7 +260,7 @@ footer {
 	</c:choose>
 </table>
 </div>
-	<input type="submit" value="선택삭제"/>
+	<input type="submit" class="btn btn-default" value="선택삭제"/>
 </form>
 
 <script type="text/javascript">
@@ -233,16 +297,6 @@ footer {
 
 </div>
 <!-- 이한준 -->
-  <div class="col-sm-2 sidenav">
-  	<p>LeftsideBar</p>
-  </div>
 
-<div class="col-sm-2 sidenav">
-	<p>RightsideBar</p>
-</div>
-
-<footer class="container-fluid text-center">
-	<p>footer</p>
-</footer>
 </body>
 </html>

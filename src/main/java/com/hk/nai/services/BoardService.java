@@ -56,6 +56,11 @@ public class BoardService implements IBoardService {
 		public boolean delBoard(int b_seq) {
 			return boardDao.delBoard(b_seq);
 		}
+		@Override
+		public int getB_like(int b_seq) {
+			return boardDao.getB_like(b_seq);
+		}
+
 		
 	//---------------------------페이징------------------------------------
 		@Override
@@ -113,6 +118,7 @@ public class BoardService implements IBoardService {
 			return boardDao.downComment(b_seq);
 		}
 
+	
 		
 		
 
