@@ -9,20 +9,35 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title></title>
+<style type="text/css">
+	#table-container{
+		width: 1000px;		
+		margin: 0 auto; /* 0 :위,아래 auto :좌우를 자동으로 조정*/
+		overflow :auto;
+	}	
+</style>
+<script type="text/javascript">
+	function checkForm(){
+		var r_content = document.getElementById('r_content');
+		if(replyForm.r_content.value==""){
+			alert("댓글을 작성해주세요");
+			r_content.focus();
+			return false;
+		}
+	}
+</script>
 </head>
 <body>
 <%@include file="header.jsp" %>
-<h2>게시글 상세보기</h2>
+<h2>댓글 수정하기</h2>
 <form method="post">
 <input type ="hidden" name="b_seq" value="${dto.b_seq}" />
 <input type ="hidden" name="page" value="${cri.page}" />
 <input type ="hidden" name="perPageNum" value="${cri.perPageNum}" />
 </form>
-<table>
-	<tr>
-		<th>글 번호</th>
-		<td>${dto.b_seq}</td>
-	</tr>
+<div id="table-container">
+<div>
+<table class="table table-bordered">
 	<tr>
 		<th>작성자</th>
 		<td>${dto.m_nick}</td>
@@ -37,44 +52,27 @@
 	</tr>
 	<tr>
 		<th>내용</th>
-		<td><textarea rows="10" cols="60" readonly="readonly">${dto.b_content}</textarea>
-	</tr>
-	
+		<td><textarea rows="20" cols="50" readonly="readonly" class="form-control">${dto.b_content}</textarea>
+	</tr>	
 </table>
+</div>
 <br /><br />
-
-<!-- 	 수정댓글목록 출력할위치 -->
-
-<form action="updatecomment.do" method="post">
-<input type ="hidden" name="page" value="${cri.page}" />
-<input type ="hidden" name="perPageNum" value="${cri.perPageNum}" />
-<input type ="hidden" name="b_seq" value="${dto.b_seq}" />
+<form action="updatecomment.do" method="post" name="replyForm" onsubmit="return checkForm();">
+<input type ="hidden" name="page" value="${cri.page}" /> 
+<input type ="hidden" name="perPageNum" value="${cri.perPageNum}" /> 
+<input type ="hidden" name="b_seq" value="${dto.b_seq}" /> 
 <input type="hidden" name="r_seq" value="${cdto.r_seq }" />
-<table>
-	<col width="100px">
-	<col width="100px">
-	<col width="100px">
-	<col width="800px">
-	<col width="300px">
-	<col width="50px">
-	<col width="50px">
+<table class="table table-bordered">	
 	<tr>
-		<th>댓글번호</th>
-		<th>게시글번호</th>
-		<th>작성자</th>
-		<th>내용</th>
-		<th>작성일</th>
-	</tr>
-	<tr>
-		<td style="text-align:center">${cdto.r_seq}</td>
-		<td style="text-align:center">${dto.b_seq}</td>
-		<td style="text-align:center">${cdto.m_nick}</td>
-		<td style="text-align:center;"><textarea rows="5" cols="80" name="r_content">${cdto.r_content}</textarea>
-		<td style="text-align:center"><fmt:formatDate value="${cdto.r_regdate}" pattern="yyyy-MM-dd a HH:mm"/></td>
-		<td><input type="submit" value="수정완료" /></td>
-		<td><button type="button" onclick="location.href='detailboard.do?page=${cri.page}&perPageNum=${cri.perPageNum}&b_seq=${dto.b_seq}'">취소</button></td>
-	</tr>
-</table>
+		<td>
+			<textarea rows="4" id="r_content" name="r_content"class="form-control">${cdto.r_content}</textarea>
+		</td>
+	</tr>	
+</table>	
+	<div style="text-align:right">
+		<input type="submit" value="댓글수정" class="btn btn-primary btn-sm"/>
+	</div>	
 </form>
+</div>
 </body>
 </html>

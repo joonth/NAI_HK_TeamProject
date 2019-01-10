@@ -18,8 +18,29 @@
 		response.sendRedirect("signinform.do");
 	}
 %>
+<<<<<<< HEAD
 </head>
 	
+=======
+<style>
+
+.sticker{
+height:40px;
+overflow:hidden;
+margin:0;
+padding:0;
+list-style:none;
+}
+
+.sticker li{
+height:40px;
+padding:5px;
+margin: 0px 5px;
+}
+</style>
+
+</head>
+>>>>>>> branch 'master' of https://github.com/joonth/NAI_HK_TeamProject.git
 <body>
 <%@include file="WEB-INF/views/header.jsp" %>
 	
