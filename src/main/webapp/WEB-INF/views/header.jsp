@@ -4,8 +4,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/images/favicon.ico" type="image/x-icon">
-	<link rel="icon" href="${pageContext.request.contextPath}/resources/images/favicon.ico" type="image/x-icon">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
@@ -13,7 +11,6 @@
 	<script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/hj/header.js"></script>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
  <style type="text/css">
 body {
 	margin:0;
@@ -133,9 +130,7 @@ a{
 		
 	
 	<!-- 찜한 학원  -->
-
 	<div id="icon-bar" >
-
 	</div>
 	<!-- 찜한 학원 -->
 	<!-- Modal -->

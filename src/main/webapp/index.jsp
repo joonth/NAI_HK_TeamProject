@@ -7,6 +7,7 @@
 <html>
 <head>
 <!-- 이한준 -->
+	<link rel="shortcut icon" href="./resources/images/favicon.ico">
 	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/hj/main_search.js"></script>
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/search.css">	

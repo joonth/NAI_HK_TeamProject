@@ -7,6 +7,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="shortcut icon" href="./resources/images/favicon.ico">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>회원 조회/상세보기</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

@@ -5,6 +5,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
+		<link rel="shortcut icon" href="./resources/images/favicon.ico">
 		<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/hj/info.js"></script>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
