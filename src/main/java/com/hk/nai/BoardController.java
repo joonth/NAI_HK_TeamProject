@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 
 
+
 import java.util.List;
 
 import java.util.Locale;
@@ -30,7 +31,6 @@ import com.hk.nai.dtos.CommentDto1;
 import com.hk.nai.dtos.CriteriaDto;
 import com.hk.nai.dtos.LikeDto;
 import com.hk.nai.dtos.MemberDto;
-import com.hk.nai.dtos.MessageDto;
 import com.hk.nai.dtos.PageMakerDto;
 import com.hk.nai.services.BoardLikeService;
 import com.hk.nai.services.IBoardService;
