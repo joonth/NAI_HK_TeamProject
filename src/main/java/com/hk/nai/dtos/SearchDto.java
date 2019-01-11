@@ -18,52 +18,52 @@ public class SearchDto implements Serializable ,Comparable<SearchDto> {
 	public long getDday() {
 		return dday;
 	}
-	public void setDday(long dday) {
-		this.dday = dday;
+	public SearchDto setDday(long dday) {
+		this.dday = dday; return this;
 	}
 	public String getTrastartdate() {
 		return trastartdate;
 	}
-	public void setTrastartdate(String trastartdate) {
-		this.trastartdate = trastartdate;
+	public SearchDto setTrastartdate(String trastartdate) {
+		this.trastartdate = trastartdate; return this;
 	}
 	public String getTrprId() {
 		return trprId;
 	}
-	public void setTrprId(String trprId) {
-		this.trprId = trprId;
+	public SearchDto setTrprId(String trprId) {
+		this.trprId = trprId; return this;
 	}
 	private String trprId;
 	
 	public Float getScore() {
 		return score;
 	}
-	public void setScore(Float score) {
-		this.score = score;
+	public SearchDto setScore(Float score) {
+		this.score = score; return this;
 	}
 	public String getImg() {
 		return img;
 	}
-	public void setImg(String img) {
-		this.img = img;
+	public SearchDto setImg(String img) {
+		this.img = img; return this;
 	}
 	public String getTitle() {
 		return title;
 	}
-	public void setTitle(String title) {
-		this.title = title;
+	public SearchDto setTitle(String title) {
+		this.title = title; return this;
 	}
 	public String getSubTitle() {
 		return subTitle;
 	}
-	public void setSubTitle(String subTitle) {
-		this.subTitle = subTitle;
+	public SearchDto setSubTitle(String subTitle) {
+		this.subTitle = subTitle; return this;
 	}
 	public String getAddress() {
 		return address;
 	}
-	public void setAddress(String address) {
-		this.address = address;
+	public SearchDto setAddress(String address) {
+		this.address = address; return this;
 	}
 	
 	@Override

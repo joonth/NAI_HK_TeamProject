@@ -14,8 +14,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -54,7 +52,6 @@ import com.hk.nai.services.SearchService;
 import com.hk.nai.utils.SearchUtil;
 import com.hk.nai.dtos.BasketDto;
 import com.hk.nai.dtos.AcademyDto;
-import com.hk.nai.dtos.AddImgDto;
 import com.hk.nai.services.CommentAddPermitService;
 import com.hk.nai.services.CommentService;
 import com.hk.nai.services.CacheService;
@@ -84,10 +81,6 @@ public class HomeController {
 	@Autowired
 	PointHandleDao pointDao;
 	@Autowired
-	InfoDto infoDto;
-	@Autowired
-	AddImgDto addImgDto;
-	@Autowired
 	SearchService Sserv;
 	@Autowired
 	InfoService Iserv;
@@ -106,7 +99,6 @@ public class HomeController {
 	/////////////////////	이한준	///////////////////////
 	List<SearchDto> list = new ArrayList<SearchDto>();
 	int count = 0;	//출력되는 과정수를 나타내기 위한 변수.
-	
 	
 	@RequestMapping(value = "/main.do", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) throws IOException {
@@ -148,26 +140,26 @@ public class HomeController {
 					 String subtitle = util.tagTrim(datas.get(i).select("subtitle"), "subtitle");
 					 String address = util.tagTrim(datas.get(i).select("address"), "address");
 					 String trprid = util.tagTrim(datas.get(i).select("trprid"), "trprid");
-					 searchDto.setTitle(title);
-					 searchDto.setSubTitle(subtitle);
-					 searchDto.setAddress(address);
-					 searchDto.setTrprId(trprid);
+					 searchDto.setTitle(title)
+					 		  .setSubTitle(subtitle)
+					 		  .setAddress(address)
+					 		  .setTrprId(trprid); 
+					 
+					 // 학원 img 처리
 					 if(Sserv.getImg(subtitle) != null) {
 						 searchDto.setImg(Sserv.getImg(subtitle));						 
-					 }else {
-					    org.jsoup.nodes.Document imgData=
-						Jsoup.connect("http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA40/HRDPOA40_2.jsp?authKey="+key+"&returnType=XML&outType=2&srchTrprId="+trprid+"&srchTrprDegr=1")
-						.timeout(80000).maxBodySize(10*1024*1024).get();
-					    String img = util.tagTrim(imgData.select("filepath"), "filepath");
-					    
-						  if(img.equals("")){
-							addImgDto.setAc_name(subtitle).setImg("http://sign.kedui.net/rtimages/n_sub/no_detail_img.gif");
-							searchDto.setImg("http://sign.kedui.net/rtimages/n_sub/no_detail_img.gif");
-						  }else{
-						    addImgDto.setAc_name(subtitle).setImg(img);
+					 }else {	//db에 해당하는 학원의 img가 없으면 api요청해서 img를 받고 db에 저장한다.
+					     org.jsoup.nodes.Document imgData=
+					     Jsoup.connect("http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA40/HRDPOA40_2.jsp?authKey="+key+"&returnType=XML&outType=2&srchTrprId="+trprid+"&srchTrprDegr=1")
+					 	 .timeout(80000).maxBodySize(10*1024*1024).get();
+					     String img = util.tagTrim(imgData.select("filepath"), "filepath");				    
+						 
+					     if(img.equals("")){ 	//요청해서 받은 이미지가 없을경우 이미지없음 사진을 저장.
+							  searchDto.setImg("http://sign.kedui.net/rtimages/n_sub/no_detail_img.gif");
+						 }else{
 							searchDto.setImg(img);
-						  }  
-						  Sserv.addImgToDb(addImgDto);
+						 }  
+						 Sserv.addImgToDb(searchDto);
 					 }	
 								 
 					 if(getAcClassMap.containsKey(subtitle)) {
@@ -186,19 +178,15 @@ public class HomeController {
 						 searchDto.setDday((eventDay-today)/(60*60*24*1000));
 						 acClassList.add(searchDto);
 						 getAcClassMap.put(subtitle, (LinkedList<SearchDto>) acClassList);
-					 }
-					 
+					 }	 
 					 list.add(searchDto); 
 					 count++;	
 				}
 			}//for
-
-		
 			System.out.println("출력 과정수 : "+count);	
 		} // if(
 		model.addAttribute("list", list);	
 		model.addAttribute("key", key);
-		
 		
 		//////////////////////////////////// 이한준 /////////////////////////////////////
 		
@@ -541,49 +529,10 @@ public class HomeController {
     }
     
     ////////////////	이한준 	//////////////////////////////////////////////////////////////////////////////
-  
- 
-	
-	@RequestMapping(value = "/getMessageList.do", method = RequestMethod.GET)
-	public String getAllBoard(Locale locale, Model model, String n_receiver) {
-		logger.info("메시지 리스트 출력", locale);
-		List<MessageDto> list = messageDao.getMessageList(n_receiver);
-		Collections.sort(list);
-		model.addAttribute("list", list);
-		return "messagelist";
-	}
-	
-	@RequestMapping(value = "/getMessage.do", method = RequestMethod.GET)
-	public String getMessage(Locale locale, Model model, MessageDto dto) {
-		logger.info("메시지 내용 출력", locale);
-		MessageDto  mdto = messageDao.getMessage(dto.getN_seq());
-		model.addAttribute("dto",mdto);
-		return "messagecontent";
-	}
-	
-
-	@RequestMapping(value = "/sendMessage.do", method = RequestMethod.POST)
-	public String sendMessage(Locale locale, Model model, MessageDto dto) {
-		logger.info("메시지 전송", locale);
-		System.out.println(dto.toString());
-		messageDao.sendMessage(dto);
-		
-		return "../../index";
-	}
-	
-	@RequestMapping(value = "/deleteMessage.do", method = RequestMethod.GET)
-	public String deleteMessage(Locale locale, Model model, MessageDto dto, String n_receiver) {
-		logger.info("메시지 삭제", locale);
-		messageDao.deleteMessage(dto.getN_seq());
-		List<MessageDto> list = messageDao.getMessageList(n_receiver);
-		model.addAttribute("n_receiver", n_receiver);	
-		model.addAttribute("list", list);
-		return "messagelist";
-	}
 	
 	@RequestMapping(value = "/info.do", method = RequestMethod.GET)
 	public String info(Locale locale, Model model, String subTitle) throws IOException {
-		
+		InfoDto infoDto = new InfoDto();
 		 org.jsoup.nodes.Document docInfo=
 					Jsoup.connect("http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA40/HRDPOA40_2.jsp?authKey="+key+"&returnType=XML&outType=2&srchTrprId="+getAcClassMap.get(subTitle).get(0).getTrprId()+"&srchTrprDegr=1")
 					.timeout(80000).maxBodySize(10*1024*1024).get();
@@ -611,7 +560,6 @@ public class HomeController {
 		
 		return "info";
 	}
-	//CommentDao
 	
 	@ResponseBody
 	@RequestMapping(value = "/addComment.do", method = RequestMethod.GET)
@@ -643,6 +591,13 @@ public class HomeController {
 		}
 		return map;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/deleteComment.do", method = RequestMethod.GET)
+	public void deleteComment(Locale locale, Model model, String m_id, String ac_name) throws IOException {
+		logger.info("학원평 삭제", locale);
+		Cserv.deleteComment(m_id);
+	}
     
 	@ResponseBody
 	@RequestMapping(value = "/getList.do", method = RequestMethod.POST)
@@ -656,61 +611,34 @@ public class HomeController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/getMemberList.do", method = RequestMethod.POST)
-	public Map<String,List<MemberDto>> getMemberList(Locale locale, Model model) throws IOException {
-		Map<String,List<MemberDto>> map = new HashMap<String,List<MemberDto>>();
-		map.put("list", Sserv.getMemberList());
-		return map;
-	}
-	
-
-	@ResponseBody
-	@RequestMapping(value = "/changeState.do", method = RequestMethod.GET)
-	public Map<String,String> changeState(Locale locale, Model model,String value,String section) throws IOException {
-		Map<String,String> map = new HashMap<String,String>();	
-		section = (section.equals("a")) ? "b": "a";
-		map.put("value", value);
-		map.put("section", section);
-		return map;
-	}
-	
-	@ResponseBody
 	@RequestMapping(value = "/putBasket.do", method = RequestMethod.GET)
 	public Map<String,String> putBasket(Locale locale, Model model, BasketDto dto,HttpSession session) throws IOException {
-	Map<String,String> map = new HashMap<String,String>();
-	MemberDto mto = (MemberDto)session.getAttribute("member");
-	List<StartClassDto> list = cacheService.showStartClass();
-	List<BasketDto> myAcList = memberService.showMyAcList(mto.getId());
-	for(BasketDto bdto : myAcList) {
-		if(bdto.getBaskAcademyName().equals(dto.getBaskAcademyName())) {
-			map.put("msg", "이미 찜한 학원입니다.");
-			return map;
+		Map<String,String> map = new HashMap<String,String>();
+		MemberDto mto = (MemberDto)session.getAttribute("member");
+		List<StartClassDto> list = cacheService.showStartClass();
+		List<BasketDto> myAcList = memberService.showMyAcList(mto.getId());
+		for(BasketDto bdto : myAcList) {
+			if(bdto.getBaskAcademyName().equals(dto.getBaskAcademyName())) {
+				map.put("msg", "이미 찜한 학원입니다.");
+				return map;
+			}
 		}
-	}
-	for(int i =0; i<list.size(); i++) {
-		StartClassDto sto = list.get(i);
-		if(sto.getStartAcademyName().equals(dto.getBaskAcademyName())) {
-			MessageDto mdto = new MessageDto();
-			mdto.setN_sender("admin");
-			mdto.setN_receiver(dto.getBaskId());
-			mdto.setN_content(sto.getStartAcademyName()+" "+sto.getStartClassName()+" " + sto.getStartDDay());
-			mdto.setNs_state_code("a");
-			messageDao.sendMessage(mdto);
-		}
+		for(int i =0; i<list.size(); i++) {
+			StartClassDto sto = list.get(i);
+			if(sto.getStartAcademyName().equals(dto.getBaskAcademyName())) {
+				MessageDto mdto = new MessageDto();
+				mdto.setN_sender("admin");
+				mdto.setN_receiver(dto.getBaskId());
+				mdto.setN_content(sto.getStartAcademyName()+" "+sto.getStartClassName()+" " + sto.getStartDDay());
+				mdto.setNs_state_code("a");
+				messageDao.sendMessage(mdto);
+			}
 		}
 		System.out.println(dto.getBaskId()+" "+dto.getBaskAcademyName());
 		Sserv.putBasket(dto);
 		map.put("msg", "찜목록에 추가되었습니다.");
 		return map;
 	}
-	
-	@ResponseBody
-	@RequestMapping(value = "/deleteComment.do", method = RequestMethod.GET)
-	public void deleteComment(Locale locale, Model model, String m_id, String ac_name) throws IOException {
-		logger.info("학원평 삭제", locale);
-		Cserv.deleteComment(m_id);
-	}
-	
 	
 	@ResponseBody
 	@RequestMapping(value = "/showBasket.do", method = RequestMethod.GET)
@@ -731,9 +659,5 @@ public class HomeController {
 	}
 	
 	
-    ////////////////	이한준 	//////////////////////////////////////////////////////////////////////////////
-    
-    
-    
-    
+    ////////////////	이한준 	//////////////////////////////////////////////////////////////////////////////   
 }

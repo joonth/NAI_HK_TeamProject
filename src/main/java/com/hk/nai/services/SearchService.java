@@ -1,6 +1,5 @@
 package com.hk.nai.services;
 
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hk.nai.daos.SearchDao;
-import com.hk.nai.dtos.AddImgDto;
 import com.hk.nai.dtos.BasketDto;
 import com.hk.nai.dtos.MemberDto;
+import com.hk.nai.dtos.SearchDto;
 
 @Service
 public class SearchService {
@@ -41,7 +40,7 @@ public class SearchService {
 		return dao.getMemberList();
 	}
 	
-	public void addImgToDb(AddImgDto dto) {
+	public void addImgToDb(SearchDto dto) {
 		dao.addImgToDb(dto);
 	}
 	

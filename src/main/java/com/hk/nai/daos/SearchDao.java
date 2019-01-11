@@ -6,10 +6,9 @@ import java.util.List;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import com.hk.nai.dtos.AddImgDto;
 import com.hk.nai.dtos.BasketDto;
 import com.hk.nai.dtos.MemberDto;
+import com.hk.nai.dtos.SearchDto;
 
 @Repository
 public class SearchDao {
@@ -32,7 +31,7 @@ public class SearchDao {
 		return sst.selectList(ns+"getMemberList");
 	}
 	
-	public void addImgToDb (AddImgDto dto) {
+	public void addImgToDb (SearchDto dto) {
 		sst.insert(ns+"addImgToDb", dto);
 	}
 	
