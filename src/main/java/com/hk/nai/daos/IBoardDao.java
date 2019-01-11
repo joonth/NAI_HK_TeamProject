@@ -32,6 +32,7 @@ public List<BoardDto> getAllList(); //전체 게시글 보기
     public List<BoardDto> listCriteria(String page) throws Exception;//최신순 10개씩
 	public List<BoardDto> listCriteria1(String page) throws Exception;//조회순 10개씩
 	public List<BoardDto> listCriteria2(String page) throws Exception;//조회순 10개씩
+	public List<BoardDto> listCriteria3(String page) throws Exception;//댓글순
     // 전체 게시글 수 구하기
     public Integer TotalCount() throws Exception;
  

@@ -15,7 +15,7 @@ public class PageMakerDto {
     private boolean prev; // 이전 버튼을 누를 수 있는 경우/없는 경우 분류를 위함
     private boolean next;//다음버튼 누를수 있는경우/없는경우 분류
  
-    private int displayPageNum = 5; // 화면 하단에 보여지는 페이지의 개수
+    private int displayPageNum = 3; // 화면 하단에 보여지는 페이지의 개수
     private int tempEndPage;
  
     ///////////////////////////////////////////////////////////////////////////////////////////////

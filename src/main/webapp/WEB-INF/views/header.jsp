@@ -19,8 +19,8 @@
 	font-family: 'Noto Sans KR', sans-serif;
 }
 
-body {
-	margin:0;
+body {	
+	margin:0 auto;
 	height:100%;
 	background-color: #f6f6f6;
 	font-weight: 400;
