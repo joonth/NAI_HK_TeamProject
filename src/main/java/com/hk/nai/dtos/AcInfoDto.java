@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SearchDto implements Serializable ,Comparable<SearchDto> {
+public class AcInfoDto implements Serializable ,Comparable<AcInfoDto> {
 	private String img;
 	private String title;
 	private String subTitle;
@@ -18,52 +18,52 @@ public class SearchDto implements Serializable ,Comparable<SearchDto> {
 	public long getDday() {
 		return dday;
 	}
-	public void setDday(long dday) {
-		this.dday = dday;
+	public AcInfoDto setDday(long dday) {
+		this.dday = dday; return this;
 	}
 	public String getTrastartdate() {
 		return trastartdate;
 	}
-	public void setTrastartdate(String trastartdate) {
-		this.trastartdate = trastartdate;
+	public AcInfoDto setTrastartdate(String trastartdate) {
+		this.trastartdate = trastartdate; return this;
 	}
 	public String getTrprId() {
 		return trprId;
 	}
-	public void setTrprId(String trprId) {
-		this.trprId = trprId;
+	public AcInfoDto setTrprId(String trprId) {
+		this.trprId = trprId; return this;
 	}
 	private String trprId;
 	
 	public Float getScore() {
 		return score;
 	}
-	public void setScore(Float score) {
-		this.score = score;
+	public AcInfoDto setScore(Float score) {
+		this.score = score; return this;
 	}
 	public String getImg() {
 		return img;
 	}
-	public void setImg(String img) {
-		this.img = img;
+	public AcInfoDto setImg(String img) {
+		this.img = img; return this;
 	}
 	public String getTitle() {
 		return title;
 	}
-	public void setTitle(String title) {
-		this.title = title;
+	public AcInfoDto setTitle(String title) {
+		this.title = title; return this;
 	}
 	public String getSubTitle() {
 		return subTitle;
 	}
-	public void setSubTitle(String subTitle) {
-		this.subTitle = subTitle;
+	public AcInfoDto setSubTitle(String subTitle) {
+		this.subTitle = subTitle; return this;
 	}
 	public String getAddress() {
 		return address;
 	}
-	public void setAddress(String address) {
-		this.address = address;
+	public AcInfoDto setAddress(String address) {
+		this.address = address; return this;
 	}
 	
 	@Override
@@ -73,7 +73,7 @@ public class SearchDto implements Serializable ,Comparable<SearchDto> {
 	}
 	
 	@Override
-	public int compareTo(SearchDto d1) {
+	public int compareTo(AcInfoDto d1) {
 		if(d1.getDday() > dday) {
 			return -1;
 		}else if(d1.getDday() < dday) {
