@@ -100,7 +100,9 @@ $(document).ready(function(){
 			datatype:"json",
 			success: function (data) {
 				alert(data.msg);
-				showBasket();
+				if(data.msg == '찜목록에 추가되었습니다.'){
+					showBasket();					
+				}
 			},
 			error: function (data) {
 				console.log('실패');

@@ -11,7 +11,7 @@
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/hj/header.js"></script>
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/header.css">
+<%-- 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/header.css"> --%>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
  
  <style type="text/css">

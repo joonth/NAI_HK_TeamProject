@@ -2,7 +2,6 @@ $(document).ready(function(){
 	var sock = new SockJS('.do');
 	
 	$('#bk').click(function() {
-		alert('임박과정 Message가 도착했습니다.');
 		sock.send($("#session").val());
 	});
 	
