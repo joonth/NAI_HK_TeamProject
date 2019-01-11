@@ -623,7 +623,7 @@ public class HomeController {
 				MessageDto mdto = new MessageDto();
 				mdto.setN_sender("admin");
 				mdto.setN_receiver(dto.getBaskId());
-				mdto.setN_content(sto.getStartAcademyName()+" "+sto.getStartClassName()+" " + sto.getStartDDay());
+				mdto.setN_content(sto.getStartAcademyName()+"의  \n"+sto.getStartClassName()+"과정의 개강일이 \n" + sto.getStartDDay()+"일 남았습니다!.");
 				mdto.setNs_state_code("a");
 				messageDao.sendMessage(mdto);
 			}

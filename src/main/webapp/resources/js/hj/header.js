@@ -1,13 +1,18 @@
 $(document).ready(function(){
 	var sock = new SockJS('.do');
 	
+	$('#bk').click(function() {
+		alert('임박과정 Message가 도착했습니다.');
+		sock.send($("#session").val());
+	});
+	
 	$("#messageForm").submit(function(event) {
-     sock.send($("#n_receiver").val());
-		alert('보냄');
+	    sock.send($("#n_receiver").val());
+	    alert('쪽지를 보냈습니다.');
 	});
 	
 	$("#messageAllForm").submit(function(event){
-		alert('보냄');
+		alert('쪽지를 보냈습니다.');
 		for(var i=0; i<$('#b').children('div').length; i++){
 			var n_receiver = $('#b').children('div').eq(i).attr('value');	
 			 sock.send(n_receiver);
