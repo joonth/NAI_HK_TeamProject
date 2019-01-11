@@ -8,6 +8,9 @@
 	    width: 60%;
 	    height: 90%;
 	    overflow-y: scroll;
+	    max-width: 736px;
+   	 	min-width: 736px;
+   		 z-index: 1;
 	}
 
 	#myInput {
@@ -18,7 +21,9 @@
 	  font-size: 16px;
 	  padding: 12px 20px 12px 40px;
 	  border: 1px solid #ddd;
-	  margin-bottom: 12px;
+	  max-width: 736px;
+    min-width: 736px;
+    margin-top:35px;
 	}
 
 	#myTable {
@@ -51,9 +56,9 @@
 	
 	
 	.content{
- 	    height: 86%;
+ 	    height: 87%;
 	    margin: 0px;
-	    min-height: 86%;
+	    min-height: 87%;
 	    min-width: 100%;
 	    width: 100%;
 	    flex-direction: column;
@@ -68,8 +73,17 @@
         height: 50px;
    		text-align: center;
 	}
-	
-	
+	 	.bgImg{
+		height: 300px;
+	    max-width: 736px;
+	    width: 100%;
+	    background-image: url(../images/1.jpg);
+	    background-repeat: no-repeat;
+	    background-size: contain;
+	    background-position-x: center;
+	    position: absolute;
+	    top: 23%;
+	}
 	
 	.dday{
 		background: red;
@@ -129,22 +143,7 @@
 	.ranking-table-sec-td{
 		width: 240px;
 	}
-	.bgImg{
-		height: 300px;
-	    max-width: 1180px;
-	    width: 100%;
-	    background-image: url(../images/1.jpg);
-	    background-repeat: no-repeat;
-	    background-size: contain;
-	    background-position-x: center;
-	    position: absolute;
-	    top: 16%;
-	    z-index: -1;
-	}
 	
-	#myInput{
-		top:20%;
-	}
 	
 	.box{
 		box-sizing: border-box;

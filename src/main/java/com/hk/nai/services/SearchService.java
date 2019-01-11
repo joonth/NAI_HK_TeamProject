@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.hk.nai.daos.SearchDao;
 import com.hk.nai.dtos.BasketDto;
 import com.hk.nai.dtos.MemberDto;
-import com.hk.nai.dtos.SearchDto;
+import com.hk.nai.dtos.AcInfoDto;
 
 @Service
 public class SearchService {
@@ -40,7 +40,7 @@ public class SearchService {
 		return dao.getMemberList();
 	}
 	
-	public void addImgToDb(SearchDto dto) {
+	public void addImgToDb(AcInfoDto dto) {
 		dao.addImgToDb(dto);
 	}
 	

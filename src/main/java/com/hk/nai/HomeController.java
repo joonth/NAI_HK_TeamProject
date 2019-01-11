@@ -45,7 +45,7 @@ import com.hk.nai.dtos.MemberDto;
 import com.hk.nai.services.MemberService;
 import com.hk.nai.HomeController;
 import com.hk.nai.dtos.InfoDto;
-import com.hk.nai.dtos.SearchDto;
+import com.hk.nai.dtos.AcInfoDto;
 import com.hk.nai.dtos.StartClassDto;
 import com.hk.nai.services.InfoService;
 import com.hk.nai.services.SearchService;
@@ -70,7 +70,7 @@ public class HomeController {
 	
 	/////////////////////	이한준	///////////////////////
 	Map<String,String> dupeCheck = new HashMap<String,String>();	// 학원평 재 작성시 포인트 중복추가 방지
-	Map<String,LinkedList<SearchDto>> getAcClassMap = new HashMap<String,LinkedList<SearchDto>>();
+	Map<String,LinkedList<AcInfoDto>> getAcInfoMap = new HashMap<String,LinkedList<AcInfoDto>>();
 
 	@Autowired		//api로 얻어온 xml data의 tag를 없애는 util.
 	SearchUtil util;
@@ -97,7 +97,7 @@ public class HomeController {
 	private CacheService cacheService;
 	
 	/////////////////////	이한준	///////////////////////
-	List<SearchDto> list = new ArrayList<SearchDto>();
+	List<AcInfoDto> list = new ArrayList<AcInfoDto>();
 	int count = 0;	//출력되는 과정수를 나타내기 위한 변수.
 	
 	@RequestMapping(value = "/main.do", method = RequestMethod.GET)
@@ -109,7 +109,6 @@ public class HomeController {
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");	
 		    Calendar c1 = Calendar.getInstance();
-		    long today = c1.getTimeInMillis();
 		    String strToday = sdf.format(c1.getTime());
 			
 			org.jsoup.nodes.Document doc=
@@ -119,6 +118,7 @@ public class HomeController {
 			
 			for(int i = 0; i < datas.size(); i++){
 				String title = util.tagTrim(datas.get(i).select("title"), "title");
+				// 
 				if(title.contains("자바")
 						|| title.contains("웹")
 						|| title.contains("앱")
@@ -136,50 +136,44 @@ public class HomeController {
 						|| title.contains("프로그래밍")
 						|| title.contains("보안"))
 				 {		 
-					 SearchDto searchDto = new SearchDto();
+					 AcInfoDto acInfoDto = new AcInfoDto();
 					 String subtitle = util.tagTrim(datas.get(i).select("subtitle"), "subtitle");
 					 String address = util.tagTrim(datas.get(i).select("address"), "address");
 					 String trprid = util.tagTrim(datas.get(i).select("trprid"), "trprid");
-					 searchDto.setTitle(title)
+					 String trastartdate =util.tagTrim(datas.get(i).select("trastartdate"), "trastartdate");
+					 acInfoDto.setTitle(title)
 					 		  .setSubTitle(subtitle)
 					 		  .setAddress(address)
-					 		  .setTrprId(trprid); 
+					 		  .setTrprId(trprid) 
+					 		  .setTrastartdate(trastartdate)
+					 		  .setDday(util.trimDday(acInfoDto));
 					 
 					 // 학원 img 처리
 					 if(Sserv.getImg(subtitle) != null) {
-						 searchDto.setImg(Sserv.getImg(subtitle));						 
+						 acInfoDto.setImg(Sserv.getImg(subtitle));						 
 					 }else {	//db에 해당하는 학원의 img가 없으면 api요청해서 img를 받고 db에 저장한다.
 					     org.jsoup.nodes.Document imgData=
 					     Jsoup.connect("http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA40/HRDPOA40_2.jsp?authKey="+key+"&returnType=XML&outType=2&srchTrprId="+trprid+"&srchTrprDegr=1")
 					 	 .timeout(80000).maxBodySize(10*1024*1024).get();
 					     String img = util.tagTrim(imgData.select("filepath"), "filepath");				    
-						 
-					     if(img.equals("")){ 	//요청해서 받은 이미지가 없을경우 이미지없음 사진을 저장.
-							  searchDto.setImg("http://sign.kedui.net/rtimages/n_sub/no_detail_img.gif");
+					   //요청해서 받은 이미지가 없을경우 이미지없음 사진을 저장.
+					     if(img.equals("")){ 
+							  acInfoDto.setImg("http://sign.kedui.net/rtimages/n_sub/no_detail_img.gif");
 						 }else{
-							searchDto.setImg(img);
+							acInfoDto.setImg(img);
 						 }  
-						 Sserv.addImgToDb(searchDto);
+						 Sserv.addImgToDb(acInfoDto);
 					 }	
-								 
-					 if(getAcClassMap.containsKey(subtitle)) {
-						 searchDto.setTrastartdate(util.tagTrim(datas.get(i).select("trastartdate"), "trastartdate"));
-						 String[] strdate =searchDto.getTrastartdate().split("-");
-						 c1.set(Integer.parseInt(strdate[0]), Integer.parseInt(strdate[1])-1, Integer.parseInt(strdate[2]));
-						 long eventDay = c1.getTimeInMillis();
-						 searchDto.setDday((eventDay-today)/(60*60*24*1000));
-						 getAcClassMap.get(subtitle).add(searchDto);					 
+					
+					 // getAcInfoMap에   AcInfoDto를 저장
+					 if(getAcInfoMap.containsKey(subtitle)) {
+						 getAcInfoMap.get(subtitle).add(acInfoDto);					 
 					 }else {
-						 List<SearchDto> acClassList = new LinkedList<SearchDto>();
-						 searchDto.setTrastartdate(util.tagTrim(datas.get(i).select("trastartdate"), "trastartdate"));
-						 String[] strdate =searchDto.getTrastartdate().split("-");
-						 c1.set(Integer.parseInt(strdate[0]), Integer.parseInt(strdate[1])-1, Integer.parseInt(strdate[2]));
-						 long eventDay = c1.getTimeInMillis();
-						 searchDto.setDday((eventDay-today)/(60*60*24*1000));
-						 acClassList.add(searchDto);
-						 getAcClassMap.put(subtitle, (LinkedList<SearchDto>) acClassList);
+						 List<AcInfoDto> acClassList = new LinkedList<AcInfoDto>();
+						 acClassList.add(acInfoDto);
+						 getAcInfoMap.put(subtitle, (LinkedList<AcInfoDto>) acClassList);
 					 }	 
-					 list.add(searchDto); 
+					 list.add(acInfoDto); 
 					 count++;	
 				}
 			}//for
@@ -193,7 +187,6 @@ public class HomeController {
 		// 학원랭킹, 마감임박수업 캐시
 		model.addAttribute("ranking", cacheService.showRanking());
 		model.addAttribute("startclass", cacheService.showStartClass());
-		
 		return "../../index";  //controller가 아니라 signinform.jsp로 이동
 	}
 	
@@ -534,9 +527,9 @@ public class HomeController {
 	public String info(Locale locale, Model model, String subTitle) throws IOException {
 		InfoDto infoDto = new InfoDto();
 		 org.jsoup.nodes.Document docInfo=
-					Jsoup.connect("http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA40/HRDPOA40_2.jsp?authKey="+key+"&returnType=XML&outType=2&srchTrprId="+getAcClassMap.get(subTitle).get(0).getTrprId()+"&srchTrprDegr=1")
+					Jsoup.connect("http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA40/HRDPOA40_2.jsp?authKey="+key+"&returnType=XML&outType=2&srchTrprId="+getAcInfoMap.get(subTitle).get(0).getTrprId()+"&srchTrprDegr=1")
 					.timeout(80000).maxBodySize(10*1024*1024).get();
-		infoDto.setImg(getAcClassMap.get(subTitle).get(0).getImg());
+		infoDto.setImg(getAcInfoMap.get(subTitle).get(0).getImg());
 		infoDto.setAddr1(util.tagTrim(docInfo.select("addr1"),"addr1"));
 		infoDto.setAddr2(util.tagTrim(docInfo.select("addr2"),"addr2"));
 		infoDto.setHpaddr(util.tagTrim(docInfo.select("hpaddr"),"hpaddr"));
@@ -546,7 +539,7 @@ public class HomeController {
 		infoDto.setScore(Sserv.getScore(subTitle));
 		model.addAttribute("infoDto", infoDto);
 		// 개강일자가 빠른 순서대로 출력하기 위한 정렬
-		List<SearchDto> aclist = getAcClassMap.get(subTitle);
+		List<AcInfoDto> aclist = getAcInfoMap.get(subTitle);
 		Collections.sort(aclist);
 		//
 		model.addAttribute("aclist",aclist);
@@ -648,7 +641,7 @@ public class HomeController {
 		List<BasketDto> myAcList = memberService.showMyAcList(m_id);
 		if(myAcList != null) {	
 			for(int i=0; i<myAcList.size(); i++) {
-				SearchDto dto = (SearchDto) getAcClassMap.get((myAcList.get(i).getBaskAcademyName())).get(0);
+				AcInfoDto dto = (AcInfoDto) getAcInfoMap.get((myAcList.get(i).getBaskAcademyName())).get(0);
 				img.add(dto.getImg());
 				img.add(dto.getSubTitle());
 			}	

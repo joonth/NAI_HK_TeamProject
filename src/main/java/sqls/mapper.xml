@@ -211,7 +211,7 @@
   		UPDATE MEMBER SET M_POINT = M_POINT + #{point} WHERE M_ID =#{id}
   	</update>
   	
-  	<insert id="addImgToDb" parameterType="SearchDto">
+  	<insert id="addImgToDb" parameterType="AcInfoDto">
   		INSERT INTO AC_IMG VALUES(#{ac_name},#{img})
   	</insert>
   	

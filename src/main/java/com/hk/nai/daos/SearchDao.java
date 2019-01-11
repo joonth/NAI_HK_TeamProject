@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import com.hk.nai.dtos.BasketDto;
 import com.hk.nai.dtos.MemberDto;
-import com.hk.nai.dtos.SearchDto;
+import com.hk.nai.dtos.AcInfoDto;
 
 @Repository
 public class SearchDao {
@@ -31,7 +31,7 @@ public class SearchDao {
 		return sst.selectList(ns+"getMemberList");
 	}
 	
-	public void addImgToDb (SearchDto dto) {
+	public void addImgToDb (AcInfoDto dto) {
 		sst.insert(ns+"addImgToDb", dto);
 	}
 	
