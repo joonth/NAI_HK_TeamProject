@@ -346,6 +346,17 @@
 		]]>
     </select>  
     
+     <!--     댓글순으로 10개식 출력하는 쿼리 -->
+    <select id="listCriteria3" resultType="BoardDto" parameterType="String"> 
+       <![CDATA[
+			select * from
+						(
+							select ROW_NUMBER() OVER ( ORDER BY cmt_count desc,b_seq desc) rn,b_seq,m_nick,b_title,b_content,b_regdate,b_readcount,b_like,cmt_count from board
+				 		)
+ 			 where ceil(rn/15)=#{page}
+ 			
+		]]>
+    </select>  
     
     <!-- 전체 게시글 수를 구하는 쿼리 -->
     <select id="getTotalCount" resultType="java.lang.Integer">

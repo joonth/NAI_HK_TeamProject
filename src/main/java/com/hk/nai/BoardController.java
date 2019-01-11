@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 
 
+
 import java.util.List;
 
 import java.util.Locale;
@@ -30,7 +31,6 @@ import com.hk.nai.dtos.CommentDto1;
 import com.hk.nai.dtos.CriteriaDto;
 import com.hk.nai.dtos.LikeDto;
 import com.hk.nai.dtos.MemberDto;
-import com.hk.nai.dtos.MessageDto;
 import com.hk.nai.dtos.PageMakerDto;
 import com.hk.nai.services.BoardLikeService;
 import com.hk.nai.services.IBoardService;
@@ -95,6 +95,11 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 			dto = boardService.listCriteria2(page);
 			model.addAttribute("list", dto);
 			model.addAttribute("pagelist", "b_like");
+			return "boardlist";
+		}else if(pagelist.equals("cmt_count")) {//댓글순 ->cmt_count desc,b_seq desc
+			dto = boardService.listCriteria3(page);
+			model.addAttribute("list", dto);
+			model.addAttribute("pagelist", "cmt_count");
 			return "boardlist";
 		}
 		return "boardlist";

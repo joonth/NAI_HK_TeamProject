@@ -30,7 +30,8 @@
 </head>
 <body>
 <%@include file="header.jsp" %>
-<h2>댓글 수정하기</h2>
+<h2 style="text-align:center">댓글 수정하기</h2>
+<br /><br />
 <form method="post">
 <input type ="hidden" name="b_seq" value="${dto.b_seq}" />
 <input type ="hidden" name="page" value="${cri.page}" />
