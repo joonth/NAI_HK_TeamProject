@@ -68,7 +68,6 @@ public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
-	/////////////////////	이한준	///////////////////////
 	Map<String,String> dupeCheck = new HashMap<String,String>();	// 학원평 재 작성시 포인트 중복추가 방지
 	Map<String,LinkedList<AcInfoDto>> getAcInfoMap = new HashMap<String,LinkedList<AcInfoDto>>();
 
@@ -96,14 +95,12 @@ public class HomeController {
 	@Autowired
 	private CacheService cacheService;
 	
-	/////////////////////	이한준	///////////////////////
 	List<AcInfoDto> list = new ArrayList<AcInfoDto>();
 	int count = 0;	//출력되는 과정수를 나타내기 위한 변수.
 	
 	@RequestMapping(value = "/main.do", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) throws IOException {
 		logger.info("main {}.", locale);
-		//////////////////////////////////// 이한준 /////////////////////////////////////
 		if(list.size() ==0) {		// 과정정보 list를 구하는 for문을 한번만 돌리기 위한 if문.		
 			logger.info("학원리스트 출력",locale);
 			
@@ -116,9 +113,9 @@ public class HomeController {
 			.timeout(60000).maxBodySize(10*1024*1024).get();
 			Elements datas = doc.select("scn_list");
 			
+			// 훈련분야를 분류하는 코드를 사용할 수 없어서 키워드로 it분야를 분류...
 			for(int i = 0; i < datas.size(); i++){
 				String title = util.tagTrim(datas.get(i).select("title"), "title");
-				// 
 				if(title.contains("자바")
 						|| title.contains("웹")
 						|| title.contains("앱")
@@ -181,8 +178,6 @@ public class HomeController {
 		} // if(
 		model.addAttribute("list", list);	
 		model.addAttribute("key", key);
-		
-		//////////////////////////////////// 이한준 /////////////////////////////////////
 		
 		// 학원랭킹, 마감임박수업 캐시
 		model.addAttribute("ranking", cacheService.showRanking());
@@ -529,14 +524,16 @@ public class HomeController {
 		 org.jsoup.nodes.Document docInfo=
 					Jsoup.connect("http://www.hrd.go.kr/jsp/HRDP/HRDPO00/HRDPOA40/HRDPOA40_2.jsp?authKey="+key+"&returnType=XML&outType=2&srchTrprId="+getAcInfoMap.get(subTitle).get(0).getTrprId()+"&srchTrprDegr=1")
 					.timeout(80000).maxBodySize(10*1024*1024).get();
-		infoDto.setImg(getAcInfoMap.get(subTitle).get(0).getImg());
-		infoDto.setAddr1(util.tagTrim(docInfo.select("addr1"),"addr1"));
-		infoDto.setAddr2(util.tagTrim(docInfo.select("addr2"),"addr2"));
-		infoDto.setHpaddr(util.tagTrim(docInfo.select("hpaddr"),"hpaddr"));
-		infoDto.setInonm(util.tagTrim(docInfo.select("inonm"),"inonm"));
-		infoDto.setTrprchaptel(util.tagTrim(docInfo.select("trprchaptel"),"trprchaptel"));
-		infoDto.setTrprnm(util.tagTrim(docInfo.select("trprnm"),"trprnm"));
-		infoDto.setScore(Sserv.getScore(subTitle));
+
+	 	infoDto.setImg(getAcInfoMap.get(subTitle).get(0).getImg())
+				.setAddr1(util.tagTrim(docInfo.select("addr1"),"addr1"))
+				.setAddr2(util.tagTrim(docInfo.select("addr2"),"addr2"))
+				.setHpaddr(util.tagTrim(docInfo.select("hpaddr"),"hpaddr"))
+				.setInonm(util.tagTrim(docInfo.select("inonm"),"inonm"))
+				.setTrprchaptel(util.tagTrim(docInfo.select("trprchaptel"),"trprchaptel"))
+				.setTrprnm(util.tagTrim(docInfo.select("trprnm"),"trprnm"))
+				.setScore(Sserv.getScore(subTitle));
+		
 		model.addAttribute("infoDto", infoDto);
 		// 개강일자가 빠른 순서대로 출력하기 위한 정렬
 		List<AcInfoDto> aclist = getAcInfoMap.get(subTitle);
@@ -592,6 +589,7 @@ public class HomeController {
 		Cserv.deleteComment(m_id);
 	}
     
+	
 	@ResponseBody
 	@RequestMapping(value = "/getList.do", method = RequestMethod.POST)
 	public Map<String,Float> getList(Locale locale, Model model,String[] acTitle) throws IOException {
@@ -610,11 +608,14 @@ public class HomeController {
 		MemberDto mto = (MemberDto)session.getAttribute("member");
 		List<StartClassDto> list = cacheService.showStartClass();
 		List<BasketDto> myAcList = memberService.showMyAcList(mto.getId());
-		for(BasketDto bdto : myAcList) {
-			if(bdto.getBaskAcademyName().equals(dto.getBaskAcademyName())) {
-				map.put("msg", "이미 찜한 학원입니다.");
-				return map;
-			}
+		
+		if(myAcList != null) {
+			for(BasketDto bdto : myAcList) {
+				if(bdto.getBaskAcademyName().equals(dto.getBaskAcademyName())) {
+					map.put("msg", "이미 찜한 학원입니다.");
+					return map;
+				}
+		}
 		}
 		for(int i =0; i<list.size(); i++) {
 			StartClassDto sto = list.get(i);

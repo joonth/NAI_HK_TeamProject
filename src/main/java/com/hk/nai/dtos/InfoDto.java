@@ -19,51 +19,51 @@ public class InfoDto implements Serializable {
 	public Float getScore() {
 		return score;
 	}
-	public void setScore(Float score) {
-		this.score = score;
+	public  InfoDto setScore(Float score) {
+		this.score = score; return this;
 	}
 	public String getImg() {
 		return img;
 	}
-	public void setImg(String img) {
-		this.img = img;
+	public  InfoDto setImg(String img) {
+		this.img = img; return this;
 	}
 
 	public String getAddr1() {
 		return addr1;
 	}
-	public void setAddr1(String addr1) {
-		this.addr1 = addr1;
+	public  InfoDto setAddr1(String addr1) {
+		this.addr1 = addr1; return this;
 	}
 	public String getAddr2() {
 		return addr2;
 	}
-	public void setAddr2(String addr2) {
-		this.addr2 = addr2;
+	public  InfoDto setAddr2(String addr2) {
+		this.addr2 = addr2; return this;
 	}
 	public String getHpaddr() {
 		return hpaddr;
 	}
-	public void setHpaddr(String hpaddr) {
-		this.hpaddr = hpaddr;
+	public  InfoDto setHpaddr(String hpaddr) {
+		this.hpaddr = hpaddr; return this;
 	}
 	public String getInonm() {
 		return inonm;
 	}
-	public void setInonm(String inonm) {
-		this.inonm = inonm;
+	public  InfoDto setInonm(String inonm) {
+		this.inonm = inonm; return this;
 	}
 	public String getTrprchaptel() {
 		return trprchaptel;
 	}
-	public void setTrprchaptel(String trprchaptel) {
-		this.trprchaptel = trprchaptel;
+	public  InfoDto setTrprchaptel(String trprchaptel) {
+		this.trprchaptel = trprchaptel; return this;
 	}
 	public String getTrprnm() {
 		return trprnm;
 	}
-	public void setTrprnm(String trprnm) {
-		this.trprnm = trprnm;
+	public  InfoDto setTrprnm(String trprnm) {
+		this.trprnm = trprnm; return this;
 	}
 	
 	@Override
