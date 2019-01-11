@@ -169,6 +169,10 @@ a{
 			<div class="nav-content" style="padding: 0 0 0 5px;">
 					<span class="info-bar" style="font-weight: 100;"><a href="signout.do">로그아웃</a></span>
 			</div>
+			<div class="nav-content" style="padding: 0 0 0 70px;">
+				<span class="info-bar" style="font-weight: 100;"><a href="https://github.com/joonth/NAI_HK_TeamProject" target="_blank">
+				<img src="./resources/images/github-menu-item.svg">&nbsp; GitHub</a></span>
+			</div>
 		</div>
 	</div>
 		
