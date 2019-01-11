@@ -2,29 +2,85 @@
 	* {
 	  box-sizing: border-box;
 	}
-
+	.start-class{
+		position : absolute;
+		top: 10%; left:60%;
+		transform : translate(-50%, -50%);
+		font-size: 12px;
+		text-align: right;
+	}
+	
+	.sticker{
+		height:27px;
+		overflow:hidden;
+		margin:0;
+		padding:0;
+		list-style:none;
+		}
+	.start-class-title{
+		font-weight:bold; color:#3572b0; padding:0 5px; margin: 0px 5px;
+	}
+	.sticker li{
+		height:40px;
+		padding:5px;
+		margin: 0px 5px;
+	}
 	#none{
 		display:none;
-	    width: 60%;
+	    width: 50%;
 	    height: 90%;
 	    overflow-y: scroll;
+	    position : absolute;
+		top: 54%; left: 50%;
+		transform : translate(-50%, -30%);
+	    z-index: 1;
 	}
-
-	#myInput {
-	  background-image: url('https://www.w3schools.com/css/searchicon.png');
-	  background-position: 10px 10px;
-	  background-repeat: no-repeat;
-	  width: 60%;
-	  font-size: 16px;
-	  padding: 12px 20px 12px 40px;
-	  border: 1px solid #ddd;
-	  margin-bottom: 12px;
+	.myInput-underline{
+		border-bottom: 1px solid #ddd;
+		width: 50%;
+		display: inline-block;
+		position : absolute;
+		top: 26%; left: 50%;
+		transform : translate(-50%, -74%);
+	}
+	.myInput-underline:after{
+		content:'';
+		display: block;
+		margin: auto;
+		height: 3px;
+		width: 0px;
+		background: transparent;
+		transition: width .5s ease, border-bottom .5s ease;
+	}
+	#myInput:focus + .myInput-underline:after{
+		width: 100%;
+		border-bottom: 2px solid #3572b0;
+	}
+	#myInput  {
+		background-image: url('https://www.w3schools.com/css/searchicon.png');
+		background-position: 10px 10px;
+		background-repeat: no-repeat;
+		width: 50%;
+		font-size: 16px;
+		padding: 12px 20px 12px 40px;
+		/* margin: 0 0 10px 0; */
+		border: none;
+		/* 	  border: 1px solid #ddd; */
+		/* 	  border-bottom: 1px solid #ddd; */
+		/* 	  margin-bottom: 12px; */
+		position: absolute;
+		top: 25%;
+		left: 50%;
+		transform: translate(-50%, -75%);
+	}	
+	
+	#myInput:focus{
+		outline: none;
 	}
 
 	#myTable {
 	  border-collapse: collapse;
 	  width: 100%;
-	  
 	  border: 1px solid #ddd;
 	  font-size: 14px;
 	}
@@ -48,8 +104,6 @@
 	    position: relative;
 	    z-index: 30;
 	}
-	
-	
 	.content{
  	    height: 86%;
 	    margin: 0px;
@@ -62,15 +116,13 @@
 	    max-width: 100%;
 	    place-content: center flex-start;
 	    align-items: center; 
+	    background: white;
 	}
-	
 	.app-footer{
         height: 50px;
    		text-align: center;
 	}
-	
-	
-	
+
 	.dday{
 		background: red;
 		color: white;
@@ -80,8 +132,7 @@
 	.ranking{
 		width:350px;
 	    position: absolute;
-	   	left:45%;
-	    top: 60%;
+	    top: 28%;
         background: white;
 	}
 	
@@ -113,10 +164,14 @@
 		border: 0;
 	}
 	.ranking-table{
-		background: white;
-		padding: 20px;
-		height: auto;
+		position: absolute;
+	    top: 28%;
+	    height: auto;
 		width:350px; 
+		padding: 20px;
+		background: white;
+		border: 1px solid lightgrey;
+		z-index: 1;
 	}
 
 	.ranking-table td {
@@ -129,6 +184,10 @@
 	.ranking-table-sec-td{
 		width: 240px;
 	}
+	.ranking-table-sec-td:hover{
+		text-decoration: underline;
+		cursor:pointer;
+	}
 	.bgImg{
 		height: 300px;
 	    max-width: 1180px;
@@ -138,14 +197,10 @@
 	    background-size: contain;
 	    background-position-x: center;
 	    position: absolute;
-	    top: 16%;
-	    z-index: -1;
+	    top: 40%;
+	    /* z-index: -1; */
 	}
-	
-	#myInput{
-		top:20%;
-	}
-	
+
 	.box{
 		box-sizing: border-box;
 	    margin: 0 0 20px 0;
@@ -160,5 +215,24 @@
 	.sectionTitle {
 	    font-weight: bolder;
 	    font-family: 'Godo', sans-serif;
+	}
+	
+	.app-footer {
+		color: #c3c3c3;
+	}
+	.app-footer .banner {
+		display: inline-block;
+	}
+	.app-footer .banner a{
+		color: #c3c3c3;
+		font-weight: bold;
+	}
+	.app-footer .banner ul {
+		list-style: none;
+	}
+	
+	.app-footer .banner ul li {
+		float: left;
+		padding: 10px;
 	}
 	
