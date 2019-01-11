@@ -1,0 +1,111 @@
+@charset "UTF-8";
+
+#myinfo-container{
+	position: absolute;
+	top:40%;
+	left: 50%;
+	margin-top: -170px;
+    margin-left: -200px;
+	height: 280px;
+	width: 360px;
+	
+}
+
+#myac-container{
+	position: absolute;
+	top:40%;
+	left: 50%;
+	margin-top: -170px;
+	margin-left: -360px;
+	width: 640px;
+}
+
+
+#myac-container h1{
+	text-align: center;
+}
+
+#myac-container a{
+	text-decoration: none;
+	color:black;
+}
+#myac-container a:hover{ background:#E0F8F1; }
+
+#academyName, #authcode{
+	width: 215px;
+}
+
+#myinfo-container #authBtn{
+	width: 330px;
+	margin: 5px 0;
+}
+
+#myinfo-container #searchBtn{
+	width: 80px;
+	margin-left: 10px;
+}
+
+#myinfo-container #authBtn2{
+	width: 80px;
+	margin-left: 10px;
+}
+
+#myinfo-container #submitBtn{
+	width: 330px;
+	height: 50px;
+	margin-top: 40px;
+}
+
+#myinfo-container h1{
+	text-align: center;
+}
+#myinfo-container span{
+	text-align: center;
+}
+
+#myinfo-sidemenu-bar {
+	position: absolute;
+	width: 150px;
+	top: 29%;
+	left: 5%;
+	text-align: center;
+	
+}
+#myinfo-sidemenu-bar a{
+	color: black;
+}
+
+#mobile-myinfo-sidemenu-bar {
+	display:none;
+	
+}
+
+#mobile-myinfo-sidemenu-bar li{
+	list-style-type:none;
+}
+
+#mobile-myinfo-sidemenu-bar li a{
+	color: black;
+}
+
+
+#mobile-myinfo-sidemenu-bar li a:hover{
+	background: #eee;
+	text-decoration: none;
+}
+
+#mobile-myinfo-dropdown:hover{
+	cursor: pointer;
+}
+
+@media only screen and (max-width: 640px){
+	#myinfo-container { width: auto; } 
+	
+	#myac-container{ width: auto; }
+	
+	#myinfo-container button { width: auto;}
+	
+	#myinfo-sidemenu-bar{ display: none; }
+	
+	#mobile-myinfo-sidemenu-bar{ display: inline; }
+}
