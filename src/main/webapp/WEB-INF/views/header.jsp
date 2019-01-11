@@ -10,122 +10,20 @@
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/hj/header.js"></script>
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/header.css">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
- <style type="text/css">
-body {
-	margin:0;
-	height:100%;
-	background-color: #f6f6f6;
-}
-
-#icon-bar {
-  right: 1px;
-  position: fixed;
-  top: 40%;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-}
-
-#icon-bar a {
-  display: block;
-  text-align: center;
-  padding: 16px;
-  transition: all 0.3s ease;
-  color: black;
-  font-size: 20px;
-}
-
-#icon-bar a:hover {
-  background-color: #a9a9a9;
-}
-
-#icon-bar h4{
-	text-align:center;
-}
-
-.ac {
-  color: black;
-}
-.f-left {
-    float: left;
-}
-
-.navbar-brand {
-    font-size: 25px;
-    font-weight: bolder;
-    color: rgba(255,255,255,.699);
-    float: left;
-    height: 50px;
-    padding: 15px 15px;
-    line-height: 32px;
-        display:inline-block;
-}
-
-.nav-logo-img{
-	   width: 33px;
-    margin: -5px 0px 0px -5px;
-    float: left;
-}
-
-.nav-content{
-    font-size: 20px;
-    font-weight: bolder;
-    padding: 10px 15px;
-    display:inline-block;
-}
-
-.nav-content a{
-	text-decoration:none;
-}
-
-.nav-right{
-    font-family: 'Godo', sans-serif;
-    font-size: 18px;
-    font-weight: bold;
-    margin-top: 14px;
-    margin-right: 10px;
-    text-decoration: none;
-    text-align: right;
-    float: right;
-}
-.nav-image{
-    width: 33px;
-    margin: -5px -10px 5px -5px;
-}
-
-.navbar{
-	background:linear-gradient(to right,#369,#885195);
-	max-height: 50px;
-    overflow: hidden;
-}
-a{
-	    color: rgba(255,255,255,.699);
-}
-
-#if{
-	max-width: -webkit-fill-available;
-}
-
-.container-fluid{
-	text-align:center;
-}
- </style>
 </head>
-
 <body>
+<!-- header  -->
 	<div class="navbar">
 		<div class="container-fluid">
-				<div class="nav-content">
-				<a  href="main.do" >
-				<img class="nav-image" alt="logo" src="./resources/images/detective.png">
+			<div class="nav-content">
+				<a href="main.do">
+					<img class="nav-image" alt="logo" src="./resources/images/detective.png">
 					<span>&nbsp; NAI</span>
 				</a>
-				</div>
-		
-			
-	
-				<div class="nav-content">
+			</div>
+			<div class="nav-content">
 			 	<input id="session" type="hidden" value="${sessionScope.member.id}" >
 				<!-- 세션이 있을 때만 = 로그인되어있을 때만  -->
 				<c:if test="${sessionScope.member!=null}">
@@ -135,24 +33,27 @@ a{
 					<a href="boardlist.do?page=1&pagelist=first">게시판</a>
 					<a href="userList.do">회원목록</a>
 				</c:if>
-				</div>
+			</div>
 			<div class="nav-content" style="width:250px">
-					<span>${sessionScope.member.nickname} 님 환영합니다</span>
+				<span>${sessionScope.member.nickname} 님 환영합니다</span>
 			</div>
 			<div class="nav-content">
-					<a href="signout.do">로그아웃</a>
+				<a href="signout.do">로그아웃</a>
 			</div>
 			<div class="nav-content">
 				<span style="color:white" id="count" onclick="changeUrl('getMessageList.do?n_receiver=${sessionScope.member.id}')" class="glyphicon glyphicon-envelope" data-toggle="modal" data-target="#myModal" ></span>
 			</div>
 		</div>
 	</div>
-		
+	<!-- header  -->
+	
 	
 	<!-- 찜한 학원  -->
 	<div id="icon-bar" >
 	</div>
 	<!-- 찜한 학원 -->
+	
+	
 	<!-- Modal -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
