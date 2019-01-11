@@ -96,6 +96,11 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 			model.addAttribute("list", dto);
 			model.addAttribute("pagelist", "b_like");
 			return "boardlist";
+		}else if(pagelist.equals("cmt_count")) {//댓글순 ->cmt_count desc,b_seq desc
+			dto = boardService.listCriteria3(page);
+			model.addAttribute("list", dto);
+			model.addAttribute("pagelist", "cmt_count");
+			return "boardlist";
 		}
 		return "boardlist";
 	}

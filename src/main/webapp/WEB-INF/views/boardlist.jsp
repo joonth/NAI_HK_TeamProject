@@ -57,6 +57,7 @@
 				<option value="b_regdate" ${pagelist=="b_regdate"?"selected":""}>최신순</option>
 				<option value="b_readcount" ${pagelist=="b_readcount"?"selected":""}>조회순</option>
 				<option value="b_like" ${pagelist=="b_like"?"selected":""}>추천순</option>
+				<option value="cmt_count" ${pagelist=="cmt_count"?"selected":""}>댓글순</option>
 			</select>
 		</form>
 	</div>

@@ -33,6 +33,7 @@ public interface IBoardService {
 	    public List<BoardDto> listCriteria(String page) throws Exception;//최신순
 		public List<BoardDto> listCriteria1(String page) throws Exception;//조회순
 		public List<BoardDto> listCriteria2(String page) throws Exception;//추천순
+		public List<BoardDto> listCriteria3(String page) throws Exception;//댓글순
 	    // 전체 게시글 수 구하기
 	    public Integer totalCount() throws Exception;
 	//-----------------------댓글--------------------------    

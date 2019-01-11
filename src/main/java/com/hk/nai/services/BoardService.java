@@ -77,7 +77,11 @@ public class BoardService implements IBoardService {
 		@Override
 		public List<BoardDto> listCriteria2(String page) throws Exception {
 			return boardDao.listCriteria2(page);
-		}		
+		}	
+		@Override
+		public List<BoardDto> listCriteria3(String page) throws Exception {
+			return boardDao.listCriteria3(page);
+		}
 	//------------------게시글 전체 수 구하기---------------------------------
 
 		@Override
@@ -120,6 +124,8 @@ public class BoardService implements IBoardService {
 		public boolean downComment(int b_seq) {
 			return boardDao.downComment(b_seq);
 		}
+
+		
 
 		
 

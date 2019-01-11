@@ -94,6 +94,12 @@ public class BoardDao implements IBoardDao{
 		return sqlSession.selectList(namespace+"listCriteria2", page);
 	}
 	
+	@Override
+	public List<BoardDto> listCriteria3(String page) throws Exception {
+		return sqlSession.selectList(namespace+"listCriteria3", page);
+	}
+
+	
 //-----------------게시글 전체 수 구하기----------------------------
 	@Override
 	public Integer TotalCount() throws Exception {
@@ -146,6 +152,7 @@ public class BoardDao implements IBoardDao{
 		return count>0?true:false;
 	}
 
+	
 	
 
 	
