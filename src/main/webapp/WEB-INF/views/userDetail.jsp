@@ -13,7 +13,7 @@
  <link href="http://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css" rel="stylesheet">
 <style type="text/css">
 
-body{
+/* body{
   	margin-right: auto;
     margin-left: auto;
 	
@@ -45,7 +45,7 @@ body{
 #table {
     width: 66.66666667%;
 }
-
+ */
 
 </style>
 </head>
@@ -126,7 +126,6 @@ body{
 					var msg = obj["msg"];
 					if (msg != null) {
 						$("#nicknameChk").html(msg);
-						$("#nickname").focus();
 						return false;
 					} else {
 						$("#nicknameChk").html("");

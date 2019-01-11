@@ -90,12 +90,10 @@ public class CalController {
 				selectList.add(dto);
 			} else {
 			}
-		}
-		
+		}		
 		for(int i=0; i<selectList.size(); i++) {
 			System.out.println("selectlist"+i+"번째"+selectList.get(i));
 		}
-		
 		model.addAttribute("calViewList", selectList);
 		
 		return selectList;

@@ -1,3 +1,4 @@
+<%@page import="org.springframework.web.util.UrlPathHelper"%>
 <%@page import="com.hk.nai.services.CalService"%>
 <%@page import="com.hk.nai.dtos.CalDto"%>
 <%@page import="java.util.List"%>
@@ -15,21 +16,69 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <style>
-.srchTraArea1, .process_Kword {
+
+#Calendar{
+	width: 980px;
+    max-width: 100%;
+    margin-bottom: 20px;
+    border-color: black;
+    text-align: center;
+    padding-right: 20px;
+    padding-left: 20px;
+    margin-right: auto;
+    margin-left: auto;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 3px rgba(10,10,10,.1), 0 0 0 1px rgba(10,10,10,.1);
+    padding: 1.25rem;
+    flex: 1 1 auto;
+    flex-direction: column;
+    background: #fff;
+    color: rgba(0,0,0,.87);
+}
+
+@media (min-width: 980px)
+#Calendar {
+    width: 66.66666667%;
+}
+
+#calCap {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    color: #777;
+    text-align: center;
+}
+
+#calCap >a{
+	
+}
+
+ #monthPagebefore{
+	color: blue;
+}
+
+ .srchTraArea1, .process_Kword {
 	list-style-type: none;
 }
 
 #caltable {
 	border-collapse: collapse;
 	margin-left: 30px;
-}
-
-#caltable th {
-	border: 1px solid grey;
+	table-layout: fixed;
+	word-wrap: break-word;
 }
 
 #caltable td {
-	border: 1px solid grey;
+	border: 1px solid white;
+	padding-bottom: 10px;
+}
+
+#date{
+	background-color: black;
+}
+
+#caltable td {
+	border: 3px solid white;
 	background-color: white;
 	width: 160px;
 	height: 120px;
@@ -38,25 +87,39 @@
 	position: relative;
 }
 
+#calPage{
+	font-size: 20px;
+	color: black;
+}
+
+.dateNum{
+	padding-left: 3%;
+}
+
 .lastDayNum {
 	display: none;
 }
 
-a {
+.acName > a {
 	text-decoration: none;
 	font-size: 15px;
 }
 
-a:link {
+.acName > a {
+	color: black;
+} 
+
+.acName > a {
 	color: black;
 }
 
-a:visited {
-	color: black;
-}
-
-a:active {
+.acName > a {
 	color: #2E2EFE;
+}
+
+.acName > a{
+	color: black;
+	
 }
 
 .cPreview {
@@ -78,7 +141,8 @@ p {
 	background-color: #2E2EFE;
 	font-weight: bold;
 	margin: 3px 0;
-}
+} 
+
 </style>
 <script type="text/javascript">
 	$(function(){
@@ -99,8 +163,6 @@ p {
 		alert(yyyyMMdd);
 	});
 	
-
-
 </script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>캘린더</title>
@@ -138,6 +200,11 @@ p {
 	int lastDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 	
 	CalDao dao=new CalDao();
+	
+	UrlPathHelper urlPathHelper = new UrlPathHelper();  //controller 호출 url 찾기
+	String originalURL = urlPathHelper.getOriginatingRequestUri(request);
+	int Doleng = originalURL.length();
+	String Do = originalURL.substring(5,Doleng);
 	//--------------------------------------------------------
 %>
 <body>
@@ -178,32 +245,28 @@ p {
 				<span><input type="button" id="submit" value="검색"
 						style="float: left;"></span>
 				<span id="searchResult"></span>
-			</div>
-			
-			
+			</div>	
 		<!-- 	</form> -->
 	</div>
-
+	
 	<div id="Calendar">
 		<table id="caltable">
 		<div class="lastDayNum" style="diplay:none;"> <%=lastDay%></div>
-			<caption>
-			<div class="calPage">
-				<a href="calendar.do?year=<%=year-1%>&month=<%=month%>">◁</a> 
-				<a href="calendar.do?year=<%=year%>&month=<%=month-1%>">◀</a> 
-				<span class="y"><%=year%></span>년 <span class="m"><%=month%></span>월 
-				<a href="calendar.do?year=<%=year%>&month=<%=month+1%>">▶</a> 
-				<a href="calendar.do?year=<%=year+1%>&month=<%=month%>">▷</a>
-				</div>
+			<caption id="calCap">
+				<a id="yearPageafter" href="<%=Do%>?year=<%=year-1%>&month=<%=month%>">◁</a> 
+				<a id="monthPagebefore" href="<%=Do%>?year=<%=year%>&month=<%=month-1%>">◀</a> 
+				<div id="calPage"><span class="y"><%=year%></span>년 <span class="m"><%=month%></span>월</div>
+				<a id="monthPageafter" href="<%=Do%>?year=<%=year%>&month=<%=month+1%>">▶</a> 
+				<a id="yearPagebefore" href="<%=Do%>?year=<%=year+1%>&month=<%=month%>">▷</a>
 			</caption>
 			<tr>
-				<th>일</th>
-				<th>월</th>
-				<th>화</th>
-				<th>수</th>
-				<th>목</th>
-				<th>금</th>
-				<th>토</th>
+				<th>S</th>
+				<th>M</th>
+				<th>T</th>
+				<th>W</th>
+				<th>T</th>
+				<th>F</th>
+				<th>S</th>
 			</tr>
 			<tr>
 				<%
@@ -213,8 +276,8 @@ p {
      
         for(int i=1;i<=lastDay;i++){
   %>
-				<td><a style="color:<%=CalUtil.fontColor(i, dayOfWeek)%>"
-					class="dateNum"> <%=i%> <% 
+				<td style="background-color: #f5f3f1;"><a style="color:<%=CalUtil.fontColor(i, dayOfWeek)%>"
+					class="dateNum"><%=i%> <% 
                	String yyyyMMdddd =year+"-"+CalUtil.isTwo(String.valueOf(month))+"-"+CalUtil.isTwo(String.valueOf(i));
                             	pageContext.setAttribute("yyyyMMdddd", yyyyMMdddd.trim());
                %>
@@ -260,7 +323,6 @@ p {
 	</div>
 	<button type="button" id="AcademyRk" onclick="location.href='acDayRank.do'">일별랭킹 보기</button>
 	<button type="button" id="CartAcademyCal" onclick="location.href='cartAcademyCal.do'">찜한 학원일정 보기</button>
-	<button type="button" onclick="location.href='main.do'">메인화면으로 돌아가기</button>
 
 
 
@@ -310,15 +372,7 @@ p {
 				}
 			}); //ajax
 		}); // click
-/* 		
-		$("#AcademyRk").click(function() {
-			for(var i=0; i<5; i++){
-				var s = $(".calPage a").text();
-			alert(s);
-			}
-		}); */
-		
-		
+
 </script>	
 </body>
 </html>

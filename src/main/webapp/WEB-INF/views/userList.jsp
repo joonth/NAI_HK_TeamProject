@@ -56,7 +56,7 @@ hr{
 }
 
 #Thbar{
-font-family: 'Nanum Gothic Coding', serif;
+	font-family: 'Nanum Gothic Coding', serif;
 	font-weight: 700;
 	font-size: 15px;
 	max-width: 1023px;
