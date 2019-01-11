@@ -179,10 +179,7 @@ hr{
     text-align: center;
     margin-right:96%; 
 }
-  
-
-	 
-	 
+ 
 </style>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>회원관리페이지</title>

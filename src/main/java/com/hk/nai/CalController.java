@@ -73,12 +73,17 @@ public class CalController {
 		
 	}
 	//캘린더 검색 리스트
-	@RequestMapping(value = "/calSearch.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/calSearch.do")
 	@ResponseBody
-	public List<CalDto> CalSearch(HttpServletRequest request, Locale locale, Model model, @RequestParam String search ) {
+	public List<CalDto> CalSearch(HttpServletRequest request, Locale locale, Model model, String search ) {
 		logger.info("캘린더검색창", locale);	
 		List<CalDto> selectList = new ArrayList<CalDto>();
 		List<CalDto> calViewList = calService.getCalList();
+		if(search!=null) {
+			request.getSession().setAttribute("search", search);
+		}else {
+			search=(String)request.getSession().getAttribute("search");
+		}
 		System.out.println(search);
 		
 		for(int i=0; i<calViewList.size(); i++) {
