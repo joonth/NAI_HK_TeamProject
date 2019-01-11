@@ -5,6 +5,7 @@
 <!DOCTYPE>
 <html>
 <head>
+<link rel="shortcut icon" href="./resources/images/favicon.ico">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>로그인</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -21,12 +22,12 @@
 		<h1><img src="./resources/images/detective.png">국과수</h1>
 		<div class="input-group">
 			<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-			<input type="text" id="id" name="id" class="form-control" placeholder="ID">
+			<input type="text" id="id" name="id" class="form-control" placeholder="아이디">
 		</div>
 		<span id="idChk"></span>
 		<div class="input-group">
 			<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-			<input type="password" id="pw" name="pw" class="form-control" placeholder="Password">
+			<input type="password" id="pw" name="pw" class="form-control" placeholder="비밀번호">
 		</div>
 		<span id="pwChk"></span>
 	</form>

@@ -1,10 +1,6 @@
 $(document).ready(function(){
 	var sock = new SockJS('.do');
 	
-	/*$(document).ajaxComplete(function() {
-		 sock.send($("#session").val());
-	});*/
-	
 	$("#messageForm").submit(function(event) {
      sock.send($("#n_receiver").val());
 		alert('보냄');
@@ -24,7 +20,9 @@ $(document).ready(function(){
 	 };
 	 
 	 sock.onmessage = function(evt) {
-		 $('#count').text(evt.data);
+		 if(evt.data != 0){
+			 $('#count').html("<span class='badge' style='color:red; font-size:15px;'>"+evt.data+"</span>");			 
+		 }
 	 };
 	 
 	 sock.onclose = function() {
@@ -61,4 +59,6 @@ $(document).ready(function(){
 function changeUrl(url){
 	document.getElementById("if").src=url;	
 }
+
+
 

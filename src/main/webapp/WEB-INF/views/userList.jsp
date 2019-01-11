@@ -9,6 +9,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link rel="shortcut icon" href="./resources/images/favicon.ico">
 	<!-- 이한준 -->
 	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/hj/main_message.js"></script>
@@ -185,6 +186,41 @@ hr{
 </style>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>회원관리페이지</title>
+	
+	<style type="text/css">
+			.box{
+		box-sizing: border-box;
+	    margin: 0 0 20px 0;
+	    padding: 5px;
+	    background-color: white;
+	    border-radius: 2px;
+	    -webkit-box-shadow: 1px 1px 5px 0px #a8bff9;
+	    box-shadow: 1px 1px 5px 0px #a8bff9;
+	    overflow:auto;
+	}
+	.sectionTitle {
+    
+    font-weight: bolder;
+    font-family: 'Godo', sans-serif;
+	}
+	#a,#b{
+	width:300px;
+	height:500px;
+	background-color: #E6E6FA;
+	overflow-y: scroll;
+
+	}	
+	#c{
+		height:500px;
+		margin-top:255px;
+	}
+	
+
+	
+/* 	#a{float:left;}
+	#b{float:right;} */
+	</style>
+	
 </head>
 <body>
 <%@include file="header.jsp" %>
@@ -281,9 +317,10 @@ hr{
 				<td>${memberdto.point}</td>
 				<td>${memberdto.writeCheck}</td>
 				<td>
+
 					<button type ="button" class="btn" id="modifi" onclick="location.href='userDetail.do?seq='+'${memberdto.seq}'"><img class="btn-img" src="./resources/images/gear.png"></button>
 					<button type ="button" class="btn" onclick="location.href='userDelete.do?seq='+'${memberdto.seq}'"><img class="btn-img" src="./resources/images/trash.png"></button>		
-			
+
 				</td>
 				</tr>
 		</c:forEach>
@@ -302,33 +339,65 @@ hr{
 
 </script>
 
-<div id="회원선택">
-<!-- 이한준 -->
-	<hr>
-	<form id="messageForm" action="sendMessage.do" method="post">
-		<input type="hidden" name="n_sender" value="admin">
-		받는이 <input id="n_receiver" type="text" name="n_receiver" >
-		내용 <input id="n_content" type="text" name="n_content" >
-		<input type="radio" name="ns_state_code" checked="checked" value="a"> 공지사항
-	  	<input type="radio" name="ns_state_code" value="e"> 이벤트
-		<input type="submit" value="전송">
-	</form>
-	<button id="passAll" onclick="stateClick('all')">전체선택</button>
-	<div id="a" style="border:1px solid black;"></div>
-	<div id="b" style="border:1px solid black;"></div>
+
+<div class="container">
+	<div class="jumbotron">
 	
-	<form id="messageAllForm" action="sendMessage.do" method="post">
+<div class="box">
+	<h4 class="sectionTitle p-01">ID 입력해서 Message 보내기</h4>
+	<form id="messageForm" class="form-inline" action="sendMessage.do" method="post">
+		 <div class="form-group">
+
 		<input type="hidden" name="n_sender" value="admin">
-		내용 <input id="allContent" type="text" name="n_content">
+		    <label>받는이</label>
+			<input id="n_receiver" type="text" name="n_receiver" >
+		  </div>
+		   <div class="form-group">
+		    <label>내용</label>
+		<input id="n_content" type="text" name="n_content" >
+		  </div>
+		  <div class="radio">
+			<input type="radio" name="ns_state_code" checked="checked" value="a"> 공지사항
+		  	<input type="radio" name="ns_state_code" value="e"> 이벤트		  
+		  </div>
+		<input type="submit" class="btn btn-default" value="전송">
+	</form>
+</div>
+
+<div class="box">
+<h4 class="sectionTitle p-01">ID 선택해서 Message 보내기</h4>
+	<form id="messageAllForm" class="form-inline" action="sendMessage.do" method="post">
+	 <div class="form-group">
+		<input type="hidden" name="n_sender" value="admin">
+		<label>내용</label>
+		 <input id="allContent" type="text" name="n_content">
+		</div>
+		 <div class="form-group">
 		<input class="pick" type="radio" name="ns_state_code" checked="checked" value="a"> 공지사항
 	  	<input class="pick" type="radio" name="ns_state_code" value="e"> 이벤트
-		<input type="submit" value="전송">
+		</div>
+		<input type="submit" class="btn btn-default" value="전송">
 	</form>
+
+<div class="box">
+	<div class="col-sm-5">
+	<h5 class="sectionTitle p-01"> User </h5>
+	<div id="a" class="box" style="border:1px solid black;"></div>
+	</div>
+	<div id="c" class="col-sm-2">
+		<button id="passAll" class="btn btn-default" onclick="stateClick('all')">전체선택 →</button>
+	</div>
+	<div class="col-sm-5">
+	<h5 class="sectionTitle p-01">Message를 받을 User</h5>
+	<div id="b" class="box" style="border:1px solid black;"></div>
+	</div>
+</div>
+	
+	
 </div>
 
-
+	</div>
 </div>
-<!-- 이한준 -->
 
 </body>
 </html>

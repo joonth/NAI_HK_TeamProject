@@ -4,6 +4,7 @@
 <!DOCTYPE>
 <html>
 <head>
+<link rel="shortcut icon" href="./resources/images/favicon.ico">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>아이디 찾기</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -16,7 +17,7 @@
 			<h3>아이디 찾기<img src="./resources/images/magnifying-glass.png"></h3>
 			<div class="input-group">
 				<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-				<input type="text" id="email" name="email" class="form-control" placeholder="Email">
+				<input type="text" id="email" name="email" class="form-control" placeholder="이메일">
 			</div>
 			<span id="emailChk"></span>
 	</form>
