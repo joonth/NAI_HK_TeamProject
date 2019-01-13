@@ -212,7 +212,7 @@
   	</update>
   	
   	<insert id="addImgToDb" parameterType="AcInfoDto">
-  		INSERT INTO AC_IMG VALUES(#{ac_name},#{img})
+  		INSERT INTO AC_IMG VALUES(#{subTitle},#{img})
   	</insert>
   	
   	<update id="updateCheck" parameterType="MemberDto">

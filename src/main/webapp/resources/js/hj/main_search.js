@@ -28,6 +28,7 @@ function myFunction(val) {
 	}  
 	//검색창에 문자가 없을경우 리스트 출력하지 않음.
     if(val === ""){$('#none').attr("style","display:");}
+   
   }//	for문
   
   $.ajax({
