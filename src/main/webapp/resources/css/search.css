@@ -24,6 +24,7 @@
 		height:40px;
 		padding:5px;
 		margin: 0px 5px;
+		cursor: pointer;
 	}
 	#none{
 		display:none;
@@ -122,7 +123,7 @@
    		text-align: center;
 	}
 
-	 	.bgImg{
+	.bgImg{
 		height: 300px;
 	    max-width: 736px;
 	    width: 100%;

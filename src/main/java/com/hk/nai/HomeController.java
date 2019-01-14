@@ -415,17 +415,38 @@ public class HomeController {
 	//회원정보 수정
 	@RequestMapping(value = "/updatemyinfo.do", method = RequestMethod.POST)
 	public String updateMyInfo(Locale locale, Model model, MemberDto member, String academyName, HttpSession session) {
-
-		boolean isPw = memberService.updatePw(member);		
-		boolean isNickname = memberService.updateNickname(member);
-		boolean isEmail = memberService.updateEmail(member);
-		boolean isAuth = memberService.updateAuth(new AuthDto().setAuthId(member.getId()).setAcademyName(academyName));
-		System.out.println("pw 성공여부:" + isPw
-				+ "isNickname 여부: " + isNickname
-				+ "isEmail 여부: " + isEmail
-				+ "isAuth 여부: " + isAuth);
 		
-		if(!isPw && !isNickname && !isEmail && !isAuth) {
+		boolean isPw = false;
+		boolean isNickname = false;
+		boolean isEmail = false;
+		boolean isAuth = false;
+		int errcnt = 0;
+		
+		if(!member.getPw().isEmpty()) {
+			isPw = memberService.updatePw(member);	 
+			if(isPw==false) errcnt++; 
+		}	
+		if(!member.getNickname().isEmpty()) {
+			isNickname = memberService.updateNickname(member);
+			if(isNickname==false) errcnt++; 
+		}
+		if(!member.getEmail().isEmpty()) {
+			isEmail = memberService.updateEmail(member);
+			if(isEmail==false) errcnt++; 
+		}
+		if(!academyName.isEmpty()) { 
+			isAuth = memberService.updateAuth(new AuthDto().setAuthId(member.getId()).setAcademyName(academyName));
+			if(isAuth==false) errcnt++; 
+		}
+		else //학원명 인증이 안 된 일반사용자
+			isAuth = true;
+		
+		System.out.println("pw 변경여부: " + isPw
+				+ " isNickname 변경여부: " + isNickname
+				+ " isEmail 변경여부: " + isEmail
+				+ " isAuth 변경여부: " + isAuth);
+		
+		if(errcnt > 0) {
 			model.addAttribute("errmsg", "수정 실패");
 			return "error";
 		}
@@ -594,7 +615,8 @@ public class HomeController {
 	@RequestMapping(value = "/getList.do", method = RequestMethod.POST)
 	public Map<String,Float> getList(Locale locale, Model model,String[] acTitle) throws IOException {
 		Map<String,Float> map = new HashMap<String,Float>();
-		if(acTitle != null) {
+
+		if(acTitle != null) {	
 			for (int i = 0; i < acTitle.length; i++) {
 				map.put(acTitle[i], Sserv.getScore(acTitle[i]));
 			}
@@ -606,19 +628,18 @@ public class HomeController {
 	@ResponseBody
 	@RequestMapping(value = "/putBasket.do", method = RequestMethod.GET)
 	public Map<String,String> putBasket(Locale locale, Model model, BasketDto dto,HttpSession session) throws IOException {
-		Map<String,String> map = new HashMap<String,String>();
-		MemberDto mto = (MemberDto)session.getAttribute("member");
-		List<StartClassDto> list = cacheService.showStartClass();
-		List<BasketDto> myAcList = memberService.showMyAcList(mto.getId());
-		
-		if(myAcList != null) {
-			for(BasketDto bdto : myAcList) {
-				if(bdto.getBaskAcademyName().equals(dto.getBaskAcademyName())) {
-					map.put("msg", "이미 찜한 학원입니다.");
-					return map;
-				}
+	Map<String,String> map = new HashMap<String,String>();
+	MemberDto mto = (MemberDto)session.getAttribute("member");
+	List<StartClassDto> list = cacheService.showStartClass();
+	List<BasketDto> myAcList = memberService.showMyAcList(mto.getId());
+	if(myAcList != null) {	
+		for(BasketDto bdto : myAcList) {
+			if(bdto.getBaskAcademyName().equals(dto.getBaskAcademyName())) {
+				map.put("msg", "이미 찜한 학원입니다.");
+				return map;
+			}
 		}
-		}
+	}
 		for(int i =0; i<list.size(); i++) {
 			StartClassDto sto = list.get(i);
 			if(sto.getStartAcademyName().equals(dto.getBaskAcademyName())) {
@@ -635,6 +656,7 @@ public class HomeController {
 		map.put("msg", "찜목록에 추가되었습니다.");
 		return map;
 	}
+
 	
 	@ResponseBody
 	@RequestMapping(value = "/showBasket.do", method = RequestMethod.GET)
