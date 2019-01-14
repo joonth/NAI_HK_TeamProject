@@ -19,9 +19,6 @@
 		response.sendRedirect("signinform.do");
 	}
 %>
-<style>
-
-</style>
 </head>
 <body>
 <%@include file="WEB-INF/views/header.jsp" %>
@@ -46,7 +43,7 @@
 	</div>
 	
 	<!-- 이한준 -->
-	<input type="text" id="myInput" onkeypress="if(event.keyCode==13) {myFunction(this.value); return false;}" placeholder="학원,과정,주소로 검색 가능합니다." title="Type in a name">
+	<input type="text" id="myInput" onkeyup="myFunction(this.value)" placeholder="학원,과정,주소로 검색 가능합니다." title="Type in a name">
 	<div class="myInput-underline"></div>
 	<div id="none">
 		<table id="myTable">

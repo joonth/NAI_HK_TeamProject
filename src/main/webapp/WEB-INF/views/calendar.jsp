@@ -1,3 +1,4 @@
+<%@page import="org.springframework.web.util.UrlPathHelper"%>
 <%@page import="com.hk.nai.services.CalService"%>
 <%@page import="com.hk.nai.dtos.CalDto"%>
 <%@page import="java.util.List"%>
@@ -12,73 +13,241 @@
 <!DOCTYPE html>
 <html>
 <head>
+<%@include file="header.jsp" %>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
 <style>
-.srchTraArea1, .process_Kword {
+
+#Calendar{
+    position: absolute;
+    left: 50%;
+    margin-bottom: 10px;
+    margin-top: 0.5%;
+	transform:translateX(-50%);
+	width: 980px;
+	height: 960px;
+    border-color: black;
+    text-align: center;
+    padding-right: 25px;
+    padding-left: 25px; 
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 3px rgba(10,10,10,.1), 0 0 0 1px rgba(10,10,10,.1);
+    padding: 1.25rem;
+    flex: 1 1 auto;
+    flex-direction: column;
+    background: #fff;
+    color: rgba(0,0,0,.87);
+    
+    
+}
+
+@media (min-width: 980px)
+#Calendar {
+    width: 66.66666667%;
+}
+
+#calCap {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    color: #777;
+    text-align: center;
+}
+
+#calCap >a{
+	
+}
+
+
+#monthPagebefore, #monthPageafter{
+	vertical-align: left;
+	display: inline-block;
+}
+
+
+#monthPagebefore{
+	margin-left: 90%;
+}
+
+#monthPageafter{
+	margin-left: 85%;
+}
+
+ .srchTraArea1, .process_Kword {
 	list-style-type: none;
 }
 
 #caltable {
 	border-collapse: collapse;
-	margin-left: 30px;
+	table-layout: fixed;
+	word-wrap: break-word;
+	width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
 }
 
-#caltable th {
-	border: 1px solid grey;
+#date{
+	background-color: black;
 }
+
+#weekday >th{
+	color: #a4a4a7;
+}
+
 
 #caltable td {
-	border: 1px solid grey;
+	border: 3px solid white;
 	background-color: white;
-	width: 160px;
-	height: 120px;
 	text-align: left;
 	vertical-align: top;
 	position: relative;
+}
+
+#calPage{
+	display: inline-block;
+	margin-left: 70%;
+	position: relative;
+}
+
+#calPage >img{
+	display: inline-block;
+
+}
+
+
+#calDate{
+	font-family: 'Oswald', sans-serif;
+	font-size: 30px;
+	color: #5a5d63;
+	text-align: left;	
+}
+
+.dateNum{
+	padding-left: 3%;
 }
 
 .lastDayNum {
 	display: none;
 }
 
-a {
+.acName > a {
 	text-decoration: none;
-	font-size: 15px;
 }
 
-a:link {
+
+.acName > a{
 	color: black;
+	
 }
 
-a:visited {
-	color: black;
-}
-
-a:active {
-	color: #2E2EFE;
-}
-
-.cPreview {
-	background-color: #2E2EFE;
-	color: white;
-	font-weight: bold;
-	position: absolute;
-	top: -25px;
-	left: -30px;
-	width: 40px;
-	height: 40px;
-	border-radius: 40px 40px 1px 40px;
+#aca_name{
+	position: relative;
+	float:left;
+	width:100%;
 	text-align: center;
-	line-height: 40px;
+	margin-top: 0.5%;
+	height:100px;	
 }
 
-p {
-	color: white;
-	background-color: #2E2EFE;
-	font-weight: bold;
-	margin: 3px 0;
+/* 검색창 */
+#AcademySearch {
+	position: relative;
+	float: left;
+	display: inline-block;
+    width: 21%;
+    height: 48px;
+    margin-left:0.4%;
+    border-radius: 6px 0px 0px 6px;
+    box-shadow: 1px 2px 2px #ddd;
+    border: none;
+    outline: 0;
+    font-size: 16px;
+    font-family: 'Open Sans';
+    color: #bbb;
+    padding: 0px 12px;
+    text-rendering: auto;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    text-align: start;
+    font: 400 13.3333px Arial;
+    -webkit-writing-mode: horizontal-tb !important;
+
+ }
+ 
+/*  검색버튼 */
+ #submit{
+	 display: inline-block;
+	 float: left;
+ 	 background-image: url( "./resources/images/search.png" );
+ 	 width: 48px;
+ 	 height: 48px;
+ 	 background-color: white;
+ 	 border-radius: 6px 0px 0px 6px;
+ 	 box-shadow: 1px 2px 2px #ddd;
+ 	 border: none;
+     outline: 0;
+ }
+ 
+ 
+/*  버튼상자 */
+ .btn-worksets{
+	position: relative;
+ 	margin-top:8%; 
+    width: 160px;
+    height: 100px;
+	padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 6px 0px 0px 6px;
+    box-shadow: 1px 2px 2px #ddd;
+    border: none;
+    outline: 0;
+     -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+ 
+ }
+
+#AcademyRk{	
+	position:relative;
+    border: 1px solid rgba(0,0,0,0.15);
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    line-height: 35px;
+    background: #c1b7d0;
+    height: 34px;
+    overflow: hidden;
+    width: auto;
+    cursor: pointer;
+
 }
+
+#CartAcademyCal{
+	display: inline-block;
+    border: 1px solid rgba(0,0,0,0.15);
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    line-height: 35px;
+    background: #c1b7d0;
+    height: 34px;
+    overflow: hidden;
+    width: auto;
+    cursor: pointer;
+}
+
+.Right-sidebar{
+	 width: 160px;
+	 padding: 20px;
+	 margin-bottom: 20px;
+ 	 margin-top:3%;
+	 float: right;
+}
+
 </style>
 <script type="text/javascript">
 	$(function(){
@@ -99,13 +268,10 @@ p {
 		alert(yyyyMMdd);
 	});
 	
-
-
 </script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>캘린더</title>
 </head>
-<%@include file="header.jsp" %>
 <%
 	String paramYear=request.getParameter("year");
 	String paramMonth=request.getParameter("month");
@@ -138,12 +304,17 @@ p {
 	int lastDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 	
 	CalDao dao=new CalDao();
+	
+	UrlPathHelper urlPathHelper = new UrlPathHelper();  //controller 호출 url 찾기
+	String originalURL = urlPathHelper.getOriginatingRequestUri(request);
+	int Doleng = originalURL.length();
+	String Do = originalURL.substring(5,Doleng);
 	//--------------------------------------------------------
 %>
 <body>
 	<jsp:useBean id="util" class="com.hk.nai.utils.CalUtil" />
 	
-	<h2>지역</h2>
+
 	<div id="Search">
 		<!-- <form name="form1" id="searchCal" method="GET" action="calSearch.do"> -->
 		<!-- 	<div id="area">
@@ -175,35 +346,37 @@ p {
 			
 			<div id="aca_name">
 				<span><input type="text" name="academy_search" id="AcademySearch" placeholder="검색명을 입력해주세요"></span>
-				<span><input type="button" id="submit" value="검색"
-						style="float: left;"></span>
+				<span><input type="button" id="submit" onclick="searchbox(1)" ></span>
 				<span id="searchResult"></span>
-			</div>
-			
-			
+			</div>	
 		<!-- 	</form> -->
 	</div>
+	<div id="minical" >
 
-	<div id="Calendar">
-		<table id="caltable">
-		<div class="lastDayNum" style="diplay:none;"> <%=lastDay%></div>
-			<caption>
-			<div class="calPage">
-				<a href="calendar.do?year=<%=year-1%>&month=<%=month%>">◁</a> 
-				<a href="calendar.do?year=<%=year%>&month=<%=month-1%>">◀</a> 
-				<span class="y"><%=year%></span>년 <span class="m"><%=month%></span>월 
-				<a href="calendar.do?year=<%=year%>&month=<%=month+1%>">▶</a> 
-				<a href="calendar.do?year=<%=year+1%>&month=<%=month%>">▷</a>
+	</div>
+
+	<div id="Calendar" >
+		<table id="caltable" >
+		<div class="lastDayNum" style="diplay:none;"><%=lastDay%></div>
+			<caption id="calCap">
+				<div id="calPage">
+				
+				<a id="monthPagebefore" href="<%=Do%>?year=<%=year%>&month=<%=month-1%>"><img src="./resources/images/downarrow.png"/></a>
+				<a id="monthPageafter" href="<%=Do%>?year=<%=year%>&month=<%=month+1%>"><img src="./resources/images/uparrow.png"/></a>
+				<a id="yearPagebefore" href="<%=Do%>?year=<%=year-1%>&month=<%=month%>"></a>  
+				<a id="yearPageafter" href="<%=Do%>?year=<%=year+1%>&month=<%=month%>"></a> 
 				</div>
+				<div id="calDate"><span class="y"><%=year%></span>년  <span class="m"><%=month%></span>월</div>
 			</caption>
-			<tr>
-				<th>일</th>
-				<th>월</th>
-				<th>화</th>
-				<th>수</th>
-				<th>목</th>
-				<th>금</th>
-				<th>토</th>
+			
+			<tr id="weekday">
+				<th>S</th>
+				<th>M</th>
+				<th>T</th>
+				<th>W</th>
+				<th>T</th>
+				<th>F</th>
+				<th>S</th>
 			</tr>
 			<tr>
 				<%
@@ -213,8 +386,8 @@ p {
      
         for(int i=1;i<=lastDay;i++){
   %>
-				<td><a style="color:<%=CalUtil.fontColor(i, dayOfWeek)%>"
-					class="dateNum"> <%=i%> <% 
+				<td style="background-color: #f7f5f5; width: 150px; height: 150px;"><a style="color:<%=CalUtil.fontColor(i, dayOfWeek)%>"
+					class="dateNum"><%=i%> <% 
                	String yyyyMMdddd =year+"-"+CalUtil.isTwo(String.valueOf(month))+"-"+CalUtil.isTwo(String.valueOf(i));
                             	pageContext.setAttribute("yyyyMMdddd", yyyyMMdddd.trim());
                %>
@@ -253,15 +426,17 @@ p {
        
       }// 날짜 출력 for문 종료
        for(int i =0; i<(7-((dayOfWeek-1+lastDay)%7))%7;i++)
-         out.print("<td>&nbsp;</td>"); 
+         out.print("<td style='width: 150px; height: 150px;'>&nbsp;</td>"); 
    %>
 			</tr>
 		</table>
 	</div>
+	<div class="btn worksets" style="background-color: white; 	margin-left:0.4%;"  >
 	<button type="button" id="AcademyRk" onclick="location.href='acDayRank.do'">일별랭킹 보기</button>
 	<button type="button" id="CartAcademyCal" onclick="location.href='cartAcademyCal.do'">찜한 학원일정 보기</button>
-	<button type="button" onclick="location.href='main.do'">메인화면으로 돌아가기</button>
-
+	</div>
+	<div class="Right-sidebar">
+	</div>
 
 
 	
@@ -269,6 +444,10 @@ p {
 <script type="text/javascript">
 	//검색 결과값이 없을때 출력		
 	$("#submit").click(function() {
+// 			var index01=$("#monthPagebefore").attr("href").indexOf("?");
+// 			console.log($("#monthPagebefore").attr("href").substring(index01));
+// 			$("#monthPagebefore").attr("href","calSearch.do"+$("#monthPagebefore").attr("href").substring(index01));
+
 			var lastDay = $(".lastDayNum").text().trim();
 			for(var i=0; i<lastDay; i++){
 				$(".acName").eq(i).empty();
@@ -310,15 +489,19 @@ p {
 				}
 			}); //ajax
 		}); // click
-/* 		
-		$("#AcademyRk").click(function() {
-			for(var i=0; i<5; i++){
-				var s = $(".calPage a").text();
-			alert(s);
-			}
-		}); */
-		
-		
+
+		var SearchControl = document.getElementById('SBox');
+		var ColorChange = document.getElementById('color');
+
+		function searchbox(num) {
+		  if(num == "1"){
+		    SearchControl.style.visibility = "visible";
+		    SearchControl.style.opacity = "1";
+		  } else if(num == "0") {
+		    SearchControl.style.visibility = "hidden";
+		    SearchControl.style.opacity = "0";
+		    }
+		  }
 </script>	
 </body>
 </html>
