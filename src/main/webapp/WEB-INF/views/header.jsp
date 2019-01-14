@@ -11,6 +11,7 @@
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/hj/header.js"></script>
+<%-- 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/header.css"> --%>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
  
  <style type="text/css">
@@ -137,11 +138,13 @@ a{
 }
 
 </style>
-</head>
 
+</head>
 <body>
+<!-- header  -->
 	<div class="navbar">
 		<div class="container-fluid">
+
 				<div class="nav-content">
 				<a  href="main.do" >
 				<img class="nav-image" alt="logo" src="./resources/images/detective.png">
@@ -158,6 +161,7 @@ a{
 					<a href="boardlist.do?page=1&pagelist=first">게시판</a>
 					<a href="userList.do">회원목록</a>
 				</c:if>
+
 				</div>
 			<div class="nav-content" style="width:280px; text-align:right; padding: 0 5px 0 0;">
 					<span class="info-bar">${sessionScope.member.nickname} 님</span>
@@ -175,12 +179,15 @@ a{
 			</div>
 		</div>
 	</div>
-		
+	<!-- header  -->
+	
 	
 	<!-- 찜한 학원  -->
 	<div id="icon-bar" >
 	</div>
 	<!-- 찜한 학원 -->
+	
+	
 	<!-- Modal -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">

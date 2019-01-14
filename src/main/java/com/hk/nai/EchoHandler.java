@@ -37,12 +37,11 @@ public class EchoHandler extends TextWebSocketHandler {
 	  // 클라이언트와 연결 이후에 실행되는 메서드
 	  @Override
 	  public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-
 		  sessionList.add(session);
 		  smap =session.getAttributes();
 		  MemberDto dto = (MemberDto) smap.get("member");
 		  map.put(session.getId(), dto.getId());
-		  //System.out.println("httpsession_getid : " + dto.getId()+" , " +"websocketsession_getid : "+session.getId());
+		 // System.out.println("처음 연결! m_id : " + dto.getId()+" , " +"sockjs session id : "+session.getId());
 	    logger.info("{} 연결됨", session.getId());
 	  }
 	 
@@ -52,13 +51,13 @@ public class EchoHandler extends TextWebSocketHandler {
 	   try {
 		  logger.info("{}로 부터 {} 받음", session.getId(), message.getPayload());
 	    for(WebSocketSession ss : sessionList) {
-	    	//System.out.println("websocketsession_getid : "+session.getId()+" , "+ "message 내용 : "+message.getPayload()+" , "+ "map(sessionId) : "+map.get(session.getId()));
-	    	//System.out.println("map size : "+map.size() +" , " + "list size : " + sessionList.size());
+	    	//System.out.println("sockjs session id : "+session.getId()+" , "+ "message 내용 : "+message.getPayload()+" , "+ "m_id : "+map.get(session.getId()));
 	    	if(map.get(ss.getId()).equals(message.getPayload())) {
 	    		ss.sendMessage(new TextMessage(dao.getMsgNum(message.getPayload())));
 	    		break;
 	    	}
 	    }
+	   // System.out.println("map size : "+map.size() +" , " + "list size : " + sessionList.size());
 	   }catch(Exception e) {
 		   e.printStackTrace();
 	   }
