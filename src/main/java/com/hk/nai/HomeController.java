@@ -443,7 +443,13 @@ public class HomeController {
 		boolean isPw = memberService.updatePw(member);		
 		boolean isNickname = memberService.updateNickname(member);
 		boolean isEmail = memberService.updateEmail(member);
-		boolean isAuth = memberService.updateAuth(new AuthDto().setAuthId(member.getId()).setAcademyName(academyName));
+		boolean isAuth = false;
+		
+		if(!academyName.isEmpty()) //인증학원생
+			isAuth = memberService.updateAuth(new AuthDto().setAuthId(member.getId()).setAcademyName(academyName));
+		else //학원명 인증이 안 된 일반사용자
+			isAuth = true;
+		
 		System.out.println("pw 성공여부:" + isPw
 				+ "isNickname 여부: " + isNickname
 				+ "isEmail 여부: " + isEmail
@@ -648,8 +654,10 @@ public class HomeController {
 	@RequestMapping(value = "/getList.do", method = RequestMethod.POST)
 	public Map<String,Float> getList(Locale locale, Model model,String[] acTitle) throws IOException {
 		Map<String,Float> map = new HashMap<String,Float>();
-		for (int i = 0; i < acTitle.length; i++) {
-			map.put(acTitle[i], Sserv.getScore(acTitle[i]));
+		if(acTitle != null) {	
+			for (int i = 0; i < acTitle.length; i++) {
+				map.put(acTitle[i], Sserv.getScore(acTitle[i]));
+			}
 		}
 		model.addAttribute("map",map);
 		return map;
@@ -681,10 +689,12 @@ public class HomeController {
 	MemberDto mto = (MemberDto)session.getAttribute("member");
 	List<StartClassDto> list = cacheService.showStartClass();
 	List<BasketDto> myAcList = memberService.showMyAcList(mto.getId());
-	for(BasketDto bdto : myAcList) {
-		if(bdto.getBaskAcademyName().equals(dto.getBaskAcademyName())) {
-			map.put("msg", "이미 찜한 학원입니다.");
-			return map;
+	if(myAcList != null) {	
+		for(BasketDto bdto : myAcList) {
+			if(bdto.getBaskAcademyName().equals(dto.getBaskAcademyName())) {
+				map.put("msg", "이미 찜한 학원입니다.");
+				return map;
+			}
 		}
 	}
 	for(int i =0; i<list.size(); i++) {
