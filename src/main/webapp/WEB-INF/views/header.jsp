@@ -23,7 +23,6 @@
 body {	
 	margin:0 auto;
 	height:100%;
-	background-color: #f6f6f6;
 	font-weight: 400;
 }
 
@@ -95,15 +94,6 @@ body {
 	text-decoration:none;
 }
 
-/* .nav-right{
-    font-size: 18px;
-    margin-top: 14px;
-    margin-right: 10px;
-    text-decoration: none;
-    text-align: right;
-    float: right;
-} */
-
 .nav-image{
     width: 33px;
     margin: -5px -10px 5px -5px;
@@ -159,13 +149,22 @@ a{
 					<a href="main.do">메인</a>
 					<a href="calendar.do">캘린더</a>
 					<a href="boardlist.do?page=1&pagelist=first">게시판</a>
-					<a href="userList.do">회원목록</a>
+					<c:if test="${sessionScope.member.grade == 'A'}">
+						<a href="userList.do">회원목록</a>
+					</c:if>
 				</c:if>
-
+	
 				</div>
 			<div class="nav-content" style="width:280px; text-align:right; padding: 0 5px 0 0;">
+			<c:choose>
+				<c:when test="${sessionScope.member.grade == 'A'}">
+					<span class="info-bar" ><a style="color:#fffa29;">관리자</a> ${sessionScope.member.nickname} 님</span>
+				</c:when>
+				<c:otherwise>	
 					<span class="info-bar">${sessionScope.member.nickname} 님</span>
 					<span style="color:white" id="count" onclick="changeUrl('getMessageList.do?n_receiver=${sessionScope.member.id}')" class="glyphicon glyphicon-envelope" data-toggle="modal" data-target="#myModal" ></span>
+					</c:otherwise>
+				</c:choose>
 			</div>
 			<div class="nav-content" style=" padding: 0 5px 0 5px; ">
 					<span class="info-bar" style="font-weight: 100;"><a href="mypage.do">마이페이지</a></span>

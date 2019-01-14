@@ -157,13 +157,12 @@ $("#id").focusout(function(e){
 				var msg = obj["msg"];
 				if (msg != null) {
 					$("#emailChk").html(msg);
-					/* 프로토에서는 중복 가능하게 */
-	/* 				$("#email").focus();
-					return false; */
+					$("#email").focus();
+					return false;
 				} else {
 					$("#emailChk").html("");
 				}
-/* 				return true; */
+				return true;
 			},
 			error : function() {
 				alert("서버 통신 실패");

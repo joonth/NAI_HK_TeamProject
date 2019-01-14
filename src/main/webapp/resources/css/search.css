@@ -24,14 +24,15 @@
 		height:40px;
 		padding:5px;
 		margin: 0px 5px;
+		cursor: pointer;
 	}
 	#none{
 		display:none;
 	    width: 50%;
-	    height: 90%;
-	    overflow-y: scroll;
+	    height: 66%;
+  		overflow: auto;
 	    position : absolute;
-		top: 54%; left: 50%;
+		top: 46%; left: 50%;
 		transform : translate(-50%, -30%);
 	    z-index: 1;
 	}
@@ -94,9 +95,9 @@
 	#myTable tr {
 	  border-bottom: 1px solid #ddd;
 	}
-
-	#myTable tr.header, #myTable tr:hover {
-	  background-color: grey;
+	
+	#myTable tr :hover {
+	  background-color: grey;	
 	}
 	
 	.navbar{
@@ -116,14 +117,13 @@
 	    max-width: 100%;
 	    place-content: center flex-start;
 	    align-items: center; 
-	    background: white;
 	}
 	.app-footer{
         height: 50px;
    		text-align: center;
 	}
-<<<<<<< HEAD
-	 	.bgImg{
+
+	.bgImg{
 		height: 300px;
 	    max-width: 736px;
 	    width: 100%;
@@ -135,9 +135,6 @@
 	    top: 23%;
 	}
 	
-=======
-
->>>>>>> 00ce23ebd393e39dccecd1b77711094a3f2fa20b
 	.dday{
 		background: red;
 		color: white;
@@ -199,10 +196,7 @@
 	.ranking-table-sec-td{
 		width: 240px;
 	}
-<<<<<<< HEAD
-	
-	
-=======
+
 	.ranking-table-sec-td:hover{
 		text-decoration: underline;
 		cursor:pointer;
@@ -220,7 +214,6 @@
 	    /* z-index: -1; */
 	}
 
->>>>>>> 00ce23ebd393e39dccecd1b77711094a3f2fa20b
 	.box{
 		box-sizing: border-box;
 	    margin: 0 0 20px 0;
