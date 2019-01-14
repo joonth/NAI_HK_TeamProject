@@ -594,8 +594,10 @@ public class HomeController {
 	@RequestMapping(value = "/getList.do", method = RequestMethod.POST)
 	public Map<String,Float> getList(Locale locale, Model model,String[] acTitle) throws IOException {
 		Map<String,Float> map = new HashMap<String,Float>();
-		for (int i = 0; i < acTitle.length; i++) {
-			map.put(acTitle[i], Sserv.getScore(acTitle[i]));
+		if(acTitle != null) {
+			for (int i = 0; i < acTitle.length; i++) {
+				map.put(acTitle[i], Sserv.getScore(acTitle[i]));
+			}
 		}
 		model.addAttribute("map",map);
 		return map;

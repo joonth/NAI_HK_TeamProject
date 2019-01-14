@@ -8,7 +8,7 @@ function myFunction(val) {
   filter = input.val().toUpperCase();
   tr= $('#myTable').find('tr');
   scores = $('.score');
-
+  
   for (i = 0; i < tr.length; i++) {		
 	  td = tr.eq(i).find('td')[1];
 	  td1 = tr.eq(i).find('td')[2];
@@ -26,11 +26,11 @@ function myFunction(val) {
     	  tr.eq(i).attr("style","display:none");
       }
 	}  
-	//검색창에 문자가 없을경우 리스트 출력하지 않음.
-    if(val === ""){$('#none').attr("style","display:");}
-   
   }//	for문
   
+  if(val === ""){ $('#none').attr("style","display:none");}
+
+
   $.ajax({
 	url:"getList.do?",
 	traditional:true,

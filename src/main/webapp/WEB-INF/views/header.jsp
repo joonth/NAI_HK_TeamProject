@@ -23,7 +23,6 @@
 body {	
 	margin:0 auto;
 	height:100%;
-	background-color: #f6f6f6;
 	font-weight: 400;
 }
 
@@ -94,15 +93,6 @@ body {
 .nav-content a{
 	text-decoration:none;
 }
-
-/* .nav-right{
-    font-size: 18px;
-    margin-top: 14px;
-    margin-right: 10px;
-    text-decoration: none;
-    text-align: right;
-    float: right;
-} */
 
 .nav-image{
     width: 33px;
