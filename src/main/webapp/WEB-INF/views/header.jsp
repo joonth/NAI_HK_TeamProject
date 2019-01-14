@@ -155,8 +155,15 @@ a{
 	
 				</div>
 			<div class="nav-content" style="width:280px; text-align:right; padding: 0 5px 0 0;">
+			<c:choose>
+				<c:when test="${sessionScope.member.grade == 'A'}">
+					<span class="info-bar" ><a style="color:#fffa29;">관리자</a> ${sessionScope.member.nickname} 님</span>
+				</c:when>
+				<c:otherwise>	
 					<span class="info-bar">${sessionScope.member.nickname} 님</span>
 					<span style="color:white" id="count" onclick="changeUrl('getMessageList.do?n_receiver=${sessionScope.member.id}')" class="glyphicon glyphicon-envelope" data-toggle="modal" data-target="#myModal" ></span>
+					</c:otherwise>
+				</c:choose>
 			</div>
 			<div class="nav-content" style=" padding: 0 5px 0 5px; ">
 					<span class="info-bar" style="font-weight: 100;"><a href="mypage.do">마이페이지</a></span>
