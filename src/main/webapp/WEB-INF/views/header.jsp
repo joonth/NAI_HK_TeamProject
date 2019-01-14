@@ -145,7 +145,6 @@ a{
 			 	<input id="session" type="hidden" value="${sessionScope.member.id}" >
 				<!-- 세션이 있을 때만 = 로그인되어있을 때만  -->
 				<c:if test="${sessionScope.member!=null}">
-<!-- 					<a href="mypage.do">마이페이지</a> -->
 					<a href="main.do">메인</a>
 					<a href="calendar.do">캘린더</a>
 					<a href="boardlist.do?page=1&pagelist=first">게시판</a>

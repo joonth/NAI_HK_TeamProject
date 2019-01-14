@@ -260,6 +260,20 @@
   	<delete id="deleteComment" parameterType="String">
   		delete ac_comment where m_id = #{m_id}
   	</delete>
+  	
+  	<delete id="delOutOfDateData">
+  	<![CDATA[
+  		delete ACADEMY WHERE AC_CRE_DATE < TO_CHAR(sysdate,'YYYY-MM-DD')
+  		]]>
+  	</delete>
+  	
+  	<insert id="insUpToDateData" parameterType="AcInfoDto">
+  		insert into academy values(academy_seq.nextval,#{subTitle},#{title},#{trastartdate},#{address},'n')
+  	</insert>
+  	
+  	<select id="getAcClassNum" resultType="int">
+  		select count(*) from academy
+  	</select>
 
 <!-- 					황인후					-->
 	<!--   게시판쿼리 -->

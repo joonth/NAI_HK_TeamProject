@@ -66,11 +66,6 @@ public class AcInfoDto implements Serializable ,Comparable<AcInfoDto> {
 		this.address = address; return this;
 	}
 	
-	@Override
-	public String toString() {
-		return "SearchDto [img=" + img + ", title=" + title + ", subTitle=" + subTitle + ", address=" + address
-				+ ", score=" + score + ", trprId=" + trprId + "]";
-	}
 	
 	@Override
 	public int compareTo(AcInfoDto d1) {
@@ -81,6 +76,11 @@ public class AcInfoDto implements Serializable ,Comparable<AcInfoDto> {
 		}else {
 			return 0;
 		}
+	}
+	@Override
+	public String toString() {
+		return "AcInfoDto [img=" + img + ", title=" + title + ", subTitle=" + subTitle + ", address=" + address
+				+ ", score=" + score + ", trastartdate=" + trastartdate + ", dday=" + dday + ", trprId=" + trprId + "]";
 	}
 
 	
