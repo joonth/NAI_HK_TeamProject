@@ -119,7 +119,7 @@
         현재 페이지가 시작페이지의 - 1 이 되도록 되어야 함으로 그 부분만 신경써 주면 됩니다.
      -->    
     <c:if test="${pageMaker.prev}">
-    	<a href="boardlist.do${pageMaker.makeQuery(pageMaker.startPage - 1)}&pagelist=${pagelist}" style="color:black" class="btn btn-default btn-sm">Prev</a>         
+    	<a href="boardlist.do${pageMaker.makeQuery(pageMaker.startPage - 1)}&pagelist=${pagelist}" class="btn btn-default btn-sm">Prev</a>         
     </c:if>
  	
     <!--
@@ -133,7 +133,7 @@
 
     <c:if test="${pageMaker.next }">       
 <!--  이전버튼과 마찬가지로 다음버튼을 끝 페이지보다 1개 큰게 현재 페이지가 되도록 makeQuery에 page를 넣어줍시다. --> 			
-    	<a href="boardlist.do${pageMaker.makeQuery(pageMaker.endPage + 1)}&pagelist=${pagelist}" style="color:black" class="btn btn-default btn-sm">Next</a>
+    	<a href="boardlist.do${pageMaker.makeQuery(pageMaker.endPage + 1)}&pagelist=${pagelist}" class="btn btn-default btn-sm">Next</a>
     </c:if> 
 
 </div>
