@@ -13,24 +13,24 @@
 <!DOCTYPE html>
 <html>
 <head>
+<%@include file="header.jsp" %>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
 <style>
 
 #Calendar{
-	position: absolute;
-	margin-left: 490px;
-	
+    position: absolute;
+    left: 50%;
+    margin-bottom: 10px;
+    margin-top: 0.5%;
+	transform:translateX(-50%);
 	width: 980px;
-    max-width: 100%;
+	height: 960px;
     border-color: black;
     text-align: center;
-    margin-top: 1%;
-    padding-right: 20px;
-    padding-left: 20px;
-/*     margin-right: auto; 
-    margin-left: auto;  */
+    padding-right: 25px;
+    padding-left: 25px; 
     background-color: #fff;
     border-radius: 5px;
     box-shadow: 0 2px 3px rgba(10,10,10,.1), 0 0 0 1px rgba(10,10,10,.1);
@@ -49,7 +49,6 @@
 }
 
 #calCap {
-
     padding-top: 8px;
     padding-bottom: 8px;
     color: #777;
@@ -61,16 +60,18 @@
 }
 
 
-#monthPagebefore{
+#monthPagebefore, #monthPageafter{
 	vertical-align: left;
+	display: inline-block;
+}
+
+
+#monthPagebefore{
 	margin-left: 90%;
 }
 
 #monthPageafter{
-	vertical-align: left;
 	margin-left: 85%;
-
-
 }
 
  .srchTraArea1, .process_Kword {
@@ -84,10 +85,6 @@
 	width: 100%;
     max-width: 100%;
     margin-bottom: 20px;
-}
-
-tbody{
-	
 }
 
 #date{
@@ -108,13 +105,23 @@ tbody{
 }
 
 #calPage{
+	display: inline-block;
+	margin-left: 70%;
+	position: relative;
+}
+
+#calPage >img{
+	display: inline-block;
+
+}
+
+
+#calDate{
 	font-family: 'Oswald', sans-serif;
 	font-size: 30px;
 	color: #5a5d63;
 	text-align: left;	
 }
-
-
 
 .dateNum{
 	padding-left: 3%;
@@ -135,18 +142,22 @@ tbody{
 }
 
 #aca_name{
+	position: relative;
+	float:left;
+	width:100%;
 	text-align: center;
-	margin-top: 2%;
-	
+	margin-top: 0.5%;
+	height:100px;	
 }
 
 /* 검색창 */
 #AcademySearch {
-	text-align: center;
-	margin-left: auto;
-    margin-right: auto;
-    width: 640px;
+	position: relative;
+	float: left;
+	display: inline-block;
+    width: 21%;
     height: 48px;
+    margin-left:0.4%;
     border-radius: 6px 0px 0px 6px;
     box-shadow: 1px 2px 2px #ddd;
     border: none;
@@ -161,7 +172,6 @@ tbody{
     text-transform: none;
     text-indent: 0px;
     text-shadow: none;
-    display: inline-block;
     text-align: start;
     font: 400 13.3333px Arial;
     -webkit-writing-mode: horizontal-tb !important;
@@ -170,26 +180,27 @@ tbody{
  
 /*  검색버튼 */
  #submit{
+	 display: inline-block;
+	 float: left;
  	 background-image: url( "./resources/images/search.png" );
- 	 display: inline-block;
  	 width: 48px;
  	 height: 48px;
  	 background-color: white;
  	 border-radius: 6px 0px 0px 6px;
  	 box-shadow: 1px 2px 2px #ddd;
+ 	 border: none;
+     outline: 0;
  }
  
  
 /*  버튼상자 */
- .btn-workset{
- 	position: float;
- 	margin-top:1%;
- 	background-color: white;
- 	text-align: center;
- 	margin-left: auto;
-    margin-right: auto;
-    width: 400px;
+ .btn-worksets{
+	position: relative;
+ 	margin-top:8%; 
+    width: 160px;
     height: 100px;
+	padding: 20px;
+    margin-bottom: 20px;
     border-radius: 6px 0px 0px 6px;
     box-shadow: 1px 2px 2px #ddd;
     border: none;
@@ -200,9 +211,8 @@ tbody{
  
  }
 
-#AcademyRk{
-		
-	display: inline-block;
+#AcademyRk{	
+	position:relative;
     border: 1px solid rgba(0,0,0,0.15);
     color: #fff;
     font-weight: bold;
@@ -230,6 +240,14 @@ tbody{
     cursor: pointer;
 }
 
+.Right-sidebar{
+	 width: 160px;
+	 padding: 20px;
+	 margin-bottom: 20px;
+ 	 margin-top:3%;
+	 float: right;
+}
+
 </style>
 <script type="text/javascript">
 	$(function(){
@@ -254,7 +272,6 @@ tbody{
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>캘린더</title>
 </head>
-<%@include file="header.jsp" %>
 <%
 	String paramYear=request.getParameter("year");
 	String paramMonth=request.getParameter("month");
@@ -334,17 +351,24 @@ tbody{
 			</div>	
 		<!-- 	</form> -->
 	</div>
-	
-	<div id="Calendar">
-		<table id="caltable">
-		<div class="lastDayNum" style="diplay:none;"> <%=lastDay%></div>
+	<div id="minical" >
+
+	</div>
+
+	<div id="Calendar" >
+		<table id="caltable" >
+		<div class="lastDayNum" style="diplay:none;"><%=lastDay%></div>
 			<caption id="calCap">
-				<a id="yearPagebefore" href="<%=Do%>?year=<%=year-1%>&month=<%=month%>"></a> 
-				<a id="monthPagebefore" href="<%=Do%>?year=<%=year%>&month=<%=month-1%>"><img src="./resources/images/downarrow.png"/></a> 
-				<div id="calPage"><span class="y"><%=year%></span>년  <span class="m"><%=month%></span>월</div>
-				<a id="monthPageafter" href="<%=Do%>?year=<%=year%>&month=<%=month+1%>"><img src="./resources/images/uparrow.png"/></a> 
-				<a id="yearPageafter" href="<%=Do%>?year=<%=year+1%>&month=<%=month%>"></a>
+				<div id="calPage">
+				
+				<a id="monthPagebefore" href="<%=Do%>?year=<%=year%>&month=<%=month-1%>"><img src="./resources/images/downarrow.png"/></a>
+				<a id="monthPageafter" href="<%=Do%>?year=<%=year%>&month=<%=month+1%>"><img src="./resources/images/uparrow.png"/></a>
+				<a id="yearPagebefore" href="<%=Do%>?year=<%=year-1%>&month=<%=month%>"></a>  
+				<a id="yearPageafter" href="<%=Do%>?year=<%=year+1%>&month=<%=month%>"></a> 
+				</div>
+				<div id="calDate"><span class="y"><%=year%></span>년  <span class="m"><%=month%></span>월</div>
 			</caption>
+			
 			<tr id="weekday">
 				<th>S</th>
 				<th>M</th>
@@ -407,9 +431,11 @@ tbody{
 			</tr>
 		</table>
 	</div>
-	<div class="btn workset" style="background-color: white;" >
+	<div class="btn worksets" style="background-color: white; 	margin-left:0.4%;"  >
 	<button type="button" id="AcademyRk" onclick="location.href='acDayRank.do'">일별랭킹 보기</button>
 	<button type="button" id="CartAcademyCal" onclick="location.href='cartAcademyCal.do'">찜한 학원일정 보기</button>
+	</div>
+	<div class="Right-sidebar">
 	</div>
 
 
