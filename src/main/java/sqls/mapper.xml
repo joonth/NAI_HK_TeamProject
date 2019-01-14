@@ -322,7 +322,7 @@
  			
 		]]>
     </select>
-	<!--     조회순으로 10개식 출력하는 쿼리 -->
+	<!--     조회순으로 15개식 출력하는 쿼리 -->
     <select id="listCriteria1" resultType="BoardDto" parameterType="String"> 
        <![CDATA[
 			select * from
@@ -334,7 +334,7 @@
 		]]>
     </select>  
     
-    <!--     추천순으로 10개식 출력하는 쿼리 -->
+    <!--     추천순으로 15개식 출력하는 쿼리 -->
     <select id="listCriteria2" resultType="BoardDto" parameterType="String"> 
        <![CDATA[
 			select * from
@@ -346,7 +346,7 @@
 		]]>
     </select>  
     
-     <!--     댓글순으로 10개식 출력하는 쿼리 -->
+     <!--     댓글순으로 15개식 출력하는 쿼리 -->
     <select id="listCriteria3" resultType="BoardDto" parameterType="String"> 
        <![CDATA[
 			select * from
@@ -452,9 +452,7 @@
   		UPDATE BOARD SET POINTCHECK = 1 WHERE B_SEQ=#{b_seq}
   	</update>
   	
-  	<select id="getIdByNick" parameterType="String" resultType="String">
-  		select m_id from member where m_nick = #{nickname}
-  	</select>
+
 <!-- 					김설백					-->
 <!-- 캘린더 기능 -->
  <select id="getCalList" resultMap="CalDto"> 

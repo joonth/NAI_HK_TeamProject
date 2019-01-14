@@ -53,17 +53,14 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 
 		//조회수를 증가시킨 글번호를 세션 초기화한다.
 		request.getSession().removeAttribute("b_readcount");
-		
-	
+			
 		List<BoardDto> dto=null;
-		
-	     		 
+		     		 
         //view jsp 페이지에서 페이징 처리를 위해 사용할 PageMaker 객체를 생성
 		PageMakerDto pageMaker = new PageMakerDto();
 		pageMaker.setCri(cri);
 		Integer totalNum = boardService.totalCount();
 		pageMaker.setTotalCount(totalNum);
-
 
 		//조회순,추천순,최신순 파라미터값을 받아옴
 		pagelist = request.getParameter("pagelist");
@@ -104,14 +101,14 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 
 	//게시글 추가폼으로 이동
 	@RequestMapping(value="/insertform.do" , method= RequestMethod.GET)
-	public String insertform(Locale locale,Model model,String b_seq,BoardDto dto) {
+	public String insertform(Locale locale,Model model) {
 		logger.info("글추가 폼이동{}.", locale);
 		return "boardinsert";
 	}
 	
 	//게시글 추가 처리
 	@RequestMapping(value="/insertboard.do",method=RequestMethod.POST)
-	public String insertBoard(Locale locale,Model model,String b_seq,BoardDto dto ) {
+	public String insertBoard(Locale locale,Model model,BoardDto dto ) {
 		logger.info("글 추가{}.", locale);
 		boolean isS = boardService.insertBoard(dto);
 		if(isS) {
@@ -125,16 +122,13 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 	//게시글 상세보기 
 	@RequestMapping(value="/detailboard.do", method=RequestMethod.GET)
 	public String detailBoard(HttpSession session, CriteriaDto cri, HttpServletRequest request, Locale locale,
-							Model model,String b_seq,String page,String perPageNum) {
+							Model model,String b_seq,String page) {
 		
 		logger.info("글 상세조회{}.", locale);
 		int sseq = Integer.parseInt(b_seq);
-		
-		
-		
+				
 		MemberDto mdto = (MemberDto)session.getAttribute("member");	
 		String m_nick = mdto.getNickname();
-
 		
 		//조회수증가에 대한 처리
 		String rseq = (String)request.getSession().getAttribute("b_readcount");
@@ -174,7 +168,7 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 	
 	//게시글 수정 처리
 	@RequestMapping(value="/boardupdate.do" , method=RequestMethod.POST)
-	public String updateBoard(CriteriaDto cri,Locale locale,Model model,String b_seq,BoardDto dto,String pagelist) {
+	public String updateBoard(Locale locale,Model model,CriteriaDto cri,String b_seq,BoardDto dto,String pagelist) {
 		logger.info("글 수정하기{}.", locale);
 		model.addAttribute("cri", cri);
 		model.addAttribute("pagelist", pagelist);
@@ -190,7 +184,7 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 	
 	//게시글 삭제
 	@RequestMapping(value="/delboard.do" , method=RequestMethod.GET)
-	public String delBoard(CriteriaDto cri, Locale locale,Model model,String b_seq,HttpServletRequest request,BoardDto dto,String page,String perPageNum,String pagelist) {
+	public String delBoard(Locale locale,Model model,HttpServletRequest request,CriteriaDto cri,BoardDto dto,String page,String pagelist,String b_seq) {
 		logger.info("글삭제{}.", locale);
 		int sseq = Integer.parseInt(b_seq);
 		model.addAttribute("cri", cri);
@@ -287,9 +281,7 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 		MemberDto mdto = (MemberDto)session.getAttribute("member");
 		mdto.setNickname(writer);
 		int b_like = boardService.getB_like(b_seq); //게시판의 좋아요카운트
-		
-//		BoardDto dto = new BoardDto();
-		
+				
 		int pointcheck = boardService.getPointCheck(b_seq);
 		
 		if(boardLikeService.countbyLike(ldto)==0) {
