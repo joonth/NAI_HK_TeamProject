@@ -105,9 +105,9 @@
 	    z-index: 30;
 	}
 	.content{
- 	    height: 86%;
+ 	    height: 87%;
 	    margin: 0px;
-	    min-height: 86%;
+	    min-height: 87%;
 	    min-width: 100%;
 	    width: 100%;
 	    flex-direction: column;
@@ -122,7 +122,19 @@
         height: 50px;
    		text-align: center;
 	}
-
+<<<<<<< HEAD
+	 	.bgImg{
+		height: 300px;
+	    max-width: 736px;
+	    width: 100%;
+	    background-image: url(../images/1.jpg);
+	    background-repeat: no-repeat;
+	    background-size: contain;
+	    background-position-x: center;
+	    position: absolute;
+	    top: 23%;
+	}
+	
 	.dday{
 		background: red;
 		color: white;
@@ -184,6 +196,10 @@
 	.ranking-table-sec-td{
 		width: 240px;
 	}
+<<<<<<< HEAD
+	
+	
+=======
 	.ranking-table-sec-td:hover{
 		text-decoration: underline;
 		cursor:pointer;
@@ -201,6 +217,7 @@
 	    /* z-index: -1; */
 	}
 
+>>>>>>> 00ce23ebd393e39dccecd1b77711094a3f2fa20b
 	.box{
 		box-sizing: border-box;
 	    margin: 0 0 20px 0;
