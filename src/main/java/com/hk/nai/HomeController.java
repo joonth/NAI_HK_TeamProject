@@ -415,23 +415,38 @@ public class HomeController {
 	//회원정보 수정
 	@RequestMapping(value = "/updatemyinfo.do", method = RequestMethod.POST)
 	public String updateMyInfo(Locale locale, Model model, MemberDto member, String academyName, HttpSession session) {
-
-		boolean isPw = memberService.updatePw(member);		
-		boolean isNickname = memberService.updateNickname(member);
-		boolean isEmail = memberService.updateEmail(member);
-		boolean isAuth = false;
 		
-		if(!academyName.isEmpty()) //인증학원생
+		boolean isPw = false;
+		boolean isNickname = false;
+		boolean isEmail = false;
+		boolean isAuth = false;
+		int errcnt = 0;
+		
+		if(!member.getPw().isEmpty()) {
+			isPw = memberService.updatePw(member);	 
+			if(isPw==false) errcnt++; 
+		}	
+		if(!member.getNickname().isEmpty()) {
+			isNickname = memberService.updateNickname(member);
+			if(isNickname==false) errcnt++; 
+		}
+		if(!member.getEmail().isEmpty()) {
+			isEmail = memberService.updateEmail(member);
+			if(isEmail==false) errcnt++; 
+		}
+		if(!academyName.isEmpty()) { 
 			isAuth = memberService.updateAuth(new AuthDto().setAuthId(member.getId()).setAcademyName(academyName));
+			if(isAuth==false) errcnt++; 
+		}
 		else //학원명 인증이 안 된 일반사용자
 			isAuth = true;
 		
-		System.out.println("pw 성공여부:" + isPw
-				+ "isNickname 여부: " + isNickname
-				+ "isEmail 여부: " + isEmail
-				+ "isAuth 여부: " + isAuth);
+		System.out.println("pw 변경여부: " + isPw
+				+ " isNickname 변경여부: " + isNickname
+				+ " isEmail 변경여부: " + isEmail
+				+ " isAuth 변경여부: " + isAuth);
 		
-		if(!isPw && !isNickname && !isEmail && !isAuth) {
+		if(errcnt > 0) {
 			model.addAttribute("errmsg", "수정 실패");
 			return "error";
 		}

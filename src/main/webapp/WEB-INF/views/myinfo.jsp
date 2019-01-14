@@ -70,12 +70,12 @@ $(function(){
 	<span id="idChk"></span>
 	<div class="input-group">
 		<span class="input-group-addon"></span>
-		<input type="password" id="pw" name="pw" class="form-control" placeholder="비밀번호">
+		<input type="password" id="pw" name="pw" value="" class="form-control" placeholder="비밀번호">
 	</div>
 		<span id="pwChk"></span>
 	<div class="input-group">
 		<span class="input-group-addon"></span>
-		<input type="password" id="pw2" name="pw2"  class="form-control" placeholder="비밀번호 확인" >
+		<input type="password" id="pw2" name="pw2" value="" class="form-control" placeholder="비밀번호 확인" >
 	</div>
 	<span id="pw2Chk"></span>
 	<div class="input-group">
@@ -128,6 +128,7 @@ $(function(){
 	</ul>
 </div>
 <script type="text/javascript">
+
 //닉네임 중복 체크 ajax
 $("#nickname").focusout(function() {
 	$.ajax({
@@ -338,7 +339,8 @@ function checkRegx() {
 	var RegxPw = /^(?=.*[A-Za-z])(?=.*\d)[a-zA-Z\d]{6,20}$/;
 	var RegxEmail = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
 
-	if($("#pw").length > 0) {
+		
+	if($("#pw").val().length > 0) {
 		console.log("pw 진입");
 		if (!RegxPw.test($.trim($("#pw").val()))) {
 			$("#pwChk").html("비밀번호는 6~20자 알파벳과 숫자 조합");
@@ -356,6 +358,10 @@ function checkRegx() {
 			$("#pw2Chk").html("");
 		}
 		console.log("pw 마지막");
+	} else if($("#pw").val().length == 0) {
+		console.log("val"+$("#pw").val());
+		console.log($("#pw").val().length);
+		console.log("비번 변경x");
 	}
 
 	if (!RegxEmail.test($.trim($("#email").val()))) {
