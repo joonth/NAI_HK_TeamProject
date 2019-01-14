@@ -8,13 +8,12 @@
 <link rel="shortcut icon" href="./resources/images/favicon.ico">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>마이페이지</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui
 .css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/myinfo.css">	
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 <script type="text/javascript" >
 /* 모바일 메뉴 드롭다운 */
 $(function(){
@@ -41,7 +40,7 @@ $(function(){
 </div>
 <form action="updatemyinfo.do" method="post" onsubmit="return checkRegx();">
 	<!-- Modal -->
-	<div class="modal fade" id="myModal" role="dialog">
+	<div class="modal fade" id="yourModal" role="dialog">
 		<div class="modal-dialog">  
 		<!-- Modal content-->
 			<div class="modal-content">
@@ -92,7 +91,7 @@ $(function(){
 	<div class="input-group">
 		<span class="input-group-addon"></span>
 		<input type="text" id="academyName" name="academyName" value="${auth.academyName}">	
-		<button type="button" id="searchBtn" data-toggle="modal" data-target="#myModal" class="btn btn-primary">검색</button>	
+		<button type="button" id="searchBtn" data-toggle="modal" data-target="#yourModal" class="btn btn-primary">검색</button>	
 	</div>
 	<span style="font-size:12px;">학원생 인증시 이메일로 전송된 인증코드를 등록해야합니다</span>
 	<button type="button" id="authBtn" class="btn btn-primary">인증코드 받기</button>

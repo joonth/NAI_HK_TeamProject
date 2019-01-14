@@ -12,15 +12,12 @@
   		<typeAlias type="com.hk.nai.dtos.MessageDto" alias="MessageDto"/>
   		<typeAlias type="com.hk.nai.dtos.BoardDto" alias="BoardDto"/>
   		<typeAlias type="com.hk.nai.dtos.CommentDto1" alias="CommentDto1"/>
-
+		<typeAlias type="com.hk.nai.dtos.AcInfoDto" alias="AcInfoDto"/>
   		<typeAlias type="com.hk.nai.dtos.LikeDto" alias="LikeDto"/>
-
   		<typeAlias type="com.hk.nai.dtos.BasketDto" alias="BasketDto"/>
 		<typeAlias type="com.hk.nai.dtos.RankingDto" alias="RankingDto"/>
 		<typeAlias type="com.hk.nai.dtos.StartClassDto" alias="StartClassDto"/>
 		<typeAlias type="com.hk.nai.dtos.AcademyDto" alias="AcademyDto"/>
-		<typeAlias type="com.hk.nai.dtos.AddImgDto" alias="AddImgDto"/>
-
 		<typeAlias type="com.hk.nai.dtos.CalDto" alias="CalDto" />
 
   	</typeAliases>
