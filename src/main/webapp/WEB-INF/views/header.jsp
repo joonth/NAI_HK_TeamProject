@@ -149,9 +149,11 @@ a{
 					<a href="main.do">메인</a>
 					<a href="calendar.do">캘린더</a>
 					<a href="boardlist.do?page=1&pagelist=first">게시판</a>
-					<a href="userList.do">회원목록</a>
+					<c:if test="${sessionScope.member.grade == 'A'}">
+						<a href="userList.do">회원목록</a>
+					</c:if>
 				</c:if>
-
+	
 				</div>
 			<div class="nav-content" style="width:280px; text-align:right; padding: 0 5px 0 0;">
 					<span class="info-bar">${sessionScope.member.nickname} 님</span>
