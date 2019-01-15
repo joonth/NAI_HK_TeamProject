@@ -6,19 +6,59 @@
 <!DOCTYPE>
 <html>
 <head>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">	
 <!-- 이한준 -->
 	<link rel="shortcut icon" href="./resources/images/favicon.ico">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/search.css">
+	
+	<script src="https://unpkg.com/chaffle/chaffle.min.js"></script>
+	
 	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/hj/main_search.js"></script>
 <!-- 이한준 -->
+	
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>국과수 국비과정수업정보</title>
 <%
 	if(session.getAttribute("member") == null){
 		response.sendRedirect("signinform.do");
 	}
+
 %>
+<style>
+ img{
+	vertical-align: middle;
+ }
+
+ .sentence{
+ 	margin-top:18%;
+ 	line-height:1.8;
+ }
+ .paragraph{
+ 	font-size:17px;
+ 	line-height:1.8;
+ }
+ .figures{
+ 	line-height:2.0;
+ }
+ .figures div{
+  	display:inline-block; 
+  } 
+ .figures div h2{
+ 	display:inline-block;
+ }
+
+  .figures div p.description{ 
+	font-size:15px;
+ }
+ .figures hr{
+ 	display: inline-block; margin: 0 80px 25px -24px; height: 20px; color:black;
+ }
+ 
+
+ 
+</style>
+
 </head>
 <body>
 <%@include file="WEB-INF/views/header.jsp" %>
@@ -106,12 +146,64 @@
 			</c:otherwise>
 		</c:choose>
 		</table>
-	</div>
-	
-	<div class="bgImg">
+
 	</div>
 
-</div>
+		<h3 class="sentence">
+		&nbsp;&nbsp;&nbsp;3만 IT 국비지원생들을 위한
+		<br>
+		<strong style="color:red">IT 국비학원 정보 사이트 국과수!</strong>
+		</h3><br />
+		<div class="paragraph">
+		<p>국비학원을 다니는 <strong>인증된</strong> 학원생들이 학원과 교육과정에 대해 평가를 남겨
+		<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;예비학원생들이 쉽고 간편하게 <strong>생생한 정보</strong>를 얻을 수 있으며
+		<br>
+		학원생들과 예비학원생들간의 소통하는 <strong>커뮤니티</strong>를 이용할 수 있습니다 
+		</div>
+		<br /><br />
+		
+		<div class="figures">
+			<div>
+				<h2 data-chaffle="en"><strong>1254</strong>&nbsp;</h2><h2><span>명</span></h2>				
+				<p class="description">가입한 회원수</p>
+			</div>
+			<hr>
+			<div>
+				<h2 data-chaffle="en"><strong>567</strong>&nbsp;</h2><h2><span>명</span></h2>				
+				<p class="description">인증된 회원수</p>
+			</div>
+			<hr>
+			<div>
+				<h2 data-chaffle="en"><strong>198</strong>&nbsp;</h2><h2><span>개</span></h2>
+				<p class="description">등록된 학원수</p>
+			</div>
+			<hr>
+			<div>
+				<h2 data-chaffle="en"><strong>533</strong>&nbsp;</h2><h2><span>개</span></h2>
+				<p class="description">등록된 과정수</p>
+			</div>
+			<hr>
+			<div>
+				<h2 data-chaffle="en"><strong>159</strong>&nbsp;</h2><h2><span>개</span></h2>
+				<p class="description">작성된 학원평</p>
+			</div>
+		</div>
+
+	</div>
+	
+<script type="text/javascript">
+	const elements = document.querySelectorAll('[data-chaffle]');
+	Array.prototype.forEach.call(elements, function (el) {
+	  const chaffle = new Chaffle(el, { lang: 'en',
+		  								speed: 600,
+		  								delay: 100});    									  
+	  chaffle.init();
+
+	}); 
+
+</script>
+
 
 <div class="app-footer">
 		<div class="banner">
