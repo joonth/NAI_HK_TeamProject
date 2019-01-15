@@ -196,8 +196,8 @@
 	const elements = document.querySelectorAll('[data-chaffle]');
 	Array.prototype.forEach.call(elements, function (el) {
 	  const chaffle = new Chaffle(el, { lang: 'en',
-		  								speed: 10,
-		  								delay: 150});    									  
+		  								speed: 600,
+		  								delay: 100});    									  
 	  chaffle.init();
 
 	}); 
