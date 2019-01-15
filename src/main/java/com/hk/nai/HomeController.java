@@ -70,7 +70,8 @@ public class HomeController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	Map<String,String> dupeCheck = new HashMap<String,String>();	// 학원평 재 작성시 포인트 중복추가 방지
-	Map<String,LinkedList<AcInfoDto>> getAcInfoMap = new HashMap<String,LinkedList<AcInfoDto>>();
+	//API를 여러번 호출하지않기 위해서 받아온  Data를 맵에 저장하여 필요한부분에서 사용할 수 있도록.
+	Map<String,LinkedList<AcInfoDto>> getAcInfoMap = new HashMap<String,LinkedList<AcInfoDto>>();	
 
 	@Autowired		//api로 얻어온 xml data의 tag를 없애는 util.
 	SearchUtil util;
@@ -178,6 +179,7 @@ public class HomeController {
 					 count++;	
 				}
 			}//for
+			// 과정출력 갯수가 달라지면 update가 된것으로 간주하고 db에  새로운 과정 list를  받는다.
 			if(dataHandleService.getAcClassNum() != count) {
 				dataHandleService.delOutOfDateData();
 				dataHandleService.insUpToDateData(list);
@@ -665,7 +667,6 @@ public class HomeController {
 		return map;
 	}
 
-	
 	@ResponseBody
 	@RequestMapping(value = "/showBasket.do", method = RequestMethod.GET)
 	public Map<String,List<String>> showBasket(Locale locale, Model model, String m_id) throws IOException {
@@ -683,7 +684,5 @@ public class HomeController {
 		list.put("list", img);
 		return list;
 	}
-	
-	
     ////////////////	이한준 	//////////////////////////////////////////////////////////////////////////////   
 }
