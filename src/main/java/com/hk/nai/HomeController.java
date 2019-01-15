@@ -54,6 +54,7 @@ import com.hk.nai.dtos.BasketDto;
 import com.hk.nai.dtos.AcademyDto;
 import com.hk.nai.services.CommentAddPermitService;
 import com.hk.nai.services.CommentService;
+import com.hk.nai.services.DataHandleService;
 import com.hk.nai.services.CacheService;
 import com.hk.nai.dtos.MessageDto;
 import com.hk.nai.daos.MessageDao;
@@ -85,6 +86,8 @@ public class HomeController {
 	InfoService Iserv;
 	@Autowired
 	CommentAddPermitService commentAddPermit;
+	@Autowired
+	DataHandleService dataHandleService;
 	
 	@Value("#{apiKey['key']}")	//github에 apikey를 올리지 않기 위해서 key를 따로 저장후 받아옴.
 	private String key;
@@ -138,13 +141,14 @@ public class HomeController {
 					 String address = util.tagTrim(datas.get(i).select("address"), "address");
 					 String trprid = util.tagTrim(datas.get(i).select("trprid"), "trprid");
 					 String trastartdate =util.tagTrim(datas.get(i).select("trastartdate"), "trastartdate");
+					
 					 acInfoDto.setTitle(title)
 					 		  .setSubTitle(subtitle)
 					 		  .setAddress(address)
 					 		  .setTrprId(trprid) 
 					 		  .setTrastartdate(trastartdate)
 					 		  .setDday(util.trimDday(acInfoDto));
-					 
+										 
 					 // 학원 img 처리
 					 if(Sserv.getImg(subtitle) != null) {
 						 acInfoDto.setImg(Sserv.getImg(subtitle));						 
@@ -174,6 +178,10 @@ public class HomeController {
 					 count++;	
 				}
 			}//for
+			if(dataHandleService.getAcClassNum() != count) {
+				dataHandleService.delOutOfDateData();
+				dataHandleService.insUpToDateData(list);
+			}
 			System.out.println("출력 과정수 : "+count);	
 		} // if(
 		model.addAttribute("list", list);	
@@ -615,6 +623,7 @@ public class HomeController {
 	@RequestMapping(value = "/getList.do", method = RequestMethod.POST)
 	public Map<String,Float> getList(Locale locale, Model model,String[] acTitle) throws IOException {
 		Map<String,Float> map = new HashMap<String,Float>();
+
 		if(acTitle != null) {	
 			for (int i = 0; i < acTitle.length; i++) {
 				map.put(acTitle[i], Sserv.getScore(acTitle[i]));

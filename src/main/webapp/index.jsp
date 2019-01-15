@@ -23,8 +23,13 @@
 	if(session.getAttribute("member") == null){
 		response.sendRedirect("signinform.do");
 	}
+
 %>
 <style>
+ img{
+	vertical-align: middle;
+ }
+
  .sentence{
  	margin-top:18%;
  	line-height:1.8;
@@ -37,27 +42,20 @@
  	line-height:2.0;
  }
  .figures div{
+  	display:inline-block; 
+  } 
+ .figures div h2{
  	display:inline-block;
  }
-/*  .figures div p.number strong{ */
-/*  	display: inline-block; margin-left: 5px; letter-spacing: -2px; font-size:38px; */
-/*  } */
-/*  .figures div p.number span{  */
-/*   	display: inline-block; margin: 0 5px; font-size:20px;  */
-/*  } */
+
   .figures div p.description{ 
 	font-size:15px;
  }
  .figures hr{
- 	display: inline-block; margin: 0 80px 25px -24px; height: 20px; c;olor:black;
+ 	display: inline-block; margin: 0 80px 25px -24px; height: 20px; color:black;
  }
- .figures h4{
- 	display:inline-block;
- 	font-size:36px;
- }
- .unit{
- 	font-size:20px;
- }
+ 
+
  
 </style>
 
@@ -85,7 +83,7 @@
 	</div>
 	
 	<!-- 이한준 -->
-	<input type="text" id="myInput" onkeypress="if(event.keyCode==13) {myFunction(this.value); return false;}" placeholder="학원,과정,주소로 검색 가능합니다." title="Type in a name">
+	<input type="text" id="myInput" onkeyup="myFunction(this.value)" placeholder="학원,과정,주소로 검색 가능합니다." title="Type in a name">
 	<div class="myInput-underline"></div>
 	<div id="none">
 		<table id="myTable">
@@ -152,9 +150,9 @@
 	</div>
 
 		<h3 class="sentence">
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3만 IT국비지원생들을 위한
+		&nbsp;&nbsp;&nbsp;3만 IT 국비지원생들을 위한
 		<br>
-		<strong style="color:red">국내 1위 IT학원 정보 서비스 국과수!</strong>
+		<strong style="color:red">IT 국비학원 정보 사이트 국과수!</strong>
 		</h3><br />
 		<div class="paragraph">
 		<p>국비학원을 다니는 <strong>인증된</strong> 학원생들이 학원과 교육과정에 대해 평가를 남겨
@@ -167,50 +165,45 @@
 		
 		<div class="figures">
 			<div>
-					<h4 data-chaffle="en"><b>1254</b></h4>&nbsp;&nbsp;<span class="unit">명</span>
-<!-- 				<h4 class="number animated bounceInDown"><b>1254</b></h4>&nbsp;&nbsp;<span class="unit">명</span> -->
+				<h2 data-chaffle="en"><strong>1254</strong>&nbsp;</h2><h2><span>명</span></h2>				
 				<p class="description">가입한 회원수</p>
 			</div>
 			<hr>
 			<div>
-				<h4 data-chaffle="en"><b>567</b></h4>&nbsp;&nbsp;<span class="unit">명</span>
-<!-- 				<h4 class="number animated bounceInDown"><b>567</b></h4>&nbsp;&nbsp;<span class="unit">명</span> -->
+				<h2 data-chaffle="en"><strong>567</strong>&nbsp;</h2><h2><span>명</span></h2>				
 				<p class="description">인증된 회원수</p>
 			</div>
 			<hr>
 			<div>
-				<h4 data-chaffle="en"><b>198</b></h4>&nbsp;&nbsp;<span class="unit">개</span>
-<!-- 				<h4 class="number animated bounceInDown"><b>198</b></h4>&nbsp;&nbsp;<span class="unit">개</span> -->
+				<h2 data-chaffle="en"><strong>198</strong>&nbsp;</h2><h2><span>개</span></h2>
 				<p class="description">등록된 학원수</p>
 			</div>
 			<hr>
 			<div>
-				<h4 data-chaffle="en"><b>533</b></h4>&nbsp;&nbsp;<span class="unit">개</span>
-<!-- 				<h4 class="number animated bounceInDown"><b>533</b></h4>&nbsp;&nbsp;<span class="unit">개</span> -->
+				<h2 data-chaffle="en"><strong>533</strong>&nbsp;</h2><h2><span>개</span></h2>
 				<p class="description">등록된 과정수</p>
 			</div>
 			<hr>
 			<div>
-				<h4 data-chaffle="en"><b>159</b></h4>&nbsp;&nbsp;<span class="unit">개</span>
-<!-- 				<h4 class="number animated bounceInDown"><b>159</b></h4>&nbsp;&nbsp;<span class="unit">개</span> -->
+				<h2 data-chaffle="en"><strong>159</strong>&nbsp;</h2><h2><span>개</span></h2>
 				<p class="description">작성된 학원평</p>
 			</div>
 		</div>
 
-
+	</div>
 	
-	<script type="text/javascript">
+<script type="text/javascript">
 	const elements = document.querySelectorAll('[data-chaffle]');
 	Array.prototype.forEach.call(elements, function (el) {
 	  const chaffle = new Chaffle(el, { lang: 'en',
-		  								speed: 1,
-		  								delay: 350,});    									  
+		  								speed: 10,
+		  								delay: 150});    									  
 	  chaffle.init();
 
-	});
-	</script>
+	}); 
 
-</div>
+</script>
+
 
 <div class="app-footer">
 		<div class="banner">

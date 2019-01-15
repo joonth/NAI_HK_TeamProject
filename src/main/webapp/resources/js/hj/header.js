@@ -26,6 +26,8 @@ $(document).ready(function(){
 	 sock.onmessage = function(evt) {
 		 if(evt.data != 0){
 			 $('#count').html("<span class='badge' style='color:red; font-size:15px;'>"+evt.data+"</span>");			 
+		 }else{
+			 $('#count').html("<span class='badge' style='color:red; font-size:15px;'></span>");
 		 }
 	 };
 	 
