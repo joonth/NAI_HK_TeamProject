@@ -5,13 +5,12 @@
 <!DOCTYPE>
 <html>
 <head>
+<%@include file="header.jsp" %>
 <link rel="shortcut icon" href="./resources/images/favicon.ico">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>마이페이지</title>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui
-.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/myinfo.css">	
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <script type="text/javascript" >
@@ -25,7 +24,6 @@ $(function(){
 </script>
 </head>
 <body>
-<%@include file="header.jsp" %>
 <div id="myinfo-container" class="container">
 <!-- 모바일용 사이드메뉴 -->
 <div id="mobile-myinfo-sidemenu-bar">
@@ -127,8 +125,8 @@ $(function(){
 		<li><a href="withdrawform.do">회원 탈퇴</a></li>
 	</ul>
 </div>
-<script type="text/javascript">
 
+<script type="text/javascript">
 //닉네임 중복 체크 ajax
 $("#nickname").focusout(function() {
 	$.ajax({
@@ -231,11 +229,10 @@ $("#searchAcName").autocomplete({
 	}
 });
 //modal 창에 보이게
-$("#searchAcName").autocomplete("option", "appendTo","#myModal");
-
+$("#searchAcName").autocomplete("option", "appendTo","#yourModal");
 //검색버튼 눌러서 학원명 검색
 $("#searchBtn2").click(
-	function(){
+	function (){
 		$.ajax({
 			url : "searchacademyname.do",
 			data : {
@@ -249,6 +246,7 @@ $("#searchBtn2").click(
 					$("#searchAcNmResult").text("검색결과가 없습니다");
 				} else{
 					for(var i in obj){
+						console.log("in" + +obj[i].data);
 						$("#searchAcNmResult").append("<label><input type='radio' name='radioAcNames' " 
 								+" value='"+obj[i].data+"' style='display: none;'>"
 								+obj[i].data
@@ -267,7 +265,7 @@ $("#searchBtn2").click(
 	$("#searchSubmitBtn").click(function() {
 		console.log($("input[name='radioAcNames']:checked").val());
 		$("#academyName").val($("input[name='radioAcNames']:checked").val());
-		$("#myModal").modal("hide");
+		$("#yourModal").modal("hide");
 	});
 
 

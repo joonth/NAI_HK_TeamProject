@@ -54,6 +54,7 @@ import com.hk.nai.dtos.BasketDto;
 import com.hk.nai.dtos.AcademyDto;
 import com.hk.nai.services.CommentAddPermitService;
 import com.hk.nai.services.CommentService;
+import com.hk.nai.services.DataHandleService;
 import com.hk.nai.services.CacheService;
 import com.hk.nai.dtos.MessageDto;
 import com.hk.nai.daos.MessageDao;
@@ -85,6 +86,8 @@ public class HomeController {
 	InfoService Iserv;
 	@Autowired
 	CommentAddPermitService commentAddPermit;
+	@Autowired
+	DataHandleService dataHandleService;
 	
 	@Value("#{apiKey['key']}")	//github에 apikey를 올리지 않기 위해서 key를 따로 저장후 받아옴.
 	private String key;
@@ -138,13 +141,14 @@ public class HomeController {
 					 String address = util.tagTrim(datas.get(i).select("address"), "address");
 					 String trprid = util.tagTrim(datas.get(i).select("trprid"), "trprid");
 					 String trastartdate =util.tagTrim(datas.get(i).select("trastartdate"), "trastartdate");
+					
 					 acInfoDto.setTitle(title)
 					 		  .setSubTitle(subtitle)
 					 		  .setAddress(address)
 					 		  .setTrprId(trprid) 
 					 		  .setTrastartdate(trastartdate)
 					 		  .setDday(util.trimDday(acInfoDto));
-					 
+										 
 					 // 학원 img 처리
 					 if(Sserv.getImg(subtitle) != null) {
 						 acInfoDto.setImg(Sserv.getImg(subtitle));						 
@@ -174,6 +178,10 @@ public class HomeController {
 					 count++;	
 				}
 			}//for
+			if(dataHandleService.getAcClassNum() != count) {
+				dataHandleService.delOutOfDateData();
+				dataHandleService.insUpToDateData(list);
+			}
 			System.out.println("출력 과정수 : "+count);	
 		} // if(
 		model.addAttribute("list", list);	
@@ -189,45 +197,43 @@ public class HomeController {
 	@RequestMapping(value="/idcheck.do" , method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String,String> idCheck(Locale locale, Model model, @RequestParam String id) {
-		boolean isS = memberService.checkIdMember(id);
-		if(!isS) {
-			Map<String,String> map = new HashMap<String,String>();
-			String msg = "중복된 아이디입니다";
-			map.put("msg", msg);
-			System.out.println(msg);
-			return map;
-		}
-		return null; 
+		return duplicatedCheck("id", memberService.checkIdMember(id));
 	}
-	
+
 	//nickname 중복 ajax
 	@RequestMapping(value="/nicknamecheck.do" , method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String,String> nicknameCheck(Locale locale, Model model, @RequestParam String nickname) {
-		boolean isS = memberService.checkNicknameMember(nickname);
-		if(!isS) {
-			Map<String,String> map = new HashMap<String,String>();
-			String msg = "중복된 닉네임입니다";
-			map.put("msg", msg);
-			System.out.println(msg);
-			return map;
-		}
-		return null; 
+		return duplicatedCheck("nickname", memberService.checkNicknameMember(nickname));
 	}	
 	
 	//email 중복 ajax
 	@RequestMapping(value="/emailcheck.do" , method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String,String> emailCheck(Locale locale, Model model, @RequestParam String email) {
-		boolean isS = memberService.checkEmailMember(email);
+		return duplicatedCheck("email", memberService.checkEmailMember(email));
+	}
+	
+	public Map<String,String> duplicatedCheck(String param, boolean isS) {
 		if(!isS) {
+			String msg = "중복된 ";
 			Map<String,String> map = new HashMap<String,String>();
-			String msg = "중복된 이메일입니다";
+			switch(param) {
+				case "id" : 
+					msg += " 아이디입니다";
+					break;
+				case "nickname":
+					msg += " 닉네임입니다";
+					break;
+				case "email":
+					msg += " 이메일입니다";
+			}
 			map.put("msg", msg);
-			System.out.println(msg);
 			return map;
 		}
-		return null; 
+		else 
+			return null;
+
 	}
 	
 	//학원명 찾기 ajax
