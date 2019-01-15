@@ -149,7 +149,7 @@ a{
 					<a href="calendar.do">캘린더</a>
 					<a href="boardlist.do?page=1&pagelist=first">게시판</a>
 					<c:if test="${sessionScope.member.grade == 'A'}">
-						<a href="userList.do">회원목록</a>
+						<a href="userList.do">회원관리</a>
 					</c:if>
 				</c:if>
 	
