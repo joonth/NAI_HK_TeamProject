@@ -186,7 +186,7 @@
  	 width: 48px;
  	 height: 48px;
  	 background-color: white;
- 	 border-radius: 6px 0px 0px 6px;
+ 	 border-radius: 0px 6px 6px 0px;
  	 box-shadow: 1px 2px 2px #ddd;
  	 border: none;
      outline: 0;
@@ -405,8 +405,9 @@
 									<c:set var="ac_cre_date" value="${list.ac_cre_date}" />
 									<c:choose>
 										<c:when test="${yyyyMMdddd eq ac_cre_date && count <3}">
-											<!-- 개강일이 같은 학원명 3개 출력 -->								
-												<a target='blank' href="calDetail.do?ac_seq=${list.ac_seq}&ac_name=${list.ac_name}">${list.ac_name}</a>							
+											<!-- 개강일이 같은 학원명 3개 출력 -->		
+												<a href="calDetail.do?ac_seq=${list.ac_seq}&ac_name=${list.ac_name}" onclick="window.open(this.href,'','width=620, height=510, scrollbars=yes'); return false;" href="calDetail.do?ac_seq=${list.ac_seq}&ac_name=${list.ac_name}">${list.ac_name}</a>													
+												<%-- <a target='blank' href="calDetail.do?ac_seq=${list.ac_seq}&ac_name=${list.ac_name}" >${list.ac_name}</a>							 --%>
 											<br />
 											<c:set var="count" value="${count + 1}" />
 											<!-- for문을 돌때마다 count 증가 -->

@@ -17,7 +17,6 @@
 	<!-- 폰트추가 -->
 	  <link href="http://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css" rel="stylesheet">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-<<<<<<< HEAD
 <style type="text/css">
 
 body{
@@ -157,7 +156,7 @@ hr{
 	-webkit-appearance: button;
     cursor: pointer;
     color: #333;
-    background-color: #fff;
+    background-color: #d7d9e4;
     border-color: #ccc;
     display: inline-block;
     padding: 6px 12px;
@@ -182,8 +181,6 @@ hr{
 }
  
 </style>
-=======
->>>>>>> branch 'master' of https://github.com/joonth/NAI_HK_TeamProject.git
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>회원관리페이지</title>
 </head>
