@@ -189,21 +189,7 @@
 				<p class="description">작성된 학원평</p>
 			</div>
 		</div>
-
 	</div>
-	
-<script type="text/javascript">
-	const elements = document.querySelectorAll('[data-chaffle]');
-	Array.prototype.forEach.call(elements, function (el) {
-	  const chaffle = new Chaffle(el, { lang: 'en',
-		  								speed: 600,
-		  								delay: 100});    									  
-	  chaffle.init();
-
-	}); 
-
-</script>
-
 
 <div class="app-footer">
 		<div class="banner">
@@ -241,6 +227,16 @@
 </div>
 
 <script>
+
+	const elements = document.querySelectorAll('[data-chaffle]');
+	setInterval(function(){
+		Array.prototype.forEach.call(elements, function (el) {
+		const chaffle = new Chaffle(el, { lang: 'en',
+				speed: 100,
+				delay: 100});    									  
+		chaffle.init();
+	
+	}); },5000);
 	
 	$("#show-table-btn").on('click', function(){
 		$(".ranking-table").show();
