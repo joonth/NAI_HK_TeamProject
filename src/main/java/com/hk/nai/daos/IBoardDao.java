@@ -1,7 +1,7 @@
 package com.hk.nai.daos;
 
 import java.util.List;
-
+import java.util.Map;
 
 import com.hk.nai.dtos.BoardDto;
 import com.hk.nai.dtos.CommentDto1;
@@ -27,6 +27,12 @@ public List<BoardDto> getAllList(); //전체 게시글 보기
 	public int getB_like(int b_seq);
 	
 	public int getPointCheck(int b_seq);
+	
+	public void bUpdateNick(Map<String, String> map);
+	
+	public void cUpdateNick(Map<String, String> map);
+	
+	public void lUpdateNick(Map<String, String> map);
 	
 	// [ 페이징 처리를 위한 메서드 ]
     public List<BoardDto> listCriteria(String page) throws Exception;//최신순 10개씩

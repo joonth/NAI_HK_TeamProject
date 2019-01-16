@@ -281,7 +281,7 @@
 	
 </script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>캘린더</title>
+<title>캘린더검색페이지</title>
 </head>
 <%
 	String paramYear=request.getParameter("year");
@@ -327,14 +327,13 @@
 <body>
 	<jsp:useBean id="util" class="com.hk.nai.utils.CalUtil" />
 	<div id="Search">
-		 <form name="calSearchform" method="GET" action="calSearchform.do">
+		 <form name="calSearchform" method="GET" action="calSearchform.do"> 		
 			<div id="aca_name">
-				<span><input type="text" name="search" id="AcademySearch" placeholder="검색명을 입력해주세요"></span>
-				<span><input type="submit" id="submitForm" value="" onclick="searchbox(1)"></span>
+				<span><input type="text" name="search" id="AcademySearch" onclick="searchbox(1)" placeholder="<%=(String)session.getAttribute("search")%>"></span>
+				<span><input type="submit" id="submitForm" value="" ></span>
 				<span id="searchResult"></span>	
 			</div>	
 		</form> 
-	
 	</div>
 	
 	<div id="Calendar" >
@@ -342,10 +341,10 @@
 		<div class="lastDayNum" style="diplay:none;"><%=lastDay%></div>
 			<caption id="calCap">
 				<div id="calPage">
-				<a id="monthPageafter" href="<%=Do%>?year=<%=year%>&month=<%=month+1%>"><img src="./resources/images/uparrow.png"/></a>
-				<a id="monthPagebefore" href="<%=Do%>?year=<%=year%>&month=<%=month-1%>"><img src="./resources/images/downarrow.png"/></a>
-				<%-- <a id="yearPagebefore" href="<%=Do%>?year=<%=year-1%>&month=<%=month%>"></a>  
-				<a id="yearPageafter" href="<%=Do%>?year=<%=year+1%>&month=<%=month%>"></a>  --%>
+					<a id="monthPageafter" href="calSearchform.do?search=<%=(String)session.getAttribute("search")%>&year=<%=year%>&month=<%=month+1%>"><img src="./resources/images/uparrow.png"/></a>
+					<a id="monthPagebefore" href="calSearchform.do?search=<%=(String)session.getAttribute("search")%>&year=<%=year%>&month=<%=month-1%>"><img src="./resources/images/downarrow.png"/></a>
+					<%-- <a id="yearPagebefore" href="<%=Do%>?year=<%=year-1%>&month=<%=month%>"></a>  
+					<a id="yearPageafter" href="<%=Do%>?year=<%=year+1%>&month=<%=month%>"></a>  --%>
 				</div>
 				<div id="calDate"><span class="y"><%=year%></span>년  <span class="m"><%=month%></span>월</div>
 			</caption>
@@ -414,8 +413,8 @@
 		</table>
 	</div>
 	<div class="btn worksets" style="background-color: white; 	margin-left:0.4%;"  >
-	<button type="button" id="AcademyRk" onclick="location.href='acDayRank.do'">일별랭킹 보기</button>
-	<button type="button" id="CartAcademyCal" onclick="location.href='cartAcademyCal.do'">찜한 학원일정 보기</button>
+		<button type="button" id="AcademyRk" onclick="location.href='acDayRank.do'">일별랭킹 보기</button>
+		<button type="button" id="CartAcademyCal" onclick="location.href='cartAcademyCal.do'">찜한 학원일정 보기</button>
 	</div>
 	<div class="Right-sidebar">
 	</div>
@@ -424,7 +423,8 @@
 	
 <!-- 검색결과가 없을때 나타나는 문구 -->
 <script type="text/javascript">
-	 	var SearchControl = document.getElementById('SBox');
+
+		var SearchControl = document.getElementById('SBox');
 		var ColorChange = document.getElementById('color');
 
 		function searchbox(num) {

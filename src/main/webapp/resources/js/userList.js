@@ -16,6 +16,7 @@
 		}
 		if(count==0){// 체크를 안했을 경우
 			alert("삭제할 멤버를 선택해주세요.");
+			return false;
 		}else if(count>0){
 			if(confirm("정말 삭제하시겠습니까?")!=0){
 				return count>0?true:false;//true이면 submit실행, false이면 취소

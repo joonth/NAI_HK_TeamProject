@@ -13,6 +13,37 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
  <link href="http://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css" rel="stylesheet">
 <style type="text/css">
+#container{
+position:absolute; 
+top:50%; 
+left:50%; 
+width:400px; 
+height:300px; 
+overflow:hidden; 
+margin-top:-200px; 
+margin-left:-150px;
+
+
+}
+
+#title{
+	text-align: center;
+	margin-right: auto;
+    margin-left: auto;
+}
+
+#table{
+    width: 560px;
+    height: 429px;
+    padding: 20px 0 0 30px;
+    box-sizing: border-box;
+    border: 1px solid #e8e8e8;
+}
+
+#table >th{
+    padding-left: 30px;
+}
+
 
 /* body{
   	margin-right: auto;

@@ -55,6 +55,7 @@ import com.hk.nai.dtos.AcademyDto;
 import com.hk.nai.services.CommentAddPermitService;
 import com.hk.nai.services.CommentService;
 import com.hk.nai.services.DataHandleService;
+import com.hk.nai.services.IBoardService;
 import com.hk.nai.services.CacheService;
 import com.hk.nai.dtos.MessageDto;
 import com.hk.nai.daos.MessageDao;
@@ -98,6 +99,9 @@ public class HomeController {
 	
 	@Autowired
 	private CacheService cacheService;
+	
+	@Autowired
+	IBoardService boardService;
 	
 	List<AcInfoDto> list = new ArrayList<AcInfoDto>();
 	int count = 0;	//출력되는 과정수를 나타내기 위한 변수.
@@ -216,7 +220,7 @@ public class HomeController {
 		return duplicatedCheck("email", memberService.checkEmailMember(email));
 	}
 	
-	public Map<String,String> duplicatedCheck(String param, boolean isS) {
+	private Map<String,String> duplicatedCheck(String param, boolean isS) {
 		if(!isS) {
 			String msg = "중복된 ";
 			Map<String,String> map = new HashMap<String,String>();
@@ -264,7 +268,7 @@ public class HomeController {
 		}
 	
 	
-	//회원가입 form
+	//회원가입 폼
 	@RequestMapping(value="/signupform.do" , method=RequestMethod.GET)
 	public String signupForm(Locale locale, Model model) {
 		logger.info("signupform.", locale);
@@ -275,10 +279,8 @@ public class HomeController {
 	@RequestMapping(value="/signup.do" , method=RequestMethod.POST)
 	public String signup(Locale locale, Model model, MemberDto memdto, @RequestParam String academyName) {
 		logger.info("signup.", locale);
-		System.out.println(memdto.toString());
-		System.out.println("academyName: "+academyName);
 		boolean isS = memberService.signupMember(memdto,academyName);
-		System.out.println("isS: "+isS);
+
 		if(isS) {
 			return "redirect:signinform.do";
 		} else {
@@ -287,7 +289,7 @@ public class HomeController {
 		}
 	}
 	
-	//로그인폼
+	//로그인 폼
 	@RequestMapping(value = "/signinform.do", method = RequestMethod.GET)
 	public String signinForm(Locale locale, Model model, HttpServletRequest request) throws InvalidKeySpecException {
 		logger.info("***enter signinform {}.", locale);
@@ -303,11 +305,8 @@ public class HomeController {
 			PrivateKey privateKey = keyPair.getPrivate();
 			
 			HttpSession session=request.getSession();
-			//세션에 공개키의 문자열을 키로하여 개인키를 저장한다
 			session.setAttribute("rsaPrivateKey", privateKey);
-			
-			//공개키 문자열로 변환하여 js rsa 라이브러리 넘겨줌
-			
+				
 			RSAPublicKeySpec publicSpec = keyFactory.getKeySpec(publicKey,RSAPublicKeySpec.class);
 			
 			String publicKeyModules = publicSpec.getModulus().toString(16);
@@ -315,9 +314,7 @@ public class HomeController {
 			
 			model.addAttribute("publicKeyModules", publicKeyModules);
 			model.addAttribute("publicKeyExponent", publicKeyExponent);			
-			
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			model.addAttribute("errmsg", "로그인실패");
 			return "error";
@@ -325,7 +322,7 @@ public class HomeController {
 		return "signinform";
 	}
 	
-	//로그인, 복호화
+	//로그인 및 복호화
 	@RequestMapping(value = "/signin.do", method = RequestMethod.POST)
 	public String signin(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		logger.info("***enter signin  {}.", locale);
@@ -340,13 +337,12 @@ public class HomeController {
 			throw new RuntimeException("암호화 비밀키 정보를 찾을 수 없음");
 		}
 		
-//		session.removeAttribute("rsaPrivateKey");  //키의 재사용 막음
+		//복호화
 		String id = decryptRsa(privateKey, securedId);
 		String pw = decryptRsa(privateKey, securedPassword);
 
 		MemberDto member = memberService.signin(id, pw);
-		
-		
+
 		if (member == null) {
 			response.setContentType("text/html;charset=utf-8");;
 			PrintWriter out = response.getWriter();
@@ -355,11 +351,11 @@ public class HomeController {
 			out.println("history.go(-1);");
 			out.println("</script>");
 			out.close();
+			return null;
+		} else { 		
+			session.setAttribute("member", member); 
+			return "redirect:main.do";
 		}
-		
-		//세션에 로그인 정보 저장
-		session.setAttribute("member", member);
-		return "redirect:main.do";
 	}
 	
 	@RequestMapping(value = "/signout.do", method = RequestMethod.GET)
@@ -369,7 +365,7 @@ public class HomeController {
 		return "redirect:main.do";
 	}
 	
-	//아이디찾기폼
+	//아이디찾기 폼
 	@RequestMapping(value = "/findidform.do", method = RequestMethod.GET)
 	public String findIdForm(Locale locale, Model model) {
 		logger.info("findidform.", locale);
@@ -395,7 +391,7 @@ public class HomeController {
 		return map; 
 	}	
 	
-	//비번찾기폼
+	//비번찾기 폼
 	@RequestMapping(value = "/findpwform.do", method = RequestMethod.GET)
 	public String findPwForm(Locale locale, Model model) {
 		logger.info("findpwform.", locale);
@@ -422,7 +418,7 @@ public class HomeController {
 	
 	//회원정보 수정
 	@RequestMapping(value = "/updatemyinfo.do", method = RequestMethod.POST)
-	public String updateMyInfo(Locale locale, Model model, MemberDto member, String academyName, HttpSession session) {
+	public String updateMyInfo(Locale locale, Model model, MemberDto member, String academyName, HttpSession session,HttpServletRequest request) {
 		
 		boolean isPw = false;
 		boolean isNickname = false;
@@ -430,16 +426,29 @@ public class HomeController {
 		boolean isAuth = false;
 		int errcnt = 0;
 		
+//		황인후 원래 닉네임과 바뀐닉네임 받아오기
+		String ori_nick = request.getParameter("ori_nick");
+		String m_nick = request.getParameter("nickname");
+		Map<String, String> map = new HashMap<String,String>();
+		map.put("ori_nick", ori_nick);
+		map.put("m_nick", m_nick);		
+//		추가 끝
+		
 		if(!member.getPw().isEmpty()) {
 			isPw = memberService.updatePw(member);	 
 			if(isPw==false) errcnt++; 
 		}	
 		if(!member.getNickname().isEmpty()) {
 			isNickname = memberService.updateNickname(member);
+//			황인후  닉네임 변경시 게시판,댓글 닉네임도 같이 변경
+			boardService.bUpdateNick(map);
+			boardService.cUpdateNick(map);
+			boardService.lUpdateNick(map);
+//			추가 끝
 			if(isNickname==false) errcnt++; 
 		}
 		if(!member.getEmail().isEmpty()) {
-			isEmail = memberService.updateEmail(member);
+			isEmail = memberService.updateEmail(member);	
 			if(isEmail==false) errcnt++; 
 		}
 		if(!academyName.isEmpty()) { 

@@ -55,12 +55,6 @@ public class CalController {
 	@Autowired
 	private MemberService memberService;
 
-	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
-
-	
 	//캘린더 기본페이지
 	@RequestMapping(value = "/calendar.do", method = RequestMethod.GET)
 	public String Calendar(HttpServletRequest request, Locale locale, Model model) {
@@ -72,38 +66,43 @@ public class CalController {
 		return "calendar";
 		
 	}
+	
 	//캘린더 검색 리스트
-	@RequestMapping(value = "/calSearch.do")
-	@ResponseBody
-	public List<CalDto> CalSearch(HttpServletRequest request, Locale locale, Model model, String search ) {
-		logger.info("캘린더검색창", locale);	
+	@RequestMapping(value = "/calSearchform.do", method = RequestMethod.GET)
+	public String CalSearch(HttpServletRequest request, Locale locale, Model model, String search) throws UnsupportedEncodingException {
+		logger.info("캘린더검색", locale);	
+		request.setCharacterEncoding("utf-8");
+	
 		List<CalDto> selectList = new ArrayList<CalDto>();
 		List<CalDto> calViewList = calService.getCalList();
+					
 		if(search!=null) {
 			request.getSession().setAttribute("search", search);
+
 		}else {
 			search=(String)request.getSession().getAttribute("search");
 		}
-		System.out.println(search);
-		
-		for(int i=0; i<calViewList.size(); i++) {
-			CalDto dto =calViewList.get(i);	
+			System.out.println(search);
+			
+			for(int i=0; i<calViewList.size(); i++) {
+				CalDto dto =calViewList.get(i);	
 
-			if(dto.getAc_class().contains(search)
-					|| dto.getAc_location().contains(search)
-					|| dto.getAc_name().contains(search)) {
-				selectList.add(dto);
-			} else {
+				if(dto.getAc_class().contains(search)
+						|| dto.getAc_location().contains(search)
+						|| dto.getAc_name().contains(search)) {
+					selectList.add(dto);
+				} else {
+				}
+			}		
+			
+			for(int i=0; i<selectList.size(); i++) {
+				System.out.println("selectlist"+i+"번째"+selectList.get(i));
 			}
-		}		
-		for(int i=0; i<selectList.size(); i++) {
-			System.out.println("selectlist"+i+"번째"+selectList.get(i));
+			model.addAttribute("calViewList", selectList);
+			
+			return "calSearchResult";    //검색결과페이지로 이동
 		}
-		model.addAttribute("calViewList", selectList);
 		
-		return selectList;
-	}
-
 	
 	//캘린더 상세페이지
 	@RequestMapping(value = "/calDetail.do", method = RequestMethod.GET)

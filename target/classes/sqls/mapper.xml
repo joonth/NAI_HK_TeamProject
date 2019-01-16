@@ -20,7 +20,6 @@
 	    </resultMap>
 	    
 	    <resultMap id="AuthDto" type="com.hk.nai.dtos.AuthDto" >
-	    <!-- property = AuthDto의 field / column=db -->
 	        <result property="authId" column="M_ID"/>
 	        <result property="academyName" column="AC_NAME"/>
 	    </resultMap>
@@ -167,7 +166,7 @@
 	<!-- 개강마감임박 d-14 -->
 	<select id="startclass" resultMap="StartClassDto">
 	<!-- 20180630 = TEST용 나중에 sysdate로 변경 -->
-		SELECT AC_NAME, AC_CLASS,
+		SELECT DISTINCT AC_NAME, AC_CLASS,
 		<![CDATA[
 		REPLACE(AC_CRE_DATE,'-','')-TO_CHAR(sysdate,'YYYYMMDD') AS DDAY
 		FROM ACADEMY
@@ -323,6 +322,24 @@
   		SELECT POINTCHECK FROM BOARD WHERE B_SEQ=#{b_seq}
   	</select>
   	
+	<!--   	닉네임변경시 게시판 닉네임도 변경 -->
+  	<update id="bUpdateNick" parameterType="map">
+  		UPDATE BOARD 
+  		SET M_NICK=#{m_nick}
+  		WHERE M_NICK=#{ori_nick}
+  	</update>
+  	<!--   	닉네임변경시 댓글 닉네임도 변경 -->
+  	<update id="cUpdateNick" parameterType="map">
+  		UPDATE REPLY
+  		SET M_NICK=#{m_nick}
+  		WHERE M_NICK=#{ori_nick}
+  	</update>
+	<!--   	닉네임변경시 좋아요테이블 닉네임도 변경 -->
+  	<update id="lUpdateNick" parameterType="map">
+  		UPDATE LIKETO
+  		SET M_NICK=#{m_nick}
+  		WHERE M_NICK=#{ori_nick}
+  	</update>
   	<!-- 페이징 처리 -->
     
 	<!--     최신순으로 10개씩 출력하는 쿼리 -->
@@ -480,7 +497,7 @@
   SELECT A.AC_NAME, A.AC_CLASS, A.AC_LOCATION, A.AC_CRE_DATE, A.AC_END_DATE, B.IMG
 	FROM ACADEMY A INNER JOIN AC_IMG B
 	ON A.AC_NAME = B.AC_NAME 
-	WHERE A.AC_NAME=#{ac_name} AND AC_SEQ=#{ac_seq}
+	WHERE ROWNUM =1 AND A.AC_NAME=#{ac_name} AND AC_SEQ=#{ac_seq}
   </select>
   
  <!--  <select id="getCalDetail" resultMap="CalDto" parameterType="int">
@@ -495,7 +512,7 @@
     SELECT A.AC_NAME, B.IMG
 	FROM ACADEMY A INNER JOIN AC_IMG B
 	ON A.AC_NAME = B.AC_NAME 
-	WHERE ROWNUM = 1 AND A.AC_NAME=#{ac_name}
+	WHERE ROWNUM = 1 AND A.AC_SEQ=#{ac_seq} AND A.AC_NAME=#{ac_name}
 	</select>  
   
 <!--   	개강일별 순위 -->
