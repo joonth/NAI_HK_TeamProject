@@ -20,7 +20,6 @@
 	    </resultMap>
 	    
 	    <resultMap id="AuthDto" type="com.hk.nai.dtos.AuthDto" >
-	    <!-- property = AuthDto의 field / column=db -->
 	        <result property="authId" column="M_ID"/>
 	        <result property="academyName" column="AC_NAME"/>
 	    </resultMap>
@@ -167,7 +166,7 @@
 	<!-- 개강마감임박 d-14 -->
 	<select id="startclass" resultMap="StartClassDto">
 	<!-- 20180630 = TEST용 나중에 sysdate로 변경 -->
-		SELECT AC_NAME, AC_CLASS,
+		SELECT DISTINCT AC_NAME, AC_CLASS,
 		<![CDATA[
 		REPLACE(AC_CRE_DATE,'-','')-TO_CHAR(sysdate,'YYYYMMDD') AS DDAY
 		FROM ACADEMY
