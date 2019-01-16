@@ -1,6 +1,7 @@
 package com.hk.nai.services;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,7 +65,22 @@ public class BoardService implements IBoardService {
 		public int getPointCheck(int b_seq) {
 			return boardDao.getPointCheck(b_seq);
 		}
-		
+		@Override
+		public void bUpdateNick(Map<String, String> map) {
+			boardDao.bUpdateNick(map);
+			
+		}
+		@Override
+		public void cUpdateNick(Map<String, String> map) {
+			boardDao.cUpdateNick(map);
+			
+		}
+		@Override
+		public void lUpdateNick(Map<String, String> map) {
+			boardDao.lUpdateNick(map);
+			
+		}
+
 	//---------------------------페이징------------------------------------
 		@Override
 		public List<BoardDto> listCriteria(String page) throws Exception {
@@ -125,6 +141,7 @@ public class BoardService implements IBoardService {
 			return boardDao.downComment(b_seq);
 		}
 
+		
 		
 
 		
