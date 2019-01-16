@@ -308,6 +308,7 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 			b_like--;
 			boardService.b_like_down(b_seq);
 		}
+		mdto.setNickname(m_nick);
 		obj.put("b_seq", ldto.getB_seq());
 		obj.put("like_check",like_check);
 		obj.put("b_like", b_like);

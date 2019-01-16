@@ -55,6 +55,7 @@ import com.hk.nai.dtos.AcademyDto;
 import com.hk.nai.services.CommentAddPermitService;
 import com.hk.nai.services.CommentService;
 import com.hk.nai.services.DataHandleService;
+import com.hk.nai.services.IBoardService;
 import com.hk.nai.services.CacheService;
 import com.hk.nai.dtos.MessageDto;
 import com.hk.nai.daos.MessageDao;
@@ -70,7 +71,8 @@ public class HomeController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	Map<String,String> dupeCheck = new HashMap<String,String>();	// 학원평 재 작성시 포인트 중복추가 방지
-	Map<String,LinkedList<AcInfoDto>> getAcInfoMap = new HashMap<String,LinkedList<AcInfoDto>>();
+	//API를 여러번 호출하지않기 위해서 받아온  Data를 맵에 저장하여 필요한부분에서 사용할 수 있도록.
+	Map<String,LinkedList<AcInfoDto>> getAcInfoMap = new HashMap<String,LinkedList<AcInfoDto>>();	
 
 	@Autowired		//api로 얻어온 xml data의 tag를 없애는 util.
 	SearchUtil util;
@@ -97,6 +99,9 @@ public class HomeController {
 	
 	@Autowired
 	private CacheService cacheService;
+	
+	@Autowired
+	IBoardService boardService;
 	
 	List<AcInfoDto> list = new ArrayList<AcInfoDto>();
 	int count = 0;	//출력되는 과정수를 나타내기 위한 변수.
@@ -178,6 +183,7 @@ public class HomeController {
 					 count++;	
 				}
 			}//for
+			// 과정출력 갯수가 달라지면 update가 된것으로 간주하고 db에  새로운 과정 list를  받는다.
 			if(dataHandleService.getAcClassNum() != count) {
 				dataHandleService.delOutOfDateData();
 				dataHandleService.insUpToDateData(list);
@@ -420,7 +426,7 @@ public class HomeController {
 	
 	//회원정보 수정
 	@RequestMapping(value = "/updatemyinfo.do", method = RequestMethod.POST)
-	public String updateMyInfo(Locale locale, Model model, MemberDto member, String academyName, HttpSession session) {
+	public String updateMyInfo(Locale locale, Model model, MemberDto member, String academyName, HttpSession session,HttpServletRequest request) {
 		
 		boolean isPw = false;
 		boolean isNickname = false;
@@ -428,16 +434,29 @@ public class HomeController {
 		boolean isAuth = false;
 		int errcnt = 0;
 		
+//		황인후 원래 닉네임과 바뀐닉네임 받아오기
+		String ori_nick = request.getParameter("ori_nick");
+		String m_nick = request.getParameter("nickname");
+		Map<String, String> map = new HashMap<String,String>();
+		map.put("ori_nick", ori_nick);
+		map.put("m_nick", m_nick);		
+//		추가 끝
+		
 		if(!member.getPw().isEmpty()) {
 			isPw = memberService.updatePw(member);	 
 			if(isPw==false) errcnt++; 
 		}	
 		if(!member.getNickname().isEmpty()) {
 			isNickname = memberService.updateNickname(member);
+//			황인후  닉네임 변경시 게시판,댓글 닉네임도 같이 변경
+			boardService.bUpdateNick(map);
+			boardService.cUpdateNick(map);
+			boardService.lUpdateNick(map);
+//			추가 끝
 			if(isNickname==false) errcnt++; 
 		}
 		if(!member.getEmail().isEmpty()) {
-			isEmail = memberService.updateEmail(member);
+			isEmail = memberService.updateEmail(member);	
 			if(isEmail==false) errcnt++; 
 		}
 		if(!academyName.isEmpty()) { 
@@ -663,7 +682,6 @@ public class HomeController {
 		return map;
 	}
 
-	
 	@ResponseBody
 	@RequestMapping(value = "/showBasket.do", method = RequestMethod.GET)
 	public Map<String,List<String>> showBasket(Locale locale, Model model, String m_id) throws IOException {
@@ -681,7 +699,5 @@ public class HomeController {
 		list.put("list", img);
 		return list;
 	}
-	
-	
     ////////////////	이한준 	//////////////////////////////////////////////////////////////////////////////   
 }
