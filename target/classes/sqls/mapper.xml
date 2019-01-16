@@ -480,7 +480,7 @@
   SELECT A.AC_NAME, A.AC_CLASS, A.AC_LOCATION, A.AC_CRE_DATE, A.AC_END_DATE, B.IMG
 	FROM ACADEMY A INNER JOIN AC_IMG B
 	ON A.AC_NAME = B.AC_NAME 
-	WHERE A.AC_NAME=#{ac_name} AND AC_SEQ=#{ac_seq}
+	WHERE ROWNUM =1 AND A.AC_NAME=#{ac_name} AND AC_SEQ=#{ac_seq}
   </select>
   
  <!--  <select id="getCalDetail" resultMap="CalDto" parameterType="int">
@@ -495,7 +495,7 @@
     SELECT A.AC_NAME, B.IMG
 	FROM ACADEMY A INNER JOIN AC_IMG B
 	ON A.AC_NAME = B.AC_NAME 
-	WHERE ROWNUM = 1 AND A.AC_NAME=#{ac_name}
+	WHERE ROWNUM = 1 AND A.AC_SEQ=#{ac_seq} AND A.AC_NAME=#{ac_name}
 	</select>  
   
 <!--   	개강일별 순위 -->
