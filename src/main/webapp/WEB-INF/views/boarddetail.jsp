@@ -86,7 +86,7 @@ function like_func(){
 		<th></th>
 		<td colspan="2">
 			<div style="text-align:center">
-			<c:if test="${sessionScope.member.nickname eq dto.m_nick}">			
+			<c:if test="${sessionScope.member.nickname eq dto.m_nick or sessionScope.member.grade == 'A'}">			
 				<button type="button" onclick="updateForm('${dto.b_seq}')" class="btn btn-default" >수정</button>
 				<button type="button" onclick="delBoard('${dto.b_seq}')" class="btn btn-default">삭제</button>					
 			</c:if>
