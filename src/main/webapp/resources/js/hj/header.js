@@ -1,10 +1,6 @@
+var sock = new SockJS('.do');
 $(document).ready(function(){
-	var sock = new SockJS('.do');
-	
-	$('#bk').click(function() {
-		sock.send($("#session").val());
-	});
-	
+
 	$("#messageForm").submit(function(event) {
 	    sock.send($("#n_receiver").val());
 	    alert('쪽지를 보냈습니다.');
@@ -66,5 +62,7 @@ function changeUrl(url){
 	document.getElementById("if").src=url;	
 }
 
-
+$(document).ajaxStop(function() {
+	  sock.send($("#session").val());
+});
 

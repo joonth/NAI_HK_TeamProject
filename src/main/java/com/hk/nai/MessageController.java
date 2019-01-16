@@ -25,7 +25,6 @@ import com.hk.nai.services.SearchService;
 public class MessageController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-	
 	@Autowired
 	MessageDao messageDao;
 	@Autowired
@@ -52,8 +51,7 @@ public class MessageController {
 	@RequestMapping(value = "/sendMessage.do", method = RequestMethod.POST)
 	public String sendMessage(Locale locale, Model model, MessageDto dto) {
 		logger.info("메시지 전송", locale);
-		messageDao.sendMessage(dto);
-		
+		messageDao.sendMessage(dto);	
 		return "../../index";
 	}
 	
