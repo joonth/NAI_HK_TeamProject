@@ -199,45 +199,43 @@ public class HomeController {
 	@RequestMapping(value="/idcheck.do" , method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String,String> idCheck(Locale locale, Model model, @RequestParam String id) {
-		boolean isS = memberService.checkIdMember(id);
-		if(!isS) {
-			Map<String,String> map = new HashMap<String,String>();
-			String msg = "중복된 아이디입니다";
-			map.put("msg", msg);
-			System.out.println(msg);
-			return map;
-		}
-		return null; 
+		return duplicatedCheck("id", memberService.checkIdMember(id));
 	}
-	
+
 	//nickname 중복 ajax
 	@RequestMapping(value="/nicknamecheck.do" , method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String,String> nicknameCheck(Locale locale, Model model, @RequestParam String nickname) {
-		boolean isS = memberService.checkNicknameMember(nickname);
-		if(!isS) {
-			Map<String,String> map = new HashMap<String,String>();
-			String msg = "중복된 닉네임입니다";
-			map.put("msg", msg);
-			System.out.println(msg);
-			return map;
-		}
-		return null; 
+		return duplicatedCheck("nickname", memberService.checkNicknameMember(nickname));
 	}	
 	
 	//email 중복 ajax
 	@RequestMapping(value="/emailcheck.do" , method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String,String> emailCheck(Locale locale, Model model, @RequestParam String email) {
-		boolean isS = memberService.checkEmailMember(email);
+		return duplicatedCheck("email", memberService.checkEmailMember(email));
+	}
+	
+	public Map<String,String> duplicatedCheck(String param, boolean isS) {
 		if(!isS) {
+			String msg = "중복된 ";
 			Map<String,String> map = new HashMap<String,String>();
-			String msg = "중복된 이메일입니다";
+			switch(param) {
+				case "id" : 
+					msg += " 아이디입니다";
+					break;
+				case "nickname":
+					msg += " 닉네임입니다";
+					break;
+				case "email":
+					msg += " 이메일입니다";
+			}
 			map.put("msg", msg);
-			System.out.println(msg);
 			return map;
 		}
-		return null; 
+		else 
+			return null;
+
 	}
 	
 	//학원명 찾기 ajax

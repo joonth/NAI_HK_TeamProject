@@ -78,7 +78,7 @@
 				<td>${cdto.r_content}</td>
 				<td><fmt:formatDate value="${cdto.r_regdate}" pattern="yyyy-MM-dd a HH:mm"/></td>
 				
-				<c:if test="${sessionScope.member.nickname eq cdto.m_nick}">			
+				<c:if test="${sessionScope.member.nickname eq cdto.m_nick or sessionScope.member.grade == 'A'}">			
 					<td><button type="button" onclick="updateComment('${cdto.r_seq}')" class="btn btn-default btn-sm">수정</button></td>
 					<td><button type="button" onclick="delComment('${cdto.r_seq}')" class="btn btn-default btn-sm">삭제</button></td>			
 				</c:if>			

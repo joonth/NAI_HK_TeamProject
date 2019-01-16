@@ -142,18 +142,14 @@ public class CalController {
 				
 				for(int i=0; i<myAcList.size(); i++) {
 					String baskAcName=myAcList.get(i).getBaskAcademyName();
-					System.out.println("장바구니 학원명: " +baskAcName);	
-					BaskAcaList = calService.getCartAcademy(baskAcName);
-					BaskAcaList.addAll(BaskAcaList);
-				}	
+					System.out.println("장바구니 학원명: " +baskAcName);
+					BaskAcaList.addAll(calService.getCartAcademy(baskAcName));			
+				}
+				for(int j=0; j<BaskAcaList.size(); j++) {
+				System.out.println("찜한학원강좌목록" + BaskAcaList.get(j));
+				}
 				model.addAttribute("calViewList", BaskAcaList);
-				
-
 				return "calendar";
 			}
-		
-		
-
-	
 	
 }

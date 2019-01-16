@@ -37,11 +37,11 @@ $(function(){
 	<h1>회원 탈퇴</h1>
 	<div class="input-group">
 		<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-		<input type="text" id="id" name="id" value="${sessionScope.member.id}" readonly="readonly">
+		<input type="text" id="id" name="id" class="form-control" value="${sessionScope.member.id}" readonly="readonly">
 	</div>
 	<div class="input-group">
 		<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-		<input type="password" id="pw" name="pw" placeholder="Password" >
+		<input type="password" id="pw" name="pw" class="form-control" placeholder="Password" >
 	</div>
 	<div class="input-group">
 		<input type="submit" id="submitBtn" value="탈퇴하기" class="btn btn-primary">

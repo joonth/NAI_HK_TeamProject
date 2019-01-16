@@ -26,7 +26,7 @@
     margin-top: 0.5%;
 	transform:translateX(-50%);
 	width: 980px;
-	height: 960px;
+	height: 900px;
     border-color: black;
     text-align: center;
     padding-right: 25px;
@@ -61,17 +61,26 @@
 
 
 #monthPagebefore, #monthPageafter{
-	vertical-align: left;
-	display: inline-block;
+	vertical-align: right;
+	float: right;
+	margin-left: 95%; 
 }
 
 
 #monthPagebefore{
-	margin-left: 90%;
+	border-radius: 0px 0px 6px 0px;
+    box-shadow: 1px 2px 2px #ddd;
+    border: none;
+    outline: 0;
 }
 
 #monthPageafter{
-	margin-left: 85%;
+	position: relative;
+	border-radius: 6px 0px 0px 0px;
+    box-shadow: 1px 2px 2px #ddd;
+    border: none;
+    outline: 0;
+
 }
 
  .srchTraArea1, .process_Kword {
@@ -97,17 +106,19 @@
 
 
 #caltable td {
+	position: relative;
 	border: 3px solid white;
 	background-color: white;
 	text-align: left;
 	vertical-align: top;
-	position: relative;
+
 }
 
 #calPage{
-	display: inline-block;
-	margin-left: 70%;
 	position: relative;
+	display: inline-block;
+	margin-left: 80%;
+
 }
 
 #calPage >img{
@@ -186,7 +197,7 @@
  	 width: 48px;
  	 height: 48px;
  	 background-color: white;
- 	 border-radius: 6px 0px 0px 6px;
+ 	 border-radius: 0px 6px 6px 0px;
  	 box-shadow: 1px 2px 2px #ddd;
  	 border: none;
      outline: 0;
@@ -360,11 +371,10 @@
 		<div class="lastDayNum" style="diplay:none;"><%=lastDay%></div>
 			<caption id="calCap">
 				<div id="calPage">
-				
-				<a id="monthPagebefore" href="<%=Do%>?year=<%=year%>&month=<%=month-1%>"><img src="./resources/images/downarrow.png"/></a>
 				<a id="monthPageafter" href="<%=Do%>?year=<%=year%>&month=<%=month+1%>"><img src="./resources/images/uparrow.png"/></a>
-				<a id="yearPagebefore" href="<%=Do%>?year=<%=year-1%>&month=<%=month%>"></a>  
-				<a id="yearPageafter" href="<%=Do%>?year=<%=year+1%>&month=<%=month%>"></a> 
+				<a id="monthPagebefore" href="<%=Do%>?year=<%=year%>&month=<%=month-1%>"><img src="./resources/images/downarrow.png"/></a>
+				<%-- <a id="yearPagebefore" href="<%=Do%>?year=<%=year-1%>&month=<%=month%>"></a>  
+				<a id="yearPageafter" href="<%=Do%>?year=<%=year+1%>&month=<%=month%>"></a>  --%>
 				</div>
 				<div id="calDate"><span class="y"><%=year%></span>년  <span class="m"><%=month%></span>월</div>
 			</caption>
@@ -386,7 +396,7 @@
      
         for(int i=1;i<=lastDay;i++){
   %>
-				<td style="background-color: #f7f5f5; width: 150px; height: 150px;"><a style="color:<%=CalUtil.fontColor(i, dayOfWeek)%>"
+				<td style="background-color: #f7f5f5; width: 150px; height: 140px;"><a style="color:<%=CalUtil.fontColor(i, dayOfWeek)%>"
 					class="dateNum"><%=i%> <% 
                	String yyyyMMdddd =year+"-"+CalUtil.isTwo(String.valueOf(month))+"-"+CalUtil.isTwo(String.valueOf(i));
                             	pageContext.setAttribute("yyyyMMdddd", yyyyMMdddd.trim());
@@ -405,8 +415,9 @@
 									<c:set var="ac_cre_date" value="${list.ac_cre_date}" />
 									<c:choose>
 										<c:when test="${yyyyMMdddd eq ac_cre_date && count <3}">
-											<!-- 개강일이 같은 학원명 3개 출력 -->								
-												<a target='blank' href="calDetail.do?ac_seq=${list.ac_seq}&ac_name=${list.ac_name}">${list.ac_name}</a>							
+											<!-- 개강일이 같은 학원명 3개 출력 -->		
+												<a href="calDetail.do?ac_seq=${list.ac_seq}&ac_name=${list.ac_name}" onclick="window.open(this.href,'','width=690, height=460, scrollbars=yes'); return false;" href="calDetail.do?ac_seq=${list.ac_seq}&ac_name=${list.ac_name}">${list.ac_name}</a>													
+												<%-- <a target='blank' href="calDetail.do?ac_seq=${list.ac_seq}&ac_name=${list.ac_name}" >${list.ac_name}</a>							 --%>
 											<br />
 											<c:set var="count" value="${count + 1}" />
 											<!-- for문을 돌때마다 count 증가 -->
@@ -426,7 +437,7 @@
        
       }// 날짜 출력 for문 종료
        for(int i =0; i<(7-((dayOfWeek-1+lastDay)%7))%7;i++)
-         out.print("<td style='width: 150px; height: 150px;'>&nbsp;</td>"); 
+         out.print("<td style='width: 150px; height: 140px;'>&nbsp;</td>"); 
    %>
 			</tr>
 		</table>
