@@ -189,7 +189,7 @@ hr{
 	<%
 		AdminDaoImpl dao = new AdminDaoImpl();
 	%>]
-	<h1 id="title">회원목록</h1>
+	<h1 id="title">회원리스트</h1>
 	<div id="centerContent" class="container text-center">
 		<!-- 체크박스의 회원번호를 submit할 폼 -->
 		<form action="checkDel.do" method="post" onsubmit="return confirmChk()"> 

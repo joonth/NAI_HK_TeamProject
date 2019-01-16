@@ -19,7 +19,6 @@ private static final long serialVersionUID = 1L;
 	private int like_check;
 	private int cmt_count;
 	private int pointcheck;
-//	private String my_board;
 	public BoardDto() {
 		
 	}
@@ -114,9 +113,14 @@ private static final long serialVersionUID = 1L;
 	}
 
 
+	
+	
+	
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
+
 
 
 	@Override

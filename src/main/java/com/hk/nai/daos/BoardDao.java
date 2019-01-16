@@ -1,7 +1,7 @@
 package com.hk.nai.daos;
 
 import java.util.List;
-
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +79,22 @@ public class BoardDao implements IBoardDao{
 		int count = sqlSession.selectOne(namespace+"getPointCheck", b_seq);
 		return count;
 	}
+	
+	@Override
+	public void bUpdateNick(Map<String, String> map) {
+		sqlSession.update(namespace+"bUpdateNick", map);		
+	}
+
+	@Override
+	public void cUpdateNick(Map<String, String> map) {
+		sqlSession.update(namespace+"cUpdateNick", map);		
+	}
+
+	@Override
+	public void lUpdateNick(Map<String, String> map) {
+		sqlSession.update(namespace+"lUpdateNick", map);		
+	}
+
 //------------------------페이징----------------------
 	@Override
 	public List<BoardDto> listCriteria(String page) throws Exception {
@@ -152,6 +168,7 @@ public class BoardDao implements IBoardDao{
 		return count>0?true:false;
 	}
 
+	
 	
 	
 

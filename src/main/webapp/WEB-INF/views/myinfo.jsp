@@ -61,6 +61,10 @@ $(function(){
 		</div>
 	</div>
 	<h1>마이페이지</h1>
+	
+<!-- 	황인후 추가 -->
+	<input type="hidden" name="ori_nick" value="${member.nickname}" />
+<!-- 	추가끝 -->
 	<div class="input-group">
 		<span class="input-group-addon"></span>
 		<input type="text" id="id" name="id" value="${member.id}" class="form-control" readonly="readonly">

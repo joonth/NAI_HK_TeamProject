@@ -1,7 +1,7 @@
 package com.hk.nai.services;
 
 import java.util.List;
-
+import java.util.Map;
 
 import com.hk.nai.dtos.BoardDto;
 import com.hk.nai.dtos.CommentDto1;
@@ -29,6 +29,12 @@ public interface IBoardService {
 		public int getB_like(int b_seq);
 		
 		public int getPointCheck(int b_seq);
+		
+		public void bUpdateNick(Map<String, String> map);
+		
+		public void cUpdateNick(Map<String, String> map);
+		
+		public void lUpdateNick(Map<String, String> map);
 		// ---------------페이징 처리 서비스 메서드----------------------
 	    public List<BoardDto> listCriteria(String page) throws Exception;//최신순
 		public List<BoardDto> listCriteria1(String page) throws Exception;//조회순

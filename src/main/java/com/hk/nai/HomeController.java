@@ -55,6 +55,7 @@ import com.hk.nai.dtos.AcademyDto;
 import com.hk.nai.services.CommentAddPermitService;
 import com.hk.nai.services.CommentService;
 import com.hk.nai.services.DataHandleService;
+import com.hk.nai.services.IBoardService;
 import com.hk.nai.services.CacheService;
 import com.hk.nai.dtos.MessageDto;
 import com.hk.nai.daos.MessageDao;
@@ -98,6 +99,9 @@ public class HomeController {
 	
 	@Autowired
 	private CacheService cacheService;
+	
+	@Autowired
+	IBoardService boardService;
 	
 	List<AcInfoDto> list = new ArrayList<AcInfoDto>();
 	int count = 0;	//출력되는 과정수를 나타내기 위한 변수.
@@ -414,7 +418,7 @@ public class HomeController {
 	
 	//회원정보 수정
 	@RequestMapping(value = "/updatemyinfo.do", method = RequestMethod.POST)
-	public String updateMyInfo(Locale locale, Model model, MemberDto member, String academyName, HttpSession session) {
+	public String updateMyInfo(Locale locale, Model model, MemberDto member, String academyName, HttpSession session,HttpServletRequest request) {
 		
 		boolean isPw = false;
 		boolean isNickname = false;
@@ -422,16 +426,29 @@ public class HomeController {
 		boolean isAuth = false;
 		int errcnt = 0;
 		
+//		황인후 원래 닉네임과 바뀐닉네임 받아오기
+		String ori_nick = request.getParameter("ori_nick");
+		String m_nick = request.getParameter("nickname");
+		Map<String, String> map = new HashMap<String,String>();
+		map.put("ori_nick", ori_nick);
+		map.put("m_nick", m_nick);		
+//		추가 끝
+		
 		if(!member.getPw().isEmpty()) {
 			isPw = memberService.updatePw(member);	 
 			if(isPw==false) errcnt++; 
 		}	
 		if(!member.getNickname().isEmpty()) {
 			isNickname = memberService.updateNickname(member);
+//			황인후  닉네임 변경시 게시판,댓글 닉네임도 같이 변경
+			boardService.bUpdateNick(map);
+			boardService.cUpdateNick(map);
+			boardService.lUpdateNick(map);
+//			추가 끝
 			if(isNickname==false) errcnt++; 
 		}
 		if(!member.getEmail().isEmpty()) {
-			isEmail = memberService.updateEmail(member);
+			isEmail = memberService.updateEmail(member);	
 			if(isEmail==false) errcnt++; 
 		}
 		if(!academyName.isEmpty()) { 
