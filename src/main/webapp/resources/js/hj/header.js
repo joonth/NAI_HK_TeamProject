@@ -55,14 +55,14 @@ $(document).ready(function(){
 				console.log('실패');
 			},
 		});
-	 
  });
 	
 function changeUrl(url){
 	document.getElementById("if").src=url;	
 }
 
-$(document).ajaxStop(function() {
-	  sock.send($("#session").val());
-});
-
+function msgCheck(){
+	$(document).ajaxStop(function() {
+		sock.send($("#session").val());
+	});
+}

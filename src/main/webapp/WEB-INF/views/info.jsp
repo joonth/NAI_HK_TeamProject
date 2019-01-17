@@ -43,7 +43,7 @@
 									<p class="m-t-10">	${infoDto.trprchaptel}</p>
 								</div>
 								<div class="col-sm-2">
-									<button id="bk" class="btn btn-default">찜하기</button>
+									<button id="bk" class="btn btn-default" onclick="msgCheck()">찜하기</button>
 								</div>
 							</div>
 						</div>			
