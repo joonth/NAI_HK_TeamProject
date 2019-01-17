@@ -1,8 +1,13 @@
 @charset "UTF-8";
 
+*{
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
 body {
-	margin:0;
+	margin:0 auto;
 	height:100%;
+	font-weight: 400;
 }
 
 #icon-bar {
@@ -39,14 +44,20 @@ body {
 }
 
 .navbar-brand {
-    font-size: 25px;
-    font-weight: bolder;
-    color: rgba(255,255,255,.699);
+   color: rgba(255,255,255,.699);
     float: left;
     height: 50px;
     padding: 15px 15px;
     line-height: 32px;
-        display:inline-block;
+    display:inline-block;
+}
+
+.nav-title{
+font-size: 26px;
+	padding: 0 20px;
+	border-right: 2px solid white;
+	color: white;
+	font-family: 'Do Hyeon', sans-serif;
 }
 
 .nav-logo-img{
@@ -56,10 +67,10 @@ body {
 }
 
 .nav-content{
-    font-size: 20px;
-    font-weight: bolder;
-    padding: 10px 15px;
+    font-size: 18px;
+    padding: 8px 15px 10px 15px ;
     display:inline-block;
+    font-weight: 100;
 }
 
 .nav-content a{
@@ -83,8 +94,10 @@ body {
 
 .navbar{
 	background:linear-gradient(to right,#369,#885195);
-	max-height: 50px;
+	max-height: 55px;
     overflow: hidden;
+    margin-bottom: 0;
+	font-weight: 100;
 }
 a{
 	    color: rgba(255,255,255,.699);
@@ -96,4 +109,13 @@ a{
 
 .container-fluid{
 	text-align:center;
+	margin:0;
+	padding:0;
 }
+
+.info-bar{
+	font-weight: bold;
+	font-size: 14px;
+	color: white;
+}
+ 

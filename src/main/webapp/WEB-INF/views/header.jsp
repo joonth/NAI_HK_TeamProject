@@ -11,137 +11,20 @@
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/hj/header.js"></script>
-<%-- 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/header.css"> --%>
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/header.css">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
- 
- <style type="text/css">
- 
-*{
-	font-family: 'Noto Sans KR', sans-serif;
-}
-
-body {	
-	margin:0 auto;
-	height:100%;
-	font-weight: 400;
-}
-
-#icon-bar {
-  right: 1px;
-  position: fixed;
-  top: 40%;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-}
-
-#icon-bar a {
-  display: block;
-  text-align: center;
-  padding: 16px;
-  transition: all 0.3s ease;
-  color: black;
-  font-size: 20px;
-}
-
-#icon-bar a:hover {
-  background-color: #a9a9a9;
-}
-
-#icon-bar h4{
-	text-align:center;
-}
-
-.ac {
-  color: black;
-}
-
-.f-left {
-    float: left;
-}
-
-.navbar-brand {
-    color: rgba(255,255,255,.699);
-    float: left;
-    height: 50px;
-    padding: 15px 15px;
-    line-height: 32px;
-    display:inline-block;
-}
-
-.nav-logo-img{
-	width: 33px;
-    margin: -5px 0px 0px -5px;
-    float: left;
-}
-
-.nav-content{
-    font-size: 18px;
-    padding: 8px 15px 10px 15px ;
-    display:inline-block;
-    font-weight: 100;
-}
-
-.nav-title{
-	font-size: 26px;
-	padding: 0 20px;
-	border-right: 2px solid white;
-	color: white;
-	font-family: 'Do Hyeon', sans-serif;
-}
-
-.nav-content a{
-	text-decoration:none;
-}
-
-.nav-image{
-    width: 33px;
-    margin: -5px -10px 5px -5px;
-}
-
-.navbar{
-	background:linear-gradient(to right,#369,#885195);
-	max-height: 55px;
-    overflow: hidden;
-    margin-bottom: 0;
-	font-weight: 100;
-}
-
-a{
-	color: rgba(255,255,255,.699);
-}
-
-#if{
-	max-width: -webkit-fill-available;
-}
-
-.container-fluid{
-	text-align:center;
-	margin:0;
-	padding:0;
-} 
-
-.info-bar{
-	font-weight: bold;
-	font-size: 14px;
-	color: white;
-}
-
-</style>
-
 </head>
 <body>
 <!-- header  -->
 	<div class="navbar">
 		<div class="container-fluid">
-
-				<div class="nav-content">
-				<a  href="main.do" >
-				<img class="nav-image" alt="logo" src="./resources/images/detective.png">
+			<div class="nav-content">
+				<a href="main.do" >
+					<img class="nav-image" alt="logo" src="./resources/images/detective.png">
 					<span class="nav-title">국비과정수사 NAI</span>
 				</a>
-				</div>
-				<div class="nav-content">
+			</div>
+			<div class="nav-content">
 			 	<input id="session" type="hidden" value="${sessionScope.member.id}" >
 				<!-- 세션이 있을 때만 = 로그인되어있을 때만  -->
 				<c:if test="${sessionScope.member!=null}">
@@ -152,40 +35,50 @@ a{
 						<a href="userList.do">회원관리</a>
 					</c:if>
 				</c:if>
-	
-				</div>
+			</div>
 			<div class="nav-content" style="width:280px; text-align:right; padding: 0 5px 0 0;">
-			<c:choose>
-				<c:when test="${sessionScope.member.grade == 'A'}">
-					<span class="info-bar" ><a style="color:#fffa29;">관리자</a> ${sessionScope.member.nickname} 님</span>
-				</c:when>
-				<c:otherwise>	
-					<span class="info-bar">${sessionScope.member.nickname} 님</span>
+				<c:choose>
+					<c:when test="${sessionScope.member.grade == 'A'}">
+						<span class="info-bar" >
+							<a style="color:#fffa29;">관리자</a> 
+							${sessionScope.member.nickname} 님
+						</span>
+					</c:when>
+					<c:otherwise>	
+					<span class="info-bar">
+						${sessionScope.member.nickname} 님
+					</span>
 					<span style="color:white" id="count" onclick="changeUrl('getMessageList.do?n_receiver=${sessionScope.member.id}')" class="glyphicon glyphicon-envelope" data-toggle="modal" data-target="#myModal" ></span>
 					</c:otherwise>
 				</c:choose>
 			</div>
 			<div class="nav-content" style=" padding: 0 5px 0 5px; ">
-					<span class="info-bar" style="font-weight: 100;"><a href="mypage.do">마이페이지</a></span>
+				<span class="info-bar" style="font-weight: 100;">
+					<a href="mypage.do">마이페이지</a>
+				</span>
 			</div>
 			<div class="nav-content" style="padding: 0 0 0 5px;">
-					<span class="info-bar" style="font-weight: 100;"><a href="signout.do">로그아웃</a></span>
+				<span class="info-bar" style="font-weight: 100;">
+					<a href="signout.do">로그아웃</a>
+				</span>
 			</div>
 			<div class="nav-content" style="padding: 0 0 0 70px;">
-				<span class="info-bar" style="font-weight: 100;"><a href="https://github.com/joonth/NAI_HK_TeamProject" target="_blank">
-				<img src="./resources/images/github-menu-item.svg">&nbsp; GitHub</a></span>
+				<span class="info-bar" style="font-weight: 100;">
+					<a href="https://github.com/joonth/NAI_HK_TeamProject" target="_blank">
+						<img src="./resources/images/github-menu-item.svg">
+						&nbsp; GitHub
+					</a>
+				</span>
 			</div>
 		</div>
 	</div>
 	<!-- header  -->
 	
-	
 	<!-- 찜한 학원  -->
 	<div id="icon-bar" >
 	</div>
 	<!-- 찜한 학원 -->
-	
-	
+
 	<!-- Modal -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">

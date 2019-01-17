@@ -7,16 +7,11 @@
 <html>
 <head>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">	
-<!-- 이한준 -->
+	<script src="https://unpkg.com/chaffle/chaffle.min.js"></script>
 	<link rel="shortcut icon" href="./resources/images/favicon.ico">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/search.css">
-	
-	<script src="https://unpkg.com/chaffle/chaffle.min.js"></script>
-	
 	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/hj/main_search.js"></script>
-<!-- 이한준 -->
-	
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>국과수 국비과정수업정보</title>
 <%
@@ -227,7 +222,6 @@
 </div>
 
 <script>
-
 	const elements = document.querySelectorAll('[data-chaffle]');
 	setInterval(function(){
 		Array.prototype.forEach.call(elements, function (el) {
@@ -235,17 +229,13 @@
 				speed: 100,
 				delay: 100});    									  
 		chaffle.init();
-	
 	}); },5000);
-	
 	$("#show-table-btn").on('click', function(){
 		$(".ranking-table").show();
 	});
- 	
 	$(".ranking-table").on('mouseleave', function(){
 		$(".ranking-table").hide();
 	});
-
 	
 	function rollingSticker(){
 		$("#start-class-ul li:first").slideUp(
@@ -253,9 +243,7 @@
 					$(this).appendTo($("#start-class-ul")).slideDown();
 				});
 		};	
-	
 	setInterval(function(){rollingSticker()},3000);
-	
 	
 	function rollingStickerRanking(){
 		$("#ranking-ul li:first").slideUp(
@@ -263,9 +251,7 @@
 					$(this).appendTo($("#ranking-ul")).slideDown();
 				});
 	};	
-	
 	setInterval(function(){rollingStickerRanking()},4000);
-	
 </script>
 </body>
 </html>
