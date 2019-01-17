@@ -691,5 +691,11 @@ public class HomeController {
 		list.put("list", img);
 		return list;
 	}
+	
+	@RequestMapping(value="/getMessageForm.do" , method=RequestMethod.GET)
+	public String getMessageForm(Locale locale, Model model) {
+		logger.info("getMessageForm 가져오기", locale);
+		return "sendmessageform";
+	}
     ////////////////	이한준 	//////////////////////////////////////////////////////////////////////////////   
 }
