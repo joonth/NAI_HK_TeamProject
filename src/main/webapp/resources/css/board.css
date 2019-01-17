@@ -1,0 +1,32 @@
+@charset "UTF-8";
+	#table-container{
+		width: 1000px;		
+		margin: 0 auto; /* 0 :위,아래 auto :좌우를 자동으로 조정*/
+		overflow :auto;
+	}
+	table a:hover{
+		text-decoration:none;
+	}
+	table a{
+		color:blue;
+	}
+	.select-box{
+    width: 77x;
+    height: 30px;
+    padding-left: 10px;
+    font-size: 14px;
+    color: black;
+    border: 1px solid gray;
+    border-radius: 5px;
+	}
+	.paging-position{
+		text-align:center;
+		font-size:17px;	
+	}
+	.paging:hover{
+ 		text-decoration:none;
+ 	} 
+	.right-sort{
+		text-align:right;
+	}
+	
