@@ -7,42 +7,10 @@
 <html>
 <head>
 <link rel="shortcut icon" href="./resources/images/favicon.ico">
+<link rel="stylesheet" type="text/css" href="./resources/css/board.css" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>글 목록 페이지</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<style type="text/css">
-	#table-container{
-		width: 1000px;		
-		margin: 0 auto; /* 0 :위,아래 auto :좌우를 자동으로 조정*/
-		overflow :auto;
-	}
-	table a:hover{
-		text-decoration:none;
-	}
-	table a{
-		color:blue;
-	}
-	.select-box{
-    width: 77x;
-    height: 30px;
-    padding-left: 10px;
-    font-size: 14px;
-    color: black;
-    border: 1px solid gray;
-    border-radius: 5px;
-	}
-	.paging-position{
-		text-align:center;
-		font-size:17px;	
-	}
-	.paging:hover{
- 		text-decoration:none;
- 	} 
-	.right-sort{
-		text-align:right;
-	}
-	
-</style>
 </head>
 <body>
 <%@include file="header.jsp" %>

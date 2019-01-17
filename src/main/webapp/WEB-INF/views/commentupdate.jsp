@@ -8,15 +8,9 @@
 <html>
 <head>
 <link rel="shortcut icon" href="./resources/images/favicon.ico">
+<link rel="stylesheet" type="text/css" href="./resources/css/board.css" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title></title>
-<style type="text/css">
-	#table-container{
-		width: 1000px;		
-		margin: 0 auto; /* 0 :위,아래 auto :좌우를 자동으로 조정*/
-		overflow :auto;
-	}	
-</style>
 <script type="text/javascript">
 	function checkForm(){
 		var r_content = document.getElementById('r_content');
