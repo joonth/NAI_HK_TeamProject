@@ -109,7 +109,7 @@ public class HomeController {
 	@RequestMapping(value = "/main.do", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) throws IOException {
 		logger.info("main {}.", locale);
-		if(list.size() ==0) {		// 과정정보 list를 구하는 for문을 한번만 돌리기 위한 if문.		
+		if(list.size() ==0) {		// 과정정보 list를 구하는 for문을 한번만 돌리기 위한 if문.	cache를 사용하면 어떨까?	
 			logger.info("학원리스트 출력",locale);
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");	
@@ -605,7 +605,7 @@ public class HomeController {
 					MessageDto mdto = new MessageDto();
 					mdto.setN_sender("admin");
 					mdto.setN_receiver(member.getId());
-					mdto.setN_content("포인트 100점을 달성하셨습니다~ \n 아래의 링크를 통해서 쿠폰을 받아보실수 있습니다~! \n http://쿠폰쿠폰.com");
+					mdto.setN_content("포인트 100점을 달성하셨습니다~ <br><br> 아래의 링크를 통해서 쿠폰을 받아보실수 있습니다~! <br><br> http://쿠폰쿠폰.com");
 					mdto.setNs_state_code("e");
 					messageDao.sendMessage(mdto);
 				}
@@ -663,7 +663,7 @@ public class HomeController {
 				MessageDto mdto = new MessageDto();
 				mdto.setN_sender("admin");
 				mdto.setN_receiver(dto.getBaskId());
-				mdto.setN_content(sto.getStartAcademyName()+"의  \n"+sto.getStartClassName()+"과정의 개강일이 \n" + sto.getStartDDay()+"일 남았습니다!.");
+				mdto.setN_content(sto.getStartAcademyName()+"  <br><br>"+sto.getStartClassName()+" <br><br> 개강까지" + sto.getStartDDay()+"일 남았습니다!.");
 				mdto.setNs_state_code("a");
 				messageDao.sendMessage(mdto);
 			}
