@@ -56,17 +56,16 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 			
 		List<BoardDto> dto=null;
 		     		 
-        //view jsp 페이지에서 페이징 처리를 위해 사용할 PageMaker 객체를 생성
+        //boardlist.jsp 페이지에서 페이징 처리를 위해 사용할 PageMaker 객체를 생성
 		PageMakerDto pageMaker = new PageMakerDto();
 		pageMaker.setCri(cri);
 		Integer totalNum = boardService.totalCount();
 		pageMaker.setTotalCount(totalNum);
-
-		//조회순,추천순,최신순 파라미터값을 받아옴
-		pagelist = request.getParameter("pagelist");
-		
-		request.getSession().setAttribute("pagelist", pagelist);
 		model.addAttribute("pageMaker", pageMaker);
+		
+		//조회순,추천순,최신순 파라미터값을 받아옴
+		pagelist = request.getParameter("pagelist");	
+		request.getSession().setAttribute("pagelist", pagelist);	
 		
 		//페이지 조회순,최신순,추천순으로 출력
 		if(pagelist.equals("b_readcount")) { //조회순 b_readcount desc,b_seq desc
@@ -101,8 +100,9 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 
 	//게시글 추가폼으로 이동
 	@RequestMapping(value="/insertform.do" , method= RequestMethod.GET)
-	public String insertform(Locale locale,Model model) {
+	public String insertform(Locale locale,Model model,CriteriaDto cri) {
 		logger.info("글추가 폼이동{}.", locale);
+		model.addAttribute("cri", cri);
 		return "boardinsert";
 	}
 	
