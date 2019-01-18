@@ -42,11 +42,12 @@
 	<!-- apikey를 외부파일로 두고 gitignore에 등록해서 github에 올리지 않음 -->
 	<util:properties id="apiKey" location="classpath:/config/config.properties"/>
 	
+	
 	<websocket:handlers>
 		<websocket:mapping handler="EchoHandler" path=".do"/>
 		<websocket:handshake-interceptors>
+		<!--  HttpSessionHandShakeInterceptor 설정을 통해서 httpsession 정보를 받아옴 -->
 			<beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
-			
 		</websocket:handshake-interceptors>
 		<websocket:sockjs/>
 	</websocket:handlers>
