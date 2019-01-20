@@ -9,7 +9,7 @@
 - (2018.11.26 ~ 2019.01.21) 8주
 
 ### 개발환경
-- window 10, java 8, oracle 11g, html, css, javascript, jquery, spring, bootstrap
+- window 10, java 8, oracle 11g, html, css, javascript, jquery, spring, maven, mybatis, bootstrap
 - HRD open api
 
 
