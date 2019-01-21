@@ -41,7 +41,7 @@
 <h2 style="text-align:center">게시글 작성</h2>
 <br /><br />
     <form action="insertboard.do" method="post">
-    <input type="hidden" name="pagelist" value="${dto.b_regdate }"/>
+<%--     <input type="hidden" name="pagelist" value="${dto.b_regdate }"/> --%>
     	
         <table class="table table-striped" id="table-container">
         	<col width="100px"><col width="400px">
@@ -64,7 +64,7 @@
         			<div style="text-align:center">
         			<br />
         			<input type="submit" value="글 등록" class="btn btn-default"/> 
-					<button type="button" onclick="location.href='boardlist.do?page=1&pagelist=${pagelist}'" class="btn btn-default">취소</button>
+					<button type="button" onclick="location.href='boardlist.do?page=${cri.page }&pagelist=${pagelist}'" class="btn btn-default">취소</button>
 					</div>
 				</td>
         	</tr>

@@ -321,19 +321,19 @@
   		SELECT POINTCHECK FROM BOARD WHERE B_SEQ=#{b_seq}
   	</select>
   	
-	<!--   	닉네임변경시 게시판 닉네임도 변경 -->
+	<!--   	닉네임변경시 게시판,댓글,좋아요 테이블의 닉네임도 변경 -->
   	<update id="bUpdateNick" parameterType="map">
   		UPDATE BOARD 
   		SET M_NICK=#{m_nick}
   		WHERE M_NICK=#{ori_nick}
   	</update>
-  	<!--   	닉네임변경시 댓글 닉네임도 변경 -->
+  	
   	<update id="cUpdateNick" parameterType="map">
   		UPDATE REPLY
   		SET M_NICK=#{m_nick}
   		WHERE M_NICK=#{ori_nick}
   	</update>
-	<!--   	닉네임변경시 좋아요테이블 닉네임도 변경 -->
+	
   	<update id="lUpdateNick" parameterType="map">
   		UPDATE LIKETO
   		SET M_NICK=#{m_nick}

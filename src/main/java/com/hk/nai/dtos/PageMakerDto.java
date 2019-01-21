@@ -8,7 +8,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class PageMakerDto {
 	
 	private CriteriaDto cri; // page, perPageNum 을 가지고 있음
-	 
+	
     private int totalCount; // 전체 게시글 수
     private int startPage; // 게시글 번호에 따른 (보여지는)페이지의 시작 번호
     private int endPage; // 게시글 번호에 따른 (보여지는)페이지의 마지막 번호
@@ -102,14 +102,11 @@ public class PageMakerDto {
     }
 
     public String makeQuery(int page) {
-    	 
-        UriComponents uriComponents = UriComponentsBuilder.newInstance().queryParam("page", page)
-                .queryParam("perPageNum", cri.getPerPageNum()).build();
- 
-        return uriComponents.toUriString();
+    	 UriComponents uriComponents = UriComponentsBuilder.newInstance().queryParam("page", page).build(); 	 
+    	 return uriComponents.toUriString();
     }
-
-
-	
+//        UriComponents uriComponents = UriComponentsBuilder.newInstance().queryParam("page", page)
+//                .queryParam("perPageNum", cri.getPerPageNum()).build();
+// 	
 
 }
