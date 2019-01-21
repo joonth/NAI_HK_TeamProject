@@ -1,4 +1,4 @@
-var sock = new SockJS('.do');
+var sock = new SockJS('.so');
 $(document).ready(function(){
 
 	$("#messageForm").submit(function(event) {

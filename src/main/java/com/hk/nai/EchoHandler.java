@@ -40,7 +40,7 @@ public class EchoHandler extends TextWebSocketHandler {
 		try {
 			for(WebSocketSession ss : sessionList) {
 				// HttpSessionHandShakeInterceptor 설정을 통해서 httpsession 정보를 받아옴
-				httpSessionMap =session.getAttributes();
+				httpSessionMap =ss.getAttributes();
 				MemberDto dto = (MemberDto) httpSessionMap.get("member");
 				if(dto.getId().equals(message.getPayload())) {
 					ss.sendMessage(new TextMessage(dao.getMsgNum(message.getPayload())));

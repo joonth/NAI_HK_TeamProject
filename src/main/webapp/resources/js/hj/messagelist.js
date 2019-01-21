@@ -1,5 +1,5 @@
 $(document).ready(function(){	
-	var sock = new SockJS('.do');
+	var sock = new SockJS('.so');
 	sock.onopen = function() {
 		 sock.send($("#session").val());
 		 sock.send($("#rec").val()); 

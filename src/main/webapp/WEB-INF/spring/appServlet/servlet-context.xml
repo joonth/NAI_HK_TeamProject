@@ -44,7 +44,7 @@
 	
 	
 	<websocket:handlers>
-		<websocket:mapping handler="EchoHandler" path=".do"/>
+		<websocket:mapping handler="EchoHandler" path=".so"/>
 		<websocket:handshake-interceptors>
 		<!--  HttpSessionHandShakeInterceptor 설정을 통해서 httpsession 정보를 받아옴 -->
 			<beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
