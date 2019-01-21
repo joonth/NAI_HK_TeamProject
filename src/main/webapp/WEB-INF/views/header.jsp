@@ -21,7 +21,7 @@
 			<div class="nav-content">
 				<a href="main.do" >
 					<img class="nav-image" alt="logo" src="./resources/images/detective.png">
-					<span class="nav-title">국비과정수사 NAI</span>
+					<span class="nav-title">국비과정수업정보 NAI</span>
 				</a>
 			</div>
 			<div class="nav-content">

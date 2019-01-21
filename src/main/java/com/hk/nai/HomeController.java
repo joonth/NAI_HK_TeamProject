@@ -70,7 +70,7 @@ public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
-	Map<String,String> dupeCheck = new HashMap<String,String>();	// 학원평 재 작성시 포인트 중복추가 방지
+	Map<String,String> dupeCheck = new HashMap<String,String>();	// 학원평 재 작성시 포인트 중복추가 방지  db 정보로
 	//API를 여러번 호출하지않기 위해서 받아온  Data를 맵에 저장하여 필요한부분에서 사용할 수 있도록.
 	Map<String,LinkedList<AcInfoDto>> getAcInfoMap = new HashMap<String,LinkedList<AcInfoDto>>();	
 
@@ -109,7 +109,7 @@ public class HomeController {
 	@RequestMapping(value = "/main.do", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) throws IOException {
 		logger.info("main {}.", locale);
-		if(list.size() ==0) {		// 과정정보 list를 구하는 for문을 한번만 돌리기 위한 if문.	cache를 사용하면 어떨까?	
+		if(list.size() ==0) {		// 과정정보 list를 구하는 for문을 한번만 돌리기 위한 if문.
 			logger.info("학원리스트 출력",locale);
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");	
@@ -149,7 +149,7 @@ public class HomeController {
 					
 					 acInfoDto.setTitle(title)
 					 		  .setSubTitle(subtitle)
-					 		  .setAddress(address)
+					 		  .setAddress(address) 
 					 		  .setTrprId(trprid) 
 					 		  .setTrastartdate(trastartdate)
 					 		  .setDday(util.trimDday(acInfoDto));
@@ -185,7 +185,6 @@ public class HomeController {
 			}//for
 			// 과정출력 갯수가 달라지면 update가 된것으로 간주하고 db에  새로운 과정 list를  받는다.
 			if(dataHandleService.getAcClassNum() != count) {
-				dataHandleService.delOutOfDateData();
 				dataHandleService.insUpToDateData(list);
 			}
 			System.out.println("출력 과정수 : "+count);	

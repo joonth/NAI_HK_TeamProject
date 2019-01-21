@@ -261,9 +261,7 @@
   	</delete>
   	
   	<delete id="delOutOfDateData">
-  	<![CDATA[
-  		delete ACADEMY WHERE AC_CRE_DATE < TO_CHAR(sysdate,'YYYY-MM-DD')
-  		]]>
+  		delete ACADEMY
   	</delete>
   	
   	<insert id="insUpToDateData" parameterType="AcInfoDto">

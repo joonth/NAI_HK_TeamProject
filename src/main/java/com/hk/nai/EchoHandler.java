@@ -30,7 +30,7 @@ public class EchoHandler extends TextWebSocketHandler {
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		sessionList.add(session);
 		logger.info("{} 연결됨", session.getId());
-	  }
+	}
 	 
 	  
 	// 클라이언트가 서버로 메시지를 전송했을 때 실행되는 메서드
