@@ -198,8 +198,8 @@
   		select * from auth
   	</select>
   	
-  	<select id="checkDupe" parameterType="CommentDto" resultType="CommentDto">
-  		select * from ac_comment where ac_name =#{ac_name} and m_id=#{m_id}
+  	<select id="checkDupe" parameterType="String" resultType="String">
+  		select M_CHECK from MEMBER WHERE M_ID =#{id}
   	</select>
   	
   	<select id="checkPoint" parameterType="String" resultType="int" >
@@ -271,6 +271,7 @@
   	<select id="getAcClassNum" resultType="int">
   		select count(*) from academy
   	</select>
+  	
 
 <!-- 					황인후					-->
 	<!--   게시판쿼리 -->

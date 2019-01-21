@@ -17,8 +17,6 @@ public class CommentAddPermitService {
 
 	@Autowired
 	CommentAddPermitDao dao;
-	@Autowired
-	commentDto dto;
 	
 	List<AuthDto> list = new ArrayList<AuthDto>(); 
 	
@@ -33,12 +31,13 @@ public class CommentAddPermitService {
 		return false;
 	}
 	
-	public boolean checkDupe(commentDto dto) {
-		dto = dao.checkDupe(dto);
-		if(dto == null) {
+	public boolean checkDupe(String id) {
+		String mCheck  = dao.checkDupe(id);
+		if(mCheck.equals("N")) {
 			return true;
 		}else {
 			return false;
 		}
 	}
+	
 }

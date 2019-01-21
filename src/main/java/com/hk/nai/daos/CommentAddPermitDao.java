@@ -19,8 +19,8 @@ public class CommentAddPermitDao {
 		return sst.selectList(ns+"checkAuth");
 	}
 	
-	public commentDto checkDupe(commentDto dto) {
-		return sst.selectOne(ns+"checkDupe", dto);
+	public String checkDupe(String id) {
+		return sst.selectOne(ns+"checkDupe", id);
 	}
 	
 }

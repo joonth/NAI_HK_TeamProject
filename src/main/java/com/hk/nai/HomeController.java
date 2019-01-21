@@ -70,7 +70,6 @@ public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
-	Map<String,String> dupeCheck = new HashMap<String,String>();	// 학원평 재 작성시 포인트 중복추가 방지  db 정보로
 	//API를 여러번 호출하지않기 위해서 받아온  Data를 맵에 저장하여 필요한부분에서 사용할 수 있도록.
 	Map<String,LinkedList<AcInfoDto>> getAcInfoMap = new HashMap<String,LinkedList<AcInfoDto>>();	
 
@@ -596,8 +595,7 @@ public class HomeController {
 		String subtitle = dto.getAc_name();
 		dto.setAc_name(subtitle);
 		// 등록학원과 중복작성여부 체크
-		if(commentAddPermit.getAuth(subtitle, dto.getM_id()) && commentAddPermit.checkDupe(dto)) {
-			if(dupeCheck.get(member.getId()) ==null) {
+		if(commentAddPermit.getAuth(subtitle, dto.getM_id()) && commentAddPermit.checkDupe(member.getId())) {
 				//학원평 작성시 포인트 추가
 				member.setPoint(100);
 				if(pointDao.addPoint(member) >= 100) {
@@ -608,9 +606,7 @@ public class HomeController {
 					mdto.setNs_state_code("e");
 					messageDao.sendMessage(mdto);
 				}
-			}
 			Cserv.addComment(dto);
-			dupeCheck.put(member.getId(), member.getId());
 			map.put("dto", dto);
 		}else {
 			dto.setAc_comment("false");
