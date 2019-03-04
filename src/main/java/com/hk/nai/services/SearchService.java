@@ -36,6 +36,7 @@ public class SearchService {
 		return dao.getImg(subtitle);	
 	}
 	
+	// 모든 회원 가져오기 : message 보내는 관리자 페이지
 	public List<MemberDto> getMemberList(){
 		return dao.getMemberList();
 	}
@@ -48,6 +49,7 @@ public class SearchService {
 		dao.putBasket(dto);
 	}
 	
+	// 해당 학원을 찜한 id 구하기
 	public List<BasketDto> getBasketMname(String AC_NAME){
 		return dao.getBasketMname(AC_NAME);
 	}
