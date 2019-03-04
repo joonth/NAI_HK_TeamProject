@@ -65,6 +65,7 @@ public class MessageController {
 		return "messagelist";
 	}
 	
+	// 회원관리 page : 회원리스트 출력.
 	@ResponseBody
 	@RequestMapping(value = "/getMemberList.do", method = RequestMethod.POST)
 	public Map<String,List<MemberDto>> getMemberList(Locale locale, Model model) throws IOException {
@@ -73,7 +74,7 @@ public class MessageController {
 		return map;
 	}
 	
-	// 회원관리 page에서 회원 클릭시
+	// 회원관리 page : 회원 클릭시 반대편 box로 
 	@ResponseBody
 	@RequestMapping(value = "/changeState.do", method = RequestMethod.GET)
 	public Map<String,String> changeState(Locale locale, Model model,String value,String section) throws IOException {
