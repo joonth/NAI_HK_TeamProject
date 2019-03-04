@@ -15,6 +15,7 @@ public class DataHandleService {
 	@Autowired
 	DataHandleDao dao;
 	
+	// 기존 학원 data delete , 갱신된 data insert
 	@Transactional
 	public void insUpToDateData(List<AcInfoDto> list) {
 		dao.delOutOfDateData();
@@ -23,6 +24,7 @@ public class DataHandleService {
 		}
 	}
 	
+	// DB에 있는 학원의 수 구하기.
 	public int getAcClassNum() {
 		return dao.getAcClassNum();
 	}
